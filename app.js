@@ -646,6 +646,7 @@
   }
 
   function renderStrip(scrollToEnd) {
+    layoutStrip();
     var keep = el.stripItems.scrollLeft;
     clear(el.stripItems);
     if (!strip.length) {
@@ -667,26 +668,41 @@
     updateArrows();
   }
 
+  /* Ile obrazków mieści się na pasku – zależnie od szerokości ekranu:
+   * mały telefon 4, telefon 5, mały tablet 8, duży tablet 10 – ale nigdy mniejsze niż STRIP_MIN px
+   * (czytelność ważniejsza niż liczba). Miejsce na strzałki jest zawsze zarezerwowane,
+   * więc rozmiar się nie zmienia, gdy strzałki się pojawiają. */
+  var STRIP_MIN = 46, STRIP_MAXPX = 88, STRIP_GAP = 4, stripPerPage = 4;
+  function layoutStrip() {
+    var w = el.stripItems.clientWidth - 4; // padding
+    if (w <= 0) return;
+    var vw = window.innerWidth;
+    var target = vw < 375 ? 4 : vw < 480 ? 5 : vw < 900 ? 8 : 10;
+    var fit = Math.max(1, Math.floor((w + STRIP_GAP) / (STRIP_MIN + STRIP_GAP)));
+    var n = Math.max(1, Math.min(target, fit));
+    var size = Math.floor((w - STRIP_GAP * (n - 1)) / n);
+    size = Math.min(size, STRIP_MAXPX);
+    stripPerPage = n;
+    el.stripItems.style.setProperty('--strip-item', size + 'px');
+  }
+
   function updateArrows() {
     var s = el.stripItems;
     var overflow = s.scrollWidth > s.clientWidth + 1;
-    el.stripLeft.hidden = !overflow;
-    el.stripRight.hidden = !overflow;
-    // pokazanie strzałek zwęża pasek – sprawdzamy jeszcze raz
-    overflow = s.scrollWidth > s.clientWidth + 1;
-    el.stripLeft.hidden = !overflow;
-    el.stripRight.hidden = !overflow;
-    el.stripLeft.disabled = s.scrollLeft <= 1;
-    el.stripRight.disabled = s.scrollLeft + s.clientWidth >= s.scrollWidth - 1;
+    el.stripLeft.classList.toggle('off', !overflow);
+    el.stripRight.classList.toggle('off', !overflow);
+    el.stripLeft.disabled = !overflow || s.scrollLeft <= 1;
+    el.stripRight.disabled = !overflow || s.scrollLeft + s.clientWidth >= s.scrollWidth - 1;
   }
 
   el.stripItems.addEventListener('scroll', updateArrows, { passive: true });
-  window.addEventListener('resize', updateArrows);
+  window.addEventListener('resize', function () { layoutStrip(); updateArrows(); });
+  function stripPage() { return el.stripItems.clientWidth; } // cała strona = stripPerPage obrazków
   el.stripLeft.addEventListener('click', function () {
-    el.stripItems.scrollBy({ left: -el.stripItems.clientWidth * 0.8, behavior: 'smooth' });
+    el.stripItems.scrollBy({ left: -stripPage(), behavior: 'smooth' });
   });
   el.stripRight.addEventListener('click', function () {
-    el.stripItems.scrollBy({ left: el.stripItems.clientWidth * 0.8, behavior: 'smooth' });
+    el.stripItems.scrollBy({ left: stripPage(), behavior: 'smooth' });
   });
 
   // Dotknięcie kafelka na pasku: powtórz; podświetl albo – jeśli już był podświetlony – zgaś.

@@ -134,8 +134,8 @@ button {
   border: 3px solid var(--last-border);
 }
 .strip-btn {
-  flex: 0 0 48px;
-  width: 48px;
+  flex: 0 0 44px;
+  width: 44px;
   height: 60px;
   border-radius: 14px;
   font-size: 28px;
@@ -150,8 +150,8 @@ button {
 .strip-btn:active { transform: scale(.92); }
 .strip-btn:disabled { opacity: .35; filter: grayscale(1); }
 .strip-arrow {
-  flex: 0 0 22px;
-  width: 22px;
+  flex: 0 0 18px;
+  width: 18px;
   height: 60px;
   padding: 0;
   background: transparent;
@@ -160,14 +160,14 @@ button {
   font-weight: 900;
   line-height: 1;
 }
-.strip-arrow[hidden] { display: none; }
+.strip-arrow.off { visibility: hidden; }
 .strip-arrow:disabled { opacity: .2; }
 .strip-items {
   flex: 1 1 auto;
   min-width: 0;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px; /* = STRIP_GAP w app.js */
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
@@ -176,13 +176,14 @@ button {
 }
 .strip-items::-webkit-scrollbar { display: none; }
 .strip-item {
-  flex: 0 0 58px;
-  width: 58px;
-  height: 58px;
+  flex: 0 0 var(--strip-item, 58px);
+  width: var(--strip-item, 58px);
+  height: var(--strip-item, 58px);
+  overflow: hidden;
   border-radius: 12px;
   background: #FFFFFF;
   border: 3px solid #E0E0E0;
-  font-size: 36px;
+  font-size: calc(var(--strip-item, 58px) * .6);
   line-height: 1;
   display: flex;
   align-items: center;
@@ -190,7 +191,7 @@ button {
   padding: 0;
   transition: transform .08s ease;
 }
-.strip-item .pic { width: 46px; height: 46px; }
+.strip-item .pic { width: calc(var(--strip-item, 58px) - 12px); height: calc(var(--strip-item, 58px) - 12px); }
 .strip-item:active { transform: scale(.92); }
 .strip-item.hl {
   border-color: #1E88E5;
@@ -204,6 +205,17 @@ button {
   white-space: nowrap;
   padding-left: 6px;
 }
+
+/* ---------- Obrazki ze słownika ---------- */
+.pic {
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  max-width: 100%;
+  max-height: 100%;
+}
+.tile-emoji .pic { width: 60px; height: 60px; }
 
 /* ---------- Tile list ---------- */
 .list {
@@ -244,8 +256,11 @@ button {
 .tile-emoji {
   flex: 0 0 auto;
   width: 60px;
+  height: 60px;
   display: flex;
+  align-items: center;
   justify-content: center;
+  overflow: hidden;
   font-size: 48px;
   line-height: 1;
   text-align: center;
@@ -402,4 +417,18 @@ legend { font-weight: 700; font-size: 18px; margin-bottom: 8px; }
   text-align: right;
   font-size: 14px;
   color: var(--muted);
+}
+
+/* Mały telefon: węższe przyciski paska, żeby zmieściły się co najmniej 3 obrazki */
+@media (max-width: 359px) {
+  .strip { margin: 0 8px 8px; padding: 4px; gap: 3px; }
+  .strip-btn { flex-basis: 40px; width: 40px; font-size: 24px; }
+  .strip-arrow { flex-basis: 16px; width: 16px; font-size: 34px; }
+}
+@media (max-width: 359px) {
+  .tile { gap: 10px; padding: 10px 12px; }
+  .tile-main { gap: 10px; }
+  .tile-text { font-size: 20px; }
+  .tile-text.long { font-size: 18px; }
+  .star { flex-basis: 54px; width: 54px; height: 54px; font-size: 30px; }
 }
