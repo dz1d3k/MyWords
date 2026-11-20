@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "dictionaryVersion": "1.02",
+  "dictionaryVersion": "1.03",
   "language": "en-US",
   "categories": [
     {
@@ -422,6 +422,21 @@
               "emoji": "🥣",
               "text": "Granola",
               "image": "images/granola.svg"
+            },
+            {
+              "emoji": "🍇",
+              "text": "Raisins",
+              "image": "images/rodzynki.svg"
+            },
+            {
+              "emoji": "🥜",
+              "text": "Peanuts",
+              "image": "images/orzeszki.svg"
+            },
+            {
+              "emoji": "🥜",
+              "text": "Trail mix",
+              "image": "images/mieszanka-studencka.svg"
             },
             {
               "emoji": "🥚",
