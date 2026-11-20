@@ -1,17 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <g transform="rotate(-18 64 64)">
-    <ellipse cx="64" cy="94" rx="54" ry="5" fill="#000" opacity=".12"/>
-    <!-- chocolate end with milk filling -->
-    <rect x="80" y="44" width="38" height="40" rx="6" fill="#5A3416"/>
-    <rect x="84" y="54" width="30" height="20" rx="5" fill="#FFFDF5" stroke="#E8DCC4" stroke-width="1.5"/>
-    <path d="M94 44 v10 M106 44 v10 M94 74 v10 M106 74 v10" stroke="#3E220C" stroke-width="2"/>
-    <!-- wrapper -->
-    <path d="M8 42 L14 46 L8 50 L14 54 L8 58 L14 62 L8 66 L14 70 L8 74 L14 78 L8 82 L14 86 L84 86 L84 42 Z" fill="#FFFFFF" stroke="#D0D0D0" stroke-width="2"/>
-    <rect x="14" y="42" width="70" height="13" fill="#F36F21"/>
-    <rect x="14" y="55" width="70" height="3" fill="#D92B2B"/>
-    <rect x="14" y="79" width="70" height="7" fill="#F36F21"/>
-    <!-- bar of chocolate shown on wrapper -->
-    <rect x="26" y="63" width="44" height="11" rx="5.5" fill="#5A3416"/>
-    <rect x="30" y="66" width="36" height="5" rx="2.5" fill="#FFFDF5"/>
+  <!-- wrapped bar -->
+  <defs><linearGradient id="b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2F56D8"/><stop offset=".5" stop-color="#1B3BB0"/><stop offset="1" stop-color="#14287E"/></linearGradient></defs>
+  <path d="M16 14 L4 15 L10 19 L4 23 L10 27 L4 31 L10 35 L4 39 L10 43 L4 47 L10 51 L16 54 Z" fill="url(#b)"/>
+  <path d="M112 14 L124 15 L118 19 L124 23 L118 27 L124 31 L118 35 L124 39 L118 43 L124 47 L118 51 L112 54 Z" fill="url(#b)"/>
+  <rect x="14" y="14" width="100" height="40" fill="url(#b)"/>
+  <path d="M12 16 V52 M16 14 V54 M112 14 V54 M116 16 V52" stroke="#3E6BF0" stroke-width="1.5" opacity=".8"/>
+  <path d="M26 46 Q20 36 30 30 Q34 20 48 24 Q58 16 72 22 Q86 18 94 28 Q106 30 102 42 Q100 50 88 48 L36 50 Q26 52 26 46 Z" fill="#FFFFFF"/>
+  <path d="M32 30 Q60 18 92 24" stroke="#FFD43B" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <text x="63" y="43" text-anchor="middle" font-family="Arial Rounded MT Bold, Arial, Helvetica, sans-serif" font-weight="900" font-size="12.5" fill="#1B3BB0" font-style="italic">CandiesBar</text>
+  <path d="M100 22 l2 4 l4 0 l-3 3 l1 4 l-4 -2 l-4 2 l1 -4 l-3 -3 l4 0 Z" fill="#E53935"/>
+  <circle cx="22" cy="24" r="1.6" fill="#FFF"/><circle cx="108" cy="46" r="1.6" fill="#FFD43B"/>
+  <!-- unwrapped bar, broken in two -->
+  <ellipse cx="64" cy="118" rx="54" ry="4" fill="#000" opacity=".12"/>
+  <g transform="translate(-3 0)">
+    <path d="M10 76 Q10 68 18 68 L58 68 L60 116 L18 116 Q10 116 10 108 Z" fill="#7B4A2A"/>
+    <path d="M14 72 q8 -3 16 0 t16 0" stroke="#9C643C" stroke-width="2.5" fill="none"/>
+    <path d="M44 70 L58 68 L60 116 L46 116 Z" fill="#C8A07A"/>
+    <path d="M46 78 Q58 80 58 92 Q58 104 46 106 Q52 92 46 78 Z" fill="#F6E6B8"/>
+    <circle cx="50" cy="74" r="1.2" fill="#9C643C"/><circle cx="54" cy="110" r="1.2" fill="#9C643C"/>
   </g>
+  <g transform="translate(5 0)">
+    <path d="M70 68 L110 68 Q118 68 118 76 L118 108 Q118 116 110 116 L68 116 Z" fill="#7B4A2A"/>
+    <path d="M84 72 q8 -3 16 0 t14 0" stroke="#9C643C" stroke-width="2.5" fill="none"/>
+    <path d="M70 68 L84 70 L82 116 L68 116 Z" fill="#C8A07A"/>
+    <path d="M82 78 Q70 80 70 92 Q70 104 82 106 Q76 92 82 78 Z" fill="#F6E6B8"/>
+  </g>
+  <rect x="62" y="110" width="4" height="3" fill="#7B4A2A"/><rect x="58" y="114" width="3" height="2" fill="#7B4A2A"/>
 </svg>

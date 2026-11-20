@@ -498,7 +498,8 @@
         },
         {
           "emoji": "🍬",
-          "text": "Gumy"
+          "text": "Gumy",
+          "image": "images/gumy.svg"
         },
         {
           "emoji": "🍫",

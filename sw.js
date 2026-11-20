@@ -1,12 +1,13 @@
 /* Service worker „Moje Słowa”.
- * PODBIJ VERSION przy każdej zmianie plików aplikacji lub vocabulary.json. */
-var VERSION = 'v11';
-var CACHE = 'moje-slowa-' + VERSION;
+ * Numer wersji jest w version.js – podbij go przy każdej zmianie plików aplikacji lub słowników. */
+importScripts('version.js');
+var CACHE = 'moje-slowa-' + APP_VERSION;
 var FILES = [
   './',
   'index.html',
   'style.css',
   'app.js',
+  'version.js',
   'vocabulary.json',
   'vocabulary.en.json',
   'manifest.webmanifest',
@@ -21,6 +22,7 @@ var FILES = [
   'images/chlebek-ryzowy.svg',
   'images/cool-spot.svg',
   'images/draze.svg',
+  'images/gumy.svg',
   'images/jajko-niespodzianka.svg',
   'images/kielbasa.svg',
   'images/makaron.svg',

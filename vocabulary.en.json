@@ -498,7 +498,8 @@
         },
         {
           "emoji": "🍬",
-          "text": "Chewy candy"
+          "text": "Chewing gum",
+          "image": "images/gumy.svg"
         },
         {
           "emoji": "🍫",

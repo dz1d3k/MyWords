@@ -80,8 +80,9 @@ Wszystkie słowa są w pliku [`vocabulary.json`](vocabulary.json). Format:
   Sprawdź plik np. na https://jsonlint.com przed zapisaniem.
 - Ulubione są zapamiętywane po tekście słowa – po zmianie tekstu trzeba je zaznaczyć ponownie.
 
-**Po każdej zmianie** (słów lub plików aplikacji) otwórz `sw.js` i podbij wersję, np.
-`var VERSION = 'v1';` → `var VERSION = 'v2';`. Bez tego telefony mogą dalej pokazywać starą wersję.
+**Po każdej zmianie** (słów lub plików aplikacji) otwórz `version.js` i podbij wersję, np.
+`var APP_VERSION = '0.12';` → `var APP_VERSION = '0.13';`. Bez tego telefony mogą dalej pokazywać starą wersję.
+Numer wersji widać na ekranie startowym pod wyborem języka – tak sprawdzisz, czy telefon ma już nowość.
 Nowa wersja pojawi się na telefonie po drugim otwarciu aplikacji (pierwsze pobiera ją w tle).
 
 Ten sam plik `vocabulary.json` ma być później używany przez aplikację Flutter – nie zmieniaj jego struktury.
