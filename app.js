@@ -127,18 +127,33 @@
   function voiceLang(v) { return typeof v.lang === 'string' ? v.lang.replace('_', '-').toLowerCase() : ''; }
   function matchesLang(v) { return !!v && voiceLang(v).indexOf(L().speech.slice(0, 2).toLowerCase()) === 0; }
 
+  // Głosy-żarty z iOS/macOS – nie nadają się do AAC, ukrywamy je.
+  var NOVELTY = ['albert', 'bad news', 'bahh', 'bells', 'boing', 'bubbles', 'cellos', 'good news', 'jester',
+    'organ', 'superstar', 'trinoids', 'whisper', 'wobble', 'zarvox', 'fred', 'junior', 'kathy', 'ralph',
+    'deranged', 'hysterical', 'pipe organ'];
+  // Starsze, mało naturalne głosy „Eloquence” (iOS 17+) – dostępne, ale na końcu listy.
+  var ELOQUENCE = ['eddy', 'flo', 'grandma', 'grandpa', 'reed', 'rocko', 'sandy', 'shelley'];
+  // Dobre domyślne głosy systemowe, gdy nie ma wersji Premium/Rozszerzonej.
+  var PREFERRED = ['samantha', 'ava', 'allison', 'susan', 'nicky', 'tom', 'alex', 'aaron', 'evan', 'zoe',
+    'google us english', 'zosia', 'krzysztof', 'ewa', 'google polski'];
+
+  function baseName(v) { return String(v.name || '').toLowerCase().replace(/\s*\(.*\)\s*$/, '').trim(); }
+  function isNovelty(v) { return NOVELTY.indexOf(baseName(v)) !== -1; }
+
   function voiceScore(v) {
-    var n = (v.name || '').toLowerCase();
-    if (n.indexOf('premium') !== -1) return 3;
-    if (n.indexOf('enhanced') !== -1 || n.indexOf('rozszerz') !== -1) return 2;
-    if (v.localService) return 1;
-    return 0;
+    var n = String(v.name || '').toLowerCase(), b = baseName(v), sc = 0;
+    if (n.indexOf('premium') !== -1) sc += 30;
+    else if (n.indexOf('enhanced') !== -1 || n.indexOf('rozszerz') !== -1) sc += 20;
+    if (PREFERRED.indexOf(b) !== -1) sc += 10;
+    if (ELOQUENCE.indexOf(b) !== -1) sc -= 10;
+    if (v.localService) sc += 1;
+    return sc;
   }
 
   // Głosy dla bieżącego języka: najpierw najlepsza jakość, potem dokładny wariant (np. en-US).
   function langVoices() {
     var exact = L().speech.toLowerCase();
-    return voices.filter(matchesLang).sort(function (a, b) {
+    return voices.filter(function (v) { return matchesLang(v) && !isNovelty(v); }).sort(function (a, b) {
       return voiceScore(b) - voiceScore(a) ||
         (voiceLang(b) === exact) - (voiceLang(a) === exact) ||
         String(a.name).localeCompare(String(b.name), 'pl');

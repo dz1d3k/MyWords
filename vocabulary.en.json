@@ -492,12 +492,9 @@
           "image": "images/zelki.svg"
         },
         {
-          "emoji": "⚪",
-          "text": "White candies"
-        },
-        {
-          "emoji": "⚫",
-          "text": "Black candies"
+          "emoji": "🟤",
+          "text": "Chocolate drops",
+          "image": "images/draze.svg"
         },
         {
           "emoji": "🍬",

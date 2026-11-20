@@ -1,8 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <ellipse cx="64" cy="116" rx="30" ry="5" fill="#000" opacity=".12"/>
-  <path d="M64 10 C32 10 22 58 22 76 C22 100 40 114 64 114 C88 114 106 100 106 76 C106 58 96 10 64 10 Z" fill="#FFFFFF" stroke="#CFD8DC" stroke-width="3"/>
-  <path d="M22 70 C40 60 88 60 106 70 L106 80 C106 104 88 114 64 114 C40 114 22 104 22 80 Z" fill="#FB8C00"/>
-  <path d="M30 46 Q64 36 98 46" stroke="#E53935" stroke-width="6" fill="none" stroke-linecap="round"/>
-  <text x="64" y="98" font-family="Arial, sans-serif" font-size="30" font-weight="700" text-anchor="middle" fill="#FFF">?</text>
-  <ellipse cx="48" cy="30" rx="7" ry="12" fill="#FFF" opacity=".8" transform="rotate(20 48 30)"/>
+  <ellipse cx="64" cy="118" rx="30" ry="5" fill="#000" opacity=".12"/>
+  <clipPath id="e"><path d="M64 8 C32 8 22 58 22 76 C22 100 40 116 64 116 C88 116 106 100 106 76 C106 58 96 8 64 8 Z"/></clipPath>
+  <g clip-path="url(#e)">
+    <rect x="0" y="0" width="128" height="128" fill="#FFFFFF"/>
+    <path d="M0 66 Q32 54 64 64 T128 60 L128 128 L0 128 Z" fill="#F36F21"/>
+    <path d="M0 66 Q32 54 64 64 T128 60" stroke="#D92B2B" stroke-width="5" fill="none"/>
+    <path d="M0 96 Q32 86 64 94 T128 90" stroke="#FFFFFF" stroke-width="4" fill="none" opacity=".8"/>
+  </g>
+  <path d="M64 8 C32 8 22 58 22 76 C22 100 40 116 64 116 C88 116 106 100 106 76 C106 58 96 8 64 8 Z" fill="none" stroke="#D0D0D0" stroke-width="2.5"/>
+  <ellipse cx="46" cy="30" rx="6" ry="12" fill="#FFF" opacity=".9" transform="rotate(20 46 30)"/>
 </svg>
