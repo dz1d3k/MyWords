@@ -20,7 +20,7 @@
         back: 'Wstecz', home: 'Start', repeat: 'Powtórz ostatnie słowo',
         addFav: 'Dodaj do ulubionych', removeFav: 'Usuń z ulubionych',
         emptyFav: 'Nie masz jeszcze ulubionych. Dotknij gwiazdki ☆ obok słowa albo kategorii.',
-        language: '🌐 Język', version: 'Wersja', settingsBtn: '⚙️ Ustawienia głosu', settingsTitle: 'Ustawienia głosu',
+        language: '🌐 Język', version: 'Wersja aplikacji', dictVersion: 'słownik', settingsBtn: '⚙️ Ustawienia głosu', settingsTitle: 'Ustawienia głosu',
         voice: 'Głos', rate: 'Tempo', test: '🔊 Test', done: 'Gotowe', hintSummary: 'Jak pobrać lepszy głos?',
         hintHtml: '<p><strong>iPhone:</strong> Ustawienia → Dostępność → Treść mówiona → Głosy → Polski. Pobierz głos „Premium” lub „Rozszerzony”, potem wróć tutaj i wybierz go.</p>' +
           '<p><strong>Android:</strong> Ustawienia → Zamiana tekstu na mowę (często w: Ułatwienia dostępu). Wybierz silnik Google, zainstaluj dane głosowe dla języka polskiego.</p>' +
@@ -38,7 +38,7 @@
         back: 'Back', home: 'Home', repeat: 'Repeat the last word',
         addFav: 'Add to favorites', removeFav: 'Remove from favorites',
         emptyFav: 'No favorites yet. Tap the star ☆ next to a word or a category.',
-        language: '🌐 Language', version: 'Version', settingsBtn: '⚙️ Voice settings', settingsTitle: 'Voice settings',
+        language: '🌐 Language', version: 'App version', dictVersion: 'dictionary', settingsBtn: '⚙️ Voice settings', settingsTitle: 'Voice settings',
         voice: 'Voice', rate: 'Speed', test: '🔊 Test', done: 'Done', hintSummary: 'How to get a better voice?',
         hintHtml: '<p><strong>iPhone:</strong> Settings → Accessibility → Spoken Content → Voices → English. Download a “Premium” or “Enhanced” voice, then come back here and choose it.</p>' +
           '<p><strong>Android:</strong> Settings → Text-to-speech output (often under Accessibility). Choose the Google engine and install English voice data.</p>' +
@@ -579,9 +579,17 @@
     el.home.setAttribute('aria-label', ui('home'));
     el.fav.setAttribute('aria-label', ui('favorites'));
     el.last.setAttribute('aria-label', ui('repeat'));
-    var ver = document.getElementById('app-version');
-    if (ver) ver.textContent = ui('version') + ' ' + (typeof APP_VERSION === 'string' ? APP_VERSION : '?');
+    showVersion();
     if (!lastSpoken) el.lastText.textContent = ui('tapPicture');
+  }
+
+  // „Wersja aplikacji 0.14 · słownik 1.01” – wersja słownika pochodzi z wczytanego pliku.
+  function showVersion() {
+    var ver = document.getElementById('app-version');
+    if (!ver) return;
+    var txt = ui('version') + ' ' + (typeof APP_VERSION === 'string' ? APP_VERSION : '?');
+    if (vocab && vocab.dictionaryVersion) txt += ' · ' + ui('dictVersion') + ' ' + vocab.dictionaryVersion;
+    ver.textContent = txt;
   }
 
   function resetLast() {
@@ -605,6 +613,7 @@
         if (!valid(data)) throw new Error('bad format');
         vocab = data;
         render();
+        showVersion();
         if (onLoaded) onLoaded();
       })
       .catch(function () {

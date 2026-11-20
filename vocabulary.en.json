@@ -1,5 +1,6 @@
 {
   "version": 1,
+  "dictionaryVersion": "1.01",
   "language": "en-US",
   "categories": [
     {
@@ -547,7 +548,8 @@
         },
         {
           "emoji": "🍵",
-          "text": "Tea"
+          "text": "Tea",
+          "image": "images/herbata.svg"
         },
         {
           "emoji": "☕",
@@ -556,6 +558,11 @@
         {
           "emoji": "🥤",
           "text": "Lemonade"
+        },
+        {
+          "emoji": "🥫",
+          "text": "Can",
+          "image": "images/puszka.svg"
         },
         {
           "emoji": "🥤❓",
@@ -801,9 +808,10 @@
     },
     {
       "id": "zabawa",
-      "emoji": "🎨",
+      "emoji": "🤸",
       "name": "Play",
       "color": "#FFCCBC",
+      "image": "images/zabawa.svg",
       "words": [
         {
           "emoji": "🖍️",
@@ -813,6 +821,49 @@
           "emoji": "🎨",
           "text": "Painting"
         },
+        {
+          "emoji": "📺",
+          "text": "Watching cartoons"
+        },
+        {
+          "emoji": "🚶",
+          "text": "Walk"
+        },
+        {
+          "emoji": "🎵",
+          "text": "Listening to music"
+        },
+        {
+          "emoji": "💃",
+          "text": "Dancing"
+        },
+        {
+          "emoji": "🏊",
+          "text": "Swimming"
+        },
+        {
+          "emoji": "🤗",
+          "text": "Tickles",
+          "image": "images/laskotki.svg"
+        },
+        {
+          "emoji": "🏃",
+          "text": "Chasing",
+          "image": "images/gonitwa.svg"
+        },
+        {
+          "emoji": "🤸❓",
+          "text": "Other game"
+        }
+      ]
+    },
+    {
+      "id": "zabawki",
+      "emoji": "🧸",
+      "name": "Toys",
+      "color": "#D7CCC8",
+      "image": "images/zabawki.svg",
+      "words": [
         {
           "emoji": "🧱",
           "text": "Blocks"
@@ -826,10 +877,6 @@
           "text": "Book"
         },
         {
-          "emoji": "📺",
-          "text": "Cartoon"
-        },
-        {
           "emoji": "📱",
           "text": "Tablet"
         },
@@ -838,20 +885,18 @@
           "text": "Ball"
         },
         {
+          "emoji": "⚾",
+          "text": "Small ball",
+          "image": "images/mala-pilka.svg"
+        },
+        {
+          "emoji": "🏓",
+          "text": "Ping-pong paddle",
+          "image": "images/paletka.svg"
+        },
+        {
           "emoji": "🚲",
           "text": "Bike"
-        },
-        {
-          "emoji": "🚶",
-          "text": "Walk"
-        },
-        {
-          "emoji": "🎵",
-          "text": "Music"
-        },
-        {
-          "emoji": "💃",
-          "text": "Dancing"
         },
         {
           "emoji": "🧸",
@@ -862,16 +907,12 @@
           "text": "Train"
         },
         {
-          "emoji": "🏊",
-          "text": "Swimming"
-        },
-        {
           "emoji": "🎈",
           "text": "Balloons"
         },
         {
-          "emoji": "🎨❓",
-          "text": "Other game"
+          "emoji": "🧸❓",
+          "text": "Other toy"
         }
       ]
     },

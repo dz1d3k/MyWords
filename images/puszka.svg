@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <ellipse cx="64" cy="120" rx="30" ry="5" fill="#000" opacity=".12"/>
+  <defs><linearGradient id="c" x1="0" x2="1"><stop offset="0" stop-color="#B71C1C"/><stop offset=".35" stop-color="#F44336"/><stop offset=".6" stop-color="#E53935"/><stop offset="1" stop-color="#9A1414"/></linearGradient>
+  <linearGradient id="m" x1="0" x2="1"><stop offset="0" stop-color="#9E9E9E"/><stop offset=".4" stop-color="#F5F5F5"/><stop offset="1" stop-color="#8D8D8D"/></linearGradient></defs>
+  <path d="M38 16 Q38 10 46 10 L82 10 Q90 10 90 16 L92 24 L36 24 Z" fill="url(#m)"/>
+  <ellipse cx="64" cy="12" rx="22" ry="4" fill="#BDBDBD"/>
+  <rect x="56" y="9" width="16" height="5" rx="2.5" fill="#9E9E9E"/>
+  <path d="M36 24 L92 24 L92 106 L36 106 Z" fill="url(#c)"/>
+  <path d="M36 106 L92 106 L88 116 Q86 118 82 118 L46 118 Q42 118 40 116 Z" fill="url(#m)"/>
+  <path d="M36 74 Q56 60 92 72 L92 80 Q56 70 36 84 Z" fill="#FFFFFF"/>
+  <text x="64" y="58" text-anchor="middle" font-family="Arial Rounded MT Bold, Arial, Helvetica, sans-serif" font-weight="900" font-size="20" font-style="italic" fill="#FFFFFF">cola</text>
+  <rect x="44" y="28" width="5" height="74" fill="#FFF" opacity=".25"/>
+</svg>

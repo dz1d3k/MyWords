@@ -1,5 +1,6 @@
 {
   "version": 1,
+  "dictionaryVersion": "1.01",
   "language": "pl-PL",
   "categories": [
     {
@@ -547,7 +548,8 @@
         },
         {
           "emoji": "🍵",
-          "text": "Herbata"
+          "text": "Herbata",
+          "image": "images/herbata.svg"
         },
         {
           "emoji": "☕",
@@ -556,6 +558,11 @@
         {
           "emoji": "🥤",
           "text": "Lemoniada"
+        },
+        {
+          "emoji": "🥫",
+          "text": "Puszka",
+          "image": "images/puszka.svg"
         },
         {
           "emoji": "🥤❓",
@@ -801,9 +808,10 @@
     },
     {
       "id": "zabawa",
-      "emoji": "🎨",
+      "emoji": "🤸",
       "name": "Zabawa",
       "color": "#FFCCBC",
+      "image": "images/zabawa.svg",
       "words": [
         {
           "emoji": "🖍️",
@@ -813,6 +821,49 @@
           "emoji": "🎨",
           "text": "Malowanie"
         },
+        {
+          "emoji": "📺",
+          "text": "Oglądanie bajki"
+        },
+        {
+          "emoji": "🚶",
+          "text": "Spacer"
+        },
+        {
+          "emoji": "🎵",
+          "text": "Słuchanie muzyki"
+        },
+        {
+          "emoji": "💃",
+          "text": "Taniec"
+        },
+        {
+          "emoji": "🏊",
+          "text": "Pływanie"
+        },
+        {
+          "emoji": "🤗",
+          "text": "Łaskotki",
+          "image": "images/laskotki.svg"
+        },
+        {
+          "emoji": "🏃",
+          "text": "Gonitwa",
+          "image": "images/gonitwa.svg"
+        },
+        {
+          "emoji": "🤸❓",
+          "text": "Inna zabawa"
+        }
+      ]
+    },
+    {
+      "id": "zabawki",
+      "emoji": "🧸",
+      "name": "Zabawki",
+      "color": "#D7CCC8",
+      "image": "images/zabawki.svg",
+      "words": [
         {
           "emoji": "🧱",
           "text": "Klocki"
@@ -826,10 +877,6 @@
           "text": "Książka"
         },
         {
-          "emoji": "📺",
-          "text": "Bajka"
-        },
-        {
           "emoji": "📱",
           "text": "Tablet"
         },
@@ -838,20 +885,18 @@
           "text": "Piłka"
         },
         {
+          "emoji": "⚾",
+          "text": "Mała piłka",
+          "image": "images/mala-pilka.svg"
+        },
+        {
+          "emoji": "🏓",
+          "text": "Paletka",
+          "image": "images/paletka.svg"
+        },
+        {
           "emoji": "🚲",
           "text": "Rower"
-        },
-        {
-          "emoji": "🚶",
-          "text": "Spacer"
-        },
-        {
-          "emoji": "🎵",
-          "text": "Muzyka"
-        },
-        {
-          "emoji": "💃",
-          "text": "Taniec"
         },
         {
           "emoji": "🧸",
@@ -862,16 +907,12 @@
           "text": "Pociąg"
         },
         {
-          "emoji": "🏊",
-          "text": "Pływanie"
-        },
-        {
           "emoji": "🎈",
           "text": "Balony"
         },
         {
-          "emoji": "🎨❓",
-          "text": "Inna zabawa"
+          "emoji": "🧸❓",
+          "text": "Inna zabawka"
         }
       ]
     },
