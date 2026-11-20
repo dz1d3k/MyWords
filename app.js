@@ -27,6 +27,10 @@
         userLabel: 'Użytkownik', chooseUser: 'Wybierz…', addUser: '➕ Dodaj nowego użytkownika', login: 'Zaloguj',
         logout: 'Wyloguj', newUserTitle: 'Nowy użytkownik', namePlaceholder: 'Imię', save: 'Zapisz', cancel: 'Anuluj',
         nameEmpty: 'Wpisz imię.', nameTaken: 'Taki użytkownik już istnieje.',
+        logoutQuestion: 'Czy chcesz się wylogować?', yes: 'Tak', no: 'Nie',
+        deleteUser: 'Usuń użytkownika', deleteTitle: 'Usuń użytkownika', delete: 'Usuń', undo: 'Cofnij',
+        deleteInstr: 'Aby usunąć użytkownika „{name}”, przepisz dokładnie jego nazwę i dopisz na końcu 12. Wielkość liter ma znaczenie. Wpisz: {code}',
+        deleteWrong: 'Błędnie wpisana wartość.',
         back: 'Wstecz', home: 'Start', stripClear: 'Usuń', stripPlay: 'Odtwórz', stripLeft: 'Przewiń w lewo', stripRight: 'Przewiń w prawo',
         addFav: 'Dodaj do ulubionych', removeFav: 'Usuń z ulubionych',
         emptyFav: 'Nie masz jeszcze ulubionych. Dotknij gwiazdki ☆ obok słowa albo kategorii.',
@@ -48,6 +52,10 @@
         userLabel: 'User', chooseUser: 'Choose…', addUser: '➕ Add a new user', login: 'Log in',
         logout: 'Log out', newUserTitle: 'New user', namePlaceholder: 'Name', save: 'Save', cancel: 'Cancel',
         nameEmpty: 'Enter a name.', nameTaken: 'This user already exists.',
+        logoutQuestion: 'Do you want to log out?', yes: 'Yes', no: 'No',
+        deleteUser: 'Delete user', deleteTitle: 'Delete user', delete: 'Delete', undo: 'Back',
+        deleteInstr: 'To delete the user “{name}”, type the name exactly and add 12 at the end. Letter case matters. Type: {code}',
+        deleteWrong: 'Wrong value.',
         back: 'Back', home: 'Home', stripClear: 'Delete', stripPlay: 'Play', stripLeft: 'Scroll left', stripRight: 'Scroll right',
         addFav: 'Add to favorites', removeFav: 'Remove from favorites',
         emptyFav: 'No favorites yet. Tap the star ☆ next to a word or a category.',
@@ -93,6 +101,16 @@
     newName: document.getElementById('new-user-name'),
     newErr: document.getElementById('new-user-error'),
     cancelUser: document.getElementById('btn-cancel-user'),
+    logoutDialog: document.getElementById('confirm-logout'),
+    logoutYes: document.getElementById('btn-logout-yes'),
+    logoutNo: document.getElementById('btn-logout-no'),
+    deleteBtn: document.getElementById('btn-delete-user'),
+    deleteDialog: document.getElementById('delete-user'),
+    deleteForm: document.getElementById('delete-user-form'),
+    deleteInstr: document.getElementById('delete-instr'),
+    deleteInput: document.getElementById('delete-confirm'),
+    deleteErr: document.getElementById('delete-error'),
+    deleteCancel: document.getElementById('btn-delete-cancel'),
     stripClear: document.getElementById('strip-clear'),
     stripPlay: document.getElementById('strip-play'),
     stripLeft: document.getElementById('strip-left'),
@@ -951,6 +969,7 @@
     el.userSelect.appendChild(add);
     el.userSelect.value = (selectedId && userById(selectedId)) ? selectedId : '';
     el.loginBtn.disabled = !userById(el.userSelect.value);
+    el.deleteBtn.disabled = el.loginBtn.disabled;
   }
 
   var selectedBeforeAdd = '';
@@ -959,6 +978,7 @@
     if (el.userSelect.value === '__add') { openAddUser(); return; }
     selectedBeforeAdd = el.userSelect.value;
     el.loginBtn.disabled = !userById(el.userSelect.value);
+    el.deleteBtn.disabled = el.loginBtn.disabled;
   });
 
   function openAddUser() {
@@ -1034,13 +1054,74 @@
     window.scrollTo(0, 0);
   }
 
-  el.logout.addEventListener('click', function () {
+  function openDialog(d) {
+    try {
+      if (typeof d.showModal === 'function') d.showModal();
+      else d.setAttribute('open', '');
+    } catch (e) { d.setAttribute('open', ''); }
+  }
+  function closeDialog(d) {
+    try { if (typeof d.close === 'function') d.close(); } catch (e) { /* ignoruj */ }
+    d.removeAttribute('open');
+  }
+
+  // ⏻ – najpierw pytanie „Czy chcesz się wylogować?” 👍 / 👎
+  el.logout.addEventListener('click', function () { openDialog(el.logoutDialog); });
+  el.logoutNo.addEventListener('click', function () { closeDialog(el.logoutDialog); });
+  el.logoutYes.addEventListener('click', function () {
+    closeDialog(el.logoutDialog);
+    logout();
+  });
+
+  function logout() {
     try { if (synth && (synth.speaking || synth.pending)) synth.cancel(); } catch (e) { /* ignoruj */ }
     var depth = state.depth || 0;
     state = { screen: 'home', depth: 0 };
     showLogin();
     if (depth) { try { history.go(-depth); } catch (e) { /* ignoruj */ } }
+  }
+
+  /* Usuwanie użytkownika – trzeba przepisać nazwę + „12” (wielkość liter ma znaczenie). */
+  function deleteCode(u) { return u.name + '12'; }
+  el.deleteBtn.addEventListener('click', function () {
+    var u = userById(el.userSelect.value);
+    if (!u) return;
+    el.deleteInstr.textContent = ui('deleteInstr').replace('{name}', u.name).replace('{code}', deleteCode(u));
+    el.deleteInput.value = '';
+    el.deleteErr.hidden = true;
+    openDialog(el.deleteDialog);
+    setTimeout(function () { try { el.deleteInput.focus(); } catch (e) { /* ignoruj */ } }, 50);
   });
+  el.deleteInput.addEventListener('input', function () { el.deleteErr.hidden = true; });
+  el.deleteCancel.addEventListener('click', function () { closeDialog(el.deleteDialog); });
+  el.deleteForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var u = userById(el.userSelect.value);
+    if (!u) { closeDialog(el.deleteDialog); return; }
+    if (el.deleteInput.value !== deleteCode(u)) {
+      el.deleteInput.value = '';
+      el.deleteErr.textContent = ui('deleteWrong');
+      el.deleteErr.hidden = false;
+      return;
+    }
+    removeUser(u);
+    closeDialog(el.deleteDialog);
+    fillUserSelect('');
+  });
+
+  function removeUser(u) {
+    saveUsers(loadUsers().filter(function (x) { return x.id !== u.id; }));
+    var prefix = 'mojeSlowa.u.' + u.id + '.';
+    try {
+      var keys = [];
+      for (var i = 0; i < window.localStorage.length; i++) {
+        var k = window.localStorage.key(i);
+        if (k && k.indexOf(prefix) === 0) keys.push(k);
+      }
+      keys.forEach(function (k) { window.localStorage.removeItem(k); });
+      if (rawGet(LS_LAST_USER) === u.id) window.localStorage.removeItem(LS_LAST_USER);
+    } catch (e) { /* ignoruj */ }
+  }
 
   showLogin();
 

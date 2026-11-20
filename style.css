@@ -537,3 +537,38 @@ body.logged-out #settings-wrap { display: none !important; }
   .tile { padding: 8px 10px; }
   .tile-main { min-height: 0; }
 }
+
+/* ---------- Potwierdzenie wylogowania i usuwanie użytkownika (0.25) ---------- */
+.confirm-row { display: flex; gap: 14px; }
+.confirm-btn {
+  flex: 1 1 0;
+  min-height: 130px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 26px;
+  font-weight: 800;
+  color: #1A1A1A;
+  box-shadow: var(--shadow);
+}
+.confirm-btn.yes { background: #C8E6C9; }
+.confirm-btn.no { background: #FFCDD2; }
+.confirm-btn:active { transform: scale(.96); }
+.confirm-emoji { font-size: 60px; line-height: 1; }
+.login-delete {
+  margin-top: 26px;
+  align-self: center;
+  background: transparent;
+  color: #D32F2F;
+  border: 2px solid #D32F2F;
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-size: 17px;
+  font-weight: 700;
+}
+.login-delete:disabled { opacity: .35; }
+.delete-instr { margin: 0; font-size: 17px; line-height: 1.45; }
+.dlg-btn.danger { background: #D32F2F; color: #FFFFFF; }

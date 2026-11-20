@@ -12,7 +12,11 @@ początkowego wygląda jak zwykła aplikacja i działa także bez internetu.
   Na dole listy jest **➕ Dodaj nowego użytkownika** – wpisz imię i **Zapisz**.
   Każdy użytkownik ma własne: ulubione, język, głos, tempo mowy i pasek zdania – zapisywane automatycznie.
   To profile na tym telefonie (bez haseł); nie przenoszą się na inne urządzenia.
-  **🚪** w górnym pasku wylogowuje (wraca do wyboru użytkownika).
+  **⏻** (czerwony) w górnym pasku wylogowuje – najpierw pyta „Czy chcesz się wylogować?” 👍 Tak / 👎 Nie.
+- **Usuwanie użytkownika** – na ekranie logowania wybierz użytkownika i dotknij **Usuń użytkownika**.
+  Trzeba przepisać dokładnie jego nazwę z dopisanym **12** na końcu (np. Jan → `Jan12`, wielkość liter ma znaczenie).
+  Błędny wpis jest kasowany i pojawia się „Błędnie wpisana wartość.”; **Cofnij** wraca do logowania.
+  Usunięcie kasuje wszystkie ustawienia tego użytkownika na tym telefonie.
 
 - **Ekran startowy** – na górze kafelek **⭐ Ulubione**, pod nim kategorie (Potrzeby, Jedzenie…). Dotknięcie otwiera kategorię i mówi jej nazwę.
 - **Słowo** – dotknięcie wypowiada słowo i dokłada jego obrazek na **pasek zdania** u góry (do 30 ostatnich).

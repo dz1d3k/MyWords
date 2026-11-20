@@ -24,7 +24,31 @@
     <label class="login-label" for="user-select" data-i18n="userLabel">Użytkownik</label>
     <select id="user-select" class="login-select"></select>
     <button id="btn-login" class="login-btn" type="button" data-i18n="login" disabled>Zaloguj</button>
+    <button id="btn-delete-user" class="login-delete" type="button" data-i18n="deleteUser" disabled>Usuń użytkownika</button>
   </section>
+
+  <!-- Potwierdzenie wylogowania -->
+  <dialog id="confirm-logout" class="settings">
+    <div class="settings-inner">
+      <h2 data-i18n="logoutQuestion">Czy chcesz się wylogować?</h2>
+      <div class="confirm-row">
+        <button id="btn-logout-yes" class="confirm-btn yes" type="button"><span class="confirm-emoji">👍</span><span data-i18n="yes">Tak</span></button>
+        <button id="btn-logout-no" class="confirm-btn no" type="button"><span class="confirm-emoji">👎</span><span data-i18n="no">Nie</span></button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Usuwanie użytkownika: trzeba przepisać imię + 12 (zabezpieczenie przed dzieckiem) -->
+  <dialog id="delete-user" class="settings">
+    <form class="settings-inner" id="delete-user-form">
+      <h2 data-i18n="deleteTitle">Usuń użytkownika</h2>
+      <p id="delete-instr" class="delete-instr"></p>
+      <input id="delete-confirm" class="name-input" type="text" maxlength="40" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+      <p id="delete-error" class="form-error" hidden></p>
+      <button id="btn-delete-confirm" class="dlg-btn danger" type="submit" data-i18n="delete">Usuń</button>
+      <button id="btn-delete-cancel" class="dlg-btn cancel" type="button" data-i18n="undo">Cofnij</button>
+    </form>
+  </dialog>
 
   <dialog id="add-user" class="settings">
     <form method="dialog" class="settings-inner" id="add-user-form">
