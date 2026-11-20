@@ -10,7 +10,7 @@ początkowego wygląda jak zwykła aplikacja i działa także bez internetu.
 
 - **Ekran startowy** – na górze kafelek **⭐ Ulubione**, pod nim kategorie (Potrzeby, Jedzenie…). Dotknięcie otwiera kategorię i mówi jej nazwę.
 - **Słowo** – dotknięcie wypowiada słowo. Duży pasek u góry pokazuje ostatnie słowo; dotknij go, żeby powtórzyć.
-- **⬅️ / 🏠** – powrót do ekranu startowego (systemowy przycisk Wstecz na Androidzie też działa).
+- **⬅️** – poziom wyżej (np. z Zupy do Jedzenia; systemowy Wstecz na Androidzie działa tak samo). **🏠** – od razu ekran startowy.
 - **☆ / ★** – dodaje / usuwa słowo lub kategorię z ulubionych (gwiazdka nie mówi). Ulubione są na górze każdej listy –
   kolejność zmienia się przy następnym otwarciu ekranu, nie od razu (żeby kafelek nie uciekał spod palca).
   **⭐** u góry albo kafelek „Ulubione” pokazuje wszystkie ulubione.
@@ -60,6 +60,10 @@ Wszystkie słowa są w pliku [`vocabulary.json`](vocabulary.json). Format:
 
 - Nowe słowo: dopisz `{ "emoji": "…", "text": "…" }` do listy `words` w wybranej kategorii.
 - Nowa kategoria: dodaj obiekt do `categories` z unikalnym `id` (małe litery, bez polskich znaków i spacji).
+- Podkategorie: kategoria może mieć własne pole `"categories": [ … ]` z kategoriami w tym samym formacie
+  (tak jest zrobione Jedzenie → Obiad, Zupa, Przekąski, Owoce i warzywa). Pole `words` musi być zawsze (może być `[]`).
+- „Inny …”: ostatnie słowo w kategorii ma emoji kategorii z `❓` na końcu, np. `{ "emoji": "🍲❓", "text": "Inna zupa" }` –
+  aplikacja pokazuje wtedy emoji z małym znakiem zapytania.
 - Kolor: jasny kolor w zapisie `#RRGGBB` (tekst na kafelku jest czarny).
 - Obrazek zamiast emoji (opcjonalnie): dodaj do słowa pole `"image": "images/nazwa.svg"` (może być też `.png`/`.jpg`,
   najlepiej kwadratowy). Pole `emoji` zostaw – jest używane, gdy obrazka brak. Nowy plik dopisz też do listy `FILES` w `sw.js`,

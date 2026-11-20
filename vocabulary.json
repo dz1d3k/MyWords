@@ -91,6 +91,10 @@
         {
           "emoji": "💛",
           "text": "Dziękuję"
+        },
+        {
+          "emoji": "🙋❓",
+          "text": "Coś innego"
         }
       ]
     },
@@ -199,6 +203,10 @@
         {
           "emoji": "💊",
           "text": "Lekarstwo"
+        },
+        {
+          "emoji": "🩺❓",
+          "text": "Coś innego mi dolega"
         }
       ]
     },
@@ -255,6 +263,10 @@
         {
           "emoji": "🔊",
           "text": "Za głośno"
+        },
+        {
+          "emoji": "😊❓",
+          "text": "Czuję coś innego"
         }
       ]
     },
@@ -265,72 +277,189 @@
       "color": "#FFE0B2",
       "words": [
         {
-          "emoji": "🍞",
-          "text": "Chleb"
+          "emoji": "🍽️❓",
+          "text": "Inne jedzenie"
+        }
+      ],
+      "categories": [
+        {
+          "id": "obiad",
+          "emoji": "🍽️",
+          "name": "Obiad",
+          "color": "#FFCC80",
+          "words": [
+            {
+              "emoji": "🍝",
+              "text": "Makaron",
+              "image": "images/makaron.svg"
+            },
+            {
+              "emoji": "🍝",
+              "text": "Spaghetti"
+            },
+            {
+              "emoji": "🥔",
+              "text": "Ziemniaki",
+              "image": "images/ziemniaki.svg"
+            },
+            {
+              "emoji": "🍖",
+              "text": "Mielone",
+              "image": "images/mielone.svg"
+            },
+            {
+              "emoji": "🥞",
+              "text": "Placki"
+            },
+            {
+              "emoji": "🍟",
+              "text": "Frytki"
+            },
+            {
+              "emoji": "🍕",
+              "text": "Pizza"
+            },
+            {
+              "emoji": "🍔",
+              "text": "Hamburger"
+            },
+            {
+              "emoji": "🌭",
+              "text": "Hot dog"
+            },
+            {
+              "emoji": "🍗",
+              "text": "Kurczak"
+            },
+            {
+              "emoji": "🍚",
+              "text": "Ryż"
+            },
+            {
+              "emoji": "🍽️❓",
+              "text": "Inny obiad"
+            }
+          ]
         },
         {
-          "emoji": "🥪",
-          "text": "Kanapka"
-        },
-        {
-          "emoji": "🥣",
-          "text": "Płatki"
-        },
-        {
+          "id": "zupa",
           "emoji": "🍲",
-          "text": "Zupa"
+          "name": "Zupa",
+          "color": "#FFF59D",
+          "words": [
+            {
+              "emoji": "🍲",
+              "text": "Rosół",
+              "image": "images/zupa-rosol.svg"
+            },
+            {
+              "emoji": "🍲",
+              "text": "Żurek",
+              "image": "images/zupa-zurek.svg"
+            },
+            {
+              "emoji": "🍲",
+              "text": "Barszcz czerwony",
+              "image": "images/zupa-barszcz.svg"
+            },
+            {
+              "emoji": "🍲",
+              "text": "Warzywna",
+              "image": "images/zupa-warzywna.svg"
+            },
+            {
+              "emoji": "🍲",
+              "text": "Pomidorowa z makaronem",
+              "image": "images/zupa-pomidorowa.svg"
+            },
+            {
+              "emoji": "🍲",
+              "text": "Zupa krem",
+              "image": "images/zupa-krem.svg"
+            },
+            {
+              "emoji": "🍲❓",
+              "text": "Inna zupa"
+            }
+          ]
         },
         {
-          "emoji": "🍝",
-          "text": "Makaron"
+          "id": "przekaski",
+          "emoji": "🥪",
+          "name": "Przekąski",
+          "color": "#FFE0B2",
+          "words": [
+            {
+              "emoji": "🍞",
+              "text": "Chleb"
+            },
+            {
+              "emoji": "🥯",
+              "text": "Bułka",
+              "image": "images/bulka.svg"
+            },
+            {
+              "emoji": "⚪",
+              "text": "Chlebek ryżowy",
+              "image": "images/chlebek-ryzowy.svg"
+            },
+            {
+              "emoji": "🥪",
+              "text": "Kanapka"
+            },
+            {
+              "emoji": "🥣",
+              "text": "Płatki"
+            },
+            {
+              "emoji": "🥚",
+              "text": "Jajko"
+            },
+            {
+              "emoji": "🧀",
+              "text": "Ser"
+            },
+            {
+              "emoji": "🥪❓",
+              "text": "Inna przekąska"
+            }
+          ]
         },
         {
-          "emoji": "🍕",
-          "text": "Pizza"
-        },
-        {
-          "emoji": "🍗",
-          "text": "Kurczak"
-        },
-        {
-          "emoji": "🥔",
-          "text": "Ziemniaki"
-        },
-        {
-          "emoji": "🍚",
-          "text": "Ryż"
-        },
-        {
-          "emoji": "🥚",
-          "text": "Jajko"
-        },
-        {
-          "emoji": "🧀",
-          "text": "Ser"
-        },
-        {
+          "id": "owoce-warzywa",
           "emoji": "🍎",
-          "text": "Jabłko"
-        },
-        {
-          "emoji": "🍌",
-          "text": "Banan"
-        },
-        {
-          "emoji": "🍓",
-          "text": "Truskawki"
-        },
-        {
-          "emoji": "🍇",
-          "text": "Winogrona"
-        },
-        {
-          "emoji": "🥕",
-          "text": "Marchewka"
-        },
-        {
-          "emoji": "🥒",
-          "text": "Ogórek"
+          "name": "Owoce i warzywa",
+          "color": "#C5E1A5",
+          "words": [
+            {
+              "emoji": "🍎",
+              "text": "Jabłko"
+            },
+            {
+              "emoji": "🍌",
+              "text": "Banan"
+            },
+            {
+              "emoji": "🍓",
+              "text": "Truskawki"
+            },
+            {
+              "emoji": "🍇",
+              "text": "Winogrona"
+            },
+            {
+              "emoji": "🥕",
+              "text": "Marchewka"
+            },
+            {
+              "emoji": "🥒",
+              "text": "Ogórek"
+            },
+            {
+              "emoji": "🍎❓",
+              "text": "Inny owoc albo warzywo"
+            }
+          ]
         }
       ]
     },
@@ -368,6 +497,30 @@
         {
           "emoji": "🍬",
           "text": "Gumy"
+        },
+        {
+          "emoji": "🍫",
+          "text": "Batonik",
+          "image": "images/batonik.svg"
+        },
+        {
+          "emoji": "🥚",
+          "text": "Jajko niespodzianka",
+          "image": "images/jajko-niespodzianka.svg"
+        },
+        {
+          "emoji": "🥔",
+          "text": "Chipsy",
+          "image": "images/chipsy.svg"
+        },
+        {
+          "emoji": "🌮",
+          "text": "Nachos z dipem",
+          "image": "images/nachos.svg"
+        },
+        {
+          "emoji": "🍭❓",
+          "text": "Inne słodycze"
         }
       ]
     },
@@ -400,6 +553,10 @@
         {
           "emoji": "🥤",
           "text": "Lemoniada"
+        },
+        {
+          "emoji": "🥤❓",
+          "text": "Coś innego do picia"
         }
       ]
     },
@@ -460,6 +617,10 @@
         {
           "emoji": "🐕",
           "text": "Karmienie zwierzaka"
+        },
+        {
+          "emoji": "🧹❓",
+          "text": "Inny obowiązek"
         }
       ]
     },
@@ -550,6 +711,10 @@
         {
           "emoji": "🌻",
           "text": "Ogród"
+        },
+        {
+          "emoji": "📍❓",
+          "text": "Inne miejsce"
         }
       ]
     },
@@ -618,6 +783,10 @@
         {
           "emoji": "👉",
           "text": "Ty"
+        },
+        {
+          "emoji": "👪❓",
+          "text": "Ktoś inny"
         }
       ]
     },
@@ -690,6 +859,10 @@
         {
           "emoji": "🎈",
           "text": "Balony"
+        },
+        {
+          "emoji": "🎨❓",
+          "text": "Inna zabawa"
         }
       ]
     },
@@ -728,6 +901,10 @@
           "emoji": "▶️",
           "text": "YouTube",
           "image": "images/youtube.svg"
+        },
+        {
+          "emoji": "📺❓",
+          "text": "Inna bajka albo gra"
         }
       ]
     },
@@ -780,6 +957,10 @@
         {
           "emoji": "🌙",
           "text": "Piżama"
+        },
+        {
+          "emoji": "👕❓",
+          "text": "Inne ubranie"
         }
       ]
     },
@@ -836,6 +1017,10 @@
         {
           "emoji": "🚶",
           "text": "Plecy"
+        },
+        {
+          "emoji": "🧍❓",
+          "text": "Inna część ciała"
         }
       ]
     },
@@ -892,6 +1077,10 @@
         {
           "emoji": "🦁",
           "text": "Lew"
+        },
+        {
+          "emoji": "🐾❓",
+          "text": "Inne zwierzę"
         }
       ]
     }

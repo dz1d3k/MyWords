@@ -1,6 +1,6 @@
 /* Service worker „Moje Słowa”.
  * PODBIJ VERSION przy każdej zmianie plików aplikacji lub vocabulary.json. */
-var VERSION = 'v6';
+var VERSION = 'v7';
 var CACHE = 'moje-slowa-' + VERSION;
 var FILES = [
   './',
@@ -13,15 +13,30 @@ var FILES = [
   'icons/icon-192.png',
   'icons/icon-512.png',
   'icons/apple-touch-icon.png',
-  'images/zool.svg',
-  'images/cool-spot.svg',
-  'images/swinka.svg',
   'images/baranek.svg',
+  'images/batonik.svg',
+  'images/bulka.svg',
+  'images/chipsy.svg',
+  'images/chlebek-ryzowy.svg',
+  'images/cool-spot.svg',
+  'images/jajko-niespodzianka.svg',
+  'images/makaron.svg',
+  'images/mielone.svg',
+  'images/nachos.svg',
   'images/psi-patrol.svg',
+  'images/sala-zabaw.svg',
+  'images/swinka.svg',
+  'images/trampolina.svg',
   'images/youtube.svg',
   'images/zelki.svg',
-  'images/trampolina.svg',
-  'images/sala-zabaw.svg'
+  'images/ziemniaki.svg',
+  'images/zool.svg',
+  'images/zupa-barszcz.svg',
+  'images/zupa-krem.svg',
+  'images/zupa-pomidorowa.svg',
+  'images/zupa-rosol.svg',
+  'images/zupa-warzywna.svg',
+  'images/zupa-zurek.svg'
 ];
 
 self.addEventListener('install', function (event) {

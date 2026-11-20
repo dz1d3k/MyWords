@@ -11,10 +11,9 @@
   var FAV_TILE = { id: FAV_ID, emoji: '⭐', name: 'Ulubione', color: '#FFE082' };
 
   var vocab = null;          // zawartość vocabulary.json
-  var state = { screen: 'home' };
+  var state = { screen: 'home', depth: 0 };
   var lastSpoken = null;     // { emoji, text, image }
-  var homeScroll = 0;
-
+  
   var el = {
     list: document.getElementById('list'),
     title: document.getElementById('title'),
@@ -152,18 +151,28 @@
   }
 
   /* ---------------- Dane ---------------- */
+  // Kategoria może mieć opcjonalne podkategorie w polu "categories" (ten sam kształt).
+  function subcats(c) { return Array.isArray(c.categories) ? c.categories : []; }
+
+  // Wszystkie kategorie (z podkategoriami) w kolejności słownika.
+  function allCategories() {
+    var out = [];
+    (function walk(list) {
+      list.forEach(function (c) { out.push(c); walk(subcats(c)); });
+    })(vocab ? vocab.categories : []);
+    return out;
+  }
+
   function categoryById(id) {
-    if (!vocab) return null;
-    for (var i = 0; i < vocab.categories.length; i++) {
-      if (vocab.categories[i].id === id) return vocab.categories[i];
-    }
+    var all = allCategories();
+    for (var i = 0; i < all.length; i++) if (all[i].id === id) return all[i];
     return null;
   }
 
   // Ulubione w kolejności słownika, każde słowo raz.
   function favoriteWords() {
     var out = [], seen = {};
-    vocab.categories.forEach(function (c) {
+    allCategories().forEach(function (c) {
       c.words.forEach(function (w) {
         if (isFav(w.text) && !seen[w.text]) {
           seen[w.text] = true;
@@ -195,7 +204,20 @@
       img.onerror = function () { img.replaceWith(document.createTextNode(emoji || '')); };
       return img;
     }
+    // "🍽️❓" = „inny …”: emoji kategorii z małym znakiem zapytania.
+    if (emoji && emoji.length > 1 && /❓$/.test(emoji)) {
+      var wrap = span('q-wrap', emoji.replace(/❓$/, ''));
+      wrap.appendChild(span('q-badge', '❓'));
+      return wrap;
+    }
     return document.createTextNode(emoji || '');
+  }
+
+  // Bardzo długie słowa (np. „niespodzianka”) dostają mniejszą czcionkę,
+  // żeby nie łamały się w środku.
+  function textSpan(text) {
+    var longest = String(text).split(/\s+/).reduce(function (m, x) { return Math.max(m, x.length); }, 0);
+    return span('tile-text' + (longest >= 12 ? ' long' : ''), text);
   }
 
   function starButton(on, attr, value) {
@@ -222,7 +244,7 @@
     main.className = 'tile-main';
     main.setAttribute('data-cat', c.id);
     main.appendChild(span('tile-emoji', c.emoji));
-    main.appendChild(span('tile-text', c.name));
+    main.appendChild(textSpan(c.name));
     d.appendChild(main);
     if (!special) d.appendChild(starButton(isFavCat(c.id), 'data-star-cat', c.id));
     return d;
@@ -242,7 +264,7 @@
     var pic = span('tile-emoji', '');
     pic.appendChild(pictureNode(w.emoji, w.image));
     main.appendChild(pic);
-    main.appendChild(span('tile-text', w.text));
+    main.appendChild(textSpan(w.text));
     d.appendChild(main);
 
     d.appendChild(starButton(isFav(w.text), 'data-star', w.text));
@@ -269,13 +291,15 @@
 
     if (state.screen === 'category') {
       var c = categoryById(state.cat);
-      if (!c) { state = { screen: 'home' }; return render(); }
+      if (!c) { state = { screen: 'home', depth: 0 }; return render(); }
       setTitle(c.emoji, c.name);
+      favFirst(subcats(c), function (x) { return isFavCat(x.id); })
+        .forEach(function (x) { el.list.appendChild(categoryTile(x)); });
       favFirst(c.words, function (w) { return isFav(w.text); })
         .forEach(function (w) { el.list.appendChild(wordTile(w, c.color)); });
     } else if (state.screen === 'favorites') {
       setTitle('⭐', 'Ulubione');
-      var fc = vocab.categories.filter(function (c) { return isFavCat(c.id); });
+      var fc = allCategories().filter(function (c) { return isFavCat(c.id); });
       var fw = favoriteWords();
       if (!fw.length && !fc.length) {
         var e = document.createElement('div');
@@ -296,32 +320,50 @@
   }
 
   /* ---------------- Nawigacja ----------------
-   * Historia ma najwyżej dwa poziomy: start + jeden ekran. Przejście między
-   * ekranami innymi niż start podmienia wpis (replaceState), więc systemowy
-   * Wstecz zawsze wraca do ekranu startowego. */
+   * Każde wejście głębiej (kategoria, podkategoria, ulubione) to nowy wpis
+   * w historii z licznikiem depth. Wstecz (nasz i systemowy) = poziom w górę,
+   * Start = history.go(-depth). Wpis zapamiętuje pozycję przewinięcia. */
   function go(next) {
-    var wasHome = state.screen === 'home';
-    if (wasHome) homeScroll = window.scrollY || 0;
-    state = next;
+    next.depth = (state.depth || 0) + 1;
     try {
-      if (next.screen === 'home') {
-        if (!wasHome) { history.back(); return; } // popstate dokończy
-      } else if (wasHome) {
-        history.pushState(next, '');
-      } else {
-        history.replaceState(next, '');
-      }
+      history.replaceState(assign(state, { scroll: window.scrollY || 0 }), '');
+      history.pushState(next, '');
     } catch (e) { /* history niedostępne – i tak renderujemy */ }
+    state = next;
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  function assign(a, b) {
+    var o = {}, k;
+    for (k in a) o[k] = a[k];
+    for (k in b) o[k] = b[k];
+    return o;
+  }
+
+  function goBack() {
+    if (!state.depth) return;
+    try { history.back(); } catch (e) { goHomeNow(); }
+  }
+
+  function goHome() {
+    if (!state.depth) return;
+    try { history.go(-state.depth); } catch (e) { goHomeNow(); }
+  }
+
+  function goHomeNow() {
+    state = { screen: 'home', depth: 0 };
     render();
     window.scrollTo(0, 0);
   }
 
   window.addEventListener('popstate', function (ev) {
     var s = ev.state;
-    state = (s && s.screen && s.screen !== 'home') ? s : { screen: 'home' };
-    if (state.screen === 'category' && !categoryById(state.cat)) state = { screen: 'home' };
+    if (!s || !s.screen || s.screen === 'home' || !s.depth) s = { screen: 'home', depth: 0, scroll: s && s.scroll };
+    if (s.screen === 'category' && !categoryById(s.cat)) s = { screen: 'home', depth: 0 };
+    state = s;
     render();
-    window.scrollTo(0, state.screen === 'home' ? homeScroll : 0);
+    window.scrollTo(0, s.scroll || 0);
   });
 
   /* ---------------- Zdarzenia ---------------- */
@@ -361,8 +403,8 @@
     }
   });
 
-  el.back.addEventListener('click', function () { if (state.screen !== 'home') go({ screen: 'home' }); });
-  el.home.addEventListener('click', function () { if (state.screen !== 'home') go({ screen: 'home' }); });
+  el.back.addEventListener('click', goBack);
+  el.home.addEventListener('click', goHome);
   el.fav.addEventListener('click', function () { if (state.screen !== 'favorites') go({ screen: 'favorites' }); });
   el.last.addEventListener('click', function () { if (lastSpoken) speak(lastSpoken.text); });
 
@@ -441,14 +483,16 @@
     el.list.appendChild(d);
   }
 
-  function valid(v) {
-    return v && Array.isArray(v.categories) && v.categories.every(function (c) {
-      return c && c.id && Array.isArray(c.words);
+  function validCats(list) {
+    return Array.isArray(list) && list.every(function (c) {
+      return c && c.id && Array.isArray(c.words) && (c.categories === undefined || validCats(c.categories));
     });
   }
+  function valid(v) { return v && validCats(v.categories); }
 
   // Po przeładowaniu zaczynamy od startu – historia zawsze ma sens.
-  try { history.replaceState({ screen: 'home' }, ''); } catch (e) { /* ignoruj */ }
+  state = { screen: 'home', depth: 0 };
+  try { history.replaceState(state, ''); } catch (e) { /* ignoruj */ }
   render();
 
   fetch('vocabulary.json')
