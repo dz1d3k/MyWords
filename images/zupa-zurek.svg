@@ -1,9 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <ellipse cx="64" cy="112" rx="40" ry="6" fill="#000" opacity=".12"/>
+  <ellipse cx="64" cy="116" rx="40" ry="5" fill="#000" opacity=".12"/>
   <path d="M8 58 Q14 112 64 114 Q114 112 120 58 Z" fill="#FFFFFF" stroke="#B0BEC5" stroke-width="3"/>
   <path d="M28 102 Q64 116 100 102" stroke="#1E88E5" stroke-width="4" fill="none" opacity=".5"/>
   <ellipse cx="64" cy="58" rx="56" ry="30" fill="#ECEFF1" stroke="#B0BEC5" stroke-width="3"/>
-  <ellipse cx="64" cy="59" rx="48" ry="24" fill="#EDE3C9"/>
-  <g transform="translate(-24 -14) scale(1.4)"><ellipse cx="48" cy="55" rx="9" ry="6" fill="#FFF"/><circle cx="48" cy="55" r="4" fill="#FDD835"/><ellipse cx="78" cy="55" rx="9" ry="6" fill="#FFF"/><circle cx="78" cy="55" r="4" fill="#FDD835"/><circle cx="63" cy="60" r="5" fill="#C62828" stroke="#8E1B1B" stroke-width="1.5"/><circle cx="34" cy="60" r="4" fill="#C62828"/><circle cx="92" cy="59" r="4" fill="#C62828"/></g>
-  <path d="M46 22 q-6 -7 0 -14 M64 18 q-6 -7 0 -14 M82 22 q-6 -7 0 -14" stroke="#B0BEC5" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <ellipse cx="64" cy="59" rx="48" ry="24" fill="#E9DDBF"/>
+  <ellipse cx="40" cy="62" rx="12" ry="8" fill="#FFF" stroke="#DDD" stroke-width="1"/><circle cx="40" cy="62" r="5.5" fill="#FDD835"/>
+  <ellipse cx="62" cy="70" rx="12" ry="8" fill="#FFF" stroke="#DDD" stroke-width="1"/><circle cx="62" cy="70" r="5.5" fill="#FDD835"/>
+  <circle cx="30" cy="52" r="2" fill="#2E7D32"/><circle cx="54" cy="52" r="2" fill="#2E7D32"/>
+  <!-- sausage sticking out -->
+  <g transform="rotate(-38 92 50)">
+    <rect x="70" y="40" width="48" height="18" rx="9" fill="#B5432F" stroke="#7A2618" stroke-width="2.5"/>
+    <path d="M84 42 l4 14 M96 42 l4 14 M108 42 l3 12" stroke="#E57373" stroke-width="2"/>
+    <ellipse cx="72" cy="49" rx="4" ry="8" fill="#E8A79A" stroke="#7A2618" stroke-width="2"/>
+  </g>
+  <ellipse cx="78" cy="62" rx="14" ry="4" fill="#D8C9A4"/>
+  <path d="M40 22 q-6 -7 0 -14 M58 18 q-6 -7 0 -14" stroke="#B0BEC5" stroke-width="3" fill="none" stroke-linecap="round"/>
 </svg>

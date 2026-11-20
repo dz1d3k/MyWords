@@ -1,6 +1,6 @@
 /* Service worker „Moje Słowa”.
  * PODBIJ VERSION przy każdej zmianie plików aplikacji lub vocabulary.json. */
-var VERSION = 'v7';
+var VERSION = 'v8';
 var CACHE = 'moje-slowa-' + VERSION;
 var FILES = [
   './',
@@ -20,6 +20,7 @@ var FILES = [
   'images/chlebek-ryzowy.svg',
   'images/cool-spot.svg',
   'images/jajko-niespodzianka.svg',
+  'images/kielbasa.svg',
   'images/makaron.svg',
   'images/mielone.svg',
   'images/nachos.svg',
