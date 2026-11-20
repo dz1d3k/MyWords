@@ -8,7 +8,54 @@
   var LS_RATE = 'mojeSlowa.rate';
   var DEFAULT_RATE = 0.9;
   var FAV_ID = '__ulubione';
-  var FAV_TILE = { id: FAV_ID, emoji: '⭐', name: 'Ulubione', color: '#FFE082' };
+  var LS_LANG = 'mojeSlowa.lang';
+
+  /* ---------------- Języki ----------------
+   * Każdy język ma własny plik słownika w tym samym formacie. */
+  var LANGS = {
+    pl: {
+      label: '🇵🇱 Polski', file: 'vocabulary.json', speech: 'pl-PL',
+      ui: {
+        appTitle: 'Moje Słowa', tapPicture: 'Dotknij obrazka', favorites: 'Ulubione',
+        back: 'Wstecz', home: 'Start', repeat: 'Powtórz ostatnie słowo',
+        addFav: 'Dodaj do ulubionych', removeFav: 'Usuń z ulubionych',
+        emptyFav: 'Nie masz jeszcze ulubionych. Dotknij gwiazdki ☆ obok słowa albo kategorii.',
+        language: '🌐 Język', settingsBtn: '⚙️ Ustawienia głosu', settingsTitle: 'Ustawienia głosu',
+        voice: 'Głos', rate: 'Tempo', test: '🔊 Test', done: 'Gotowe', hintSummary: 'Jak pobrać lepszy głos?',
+        hintHtml: '<p><strong>iPhone:</strong> Ustawienia → Dostępność → Treść mówiona → Głosy → Polski. Pobierz głos „Premium” lub „Rozszerzony”, potem wróć tutaj i wybierz go.</p>' +
+          '<p><strong>Android:</strong> Ustawienia → Zamiana tekstu na mowę (często w: Ułatwienia dostępu). Wybierz silnik Google, zainstaluj dane głosowe dla języka polskiego.</p>' +
+          '<p>Po pobraniu głosu może być potrzebne ponowne uruchomienie aplikacji.</p>',
+        noVoice: 'Nie znaleziono polskiego głosu. Zostanie użyty głos domyślny. Zobacz podpowiedź poniżej, jak pobrać polski głos.',
+        noSpeech: 'Ta przeglądarka nie obsługuje mowy.',
+        hello: 'Cześć!', testPhrase: 'Cześć! To jest mój głos.', langSpoken: 'Polski',
+        loadError: 'Nie udało się wczytać słów. Sprawdź połączenie z internetem i otwórz aplikację ponownie.'
+      }
+    },
+    en: {
+      label: '🇺🇸 English', file: 'vocabulary.en.json', speech: 'en-US',
+      ui: {
+        appTitle: 'My Words', tapPicture: 'Tap a picture', favorites: 'Favorites',
+        back: 'Back', home: 'Home', repeat: 'Repeat the last word',
+        addFav: 'Add to favorites', removeFav: 'Remove from favorites',
+        emptyFav: 'No favorites yet. Tap the star ☆ next to a word or a category.',
+        language: '🌐 Language', settingsBtn: '⚙️ Voice settings', settingsTitle: 'Voice settings',
+        voice: 'Voice', rate: 'Speed', test: '🔊 Test', done: 'Done', hintSummary: 'How to get a better voice?',
+        hintHtml: '<p><strong>iPhone:</strong> Settings → Accessibility → Spoken Content → Voices → English. Download a “Premium” or “Enhanced” voice, then come back here and choose it.</p>' +
+          '<p><strong>Android:</strong> Settings → Text-to-speech output (often under Accessibility). Choose the Google engine and install English voice data.</p>' +
+          '<p>You may need to restart the app after downloading a voice.</p>',
+        noVoice: 'No English voice found. The default voice will be used. See the tip below on how to download one.',
+        noSpeech: 'This browser does not support speech.',
+        hello: 'Hello!', testPhrase: 'Hello! This is my voice.', langSpoken: 'English',
+        loadError: 'Could not load the words. Check your internet connection and open the app again.'
+      }
+    }
+  };
+  var lang = LANGS[lsGetRaw(LS_LANG)] ? lsGetRaw(LS_LANG) : 'pl';
+  function L() { return LANGS[lang]; }
+  function ui(key) { return L().ui[key]; }
+  function lsGetRaw(key) { try { return window.localStorage.getItem(key); } catch (e) { return null; } }
+
+  var FAV_TILE = { id: FAV_ID, emoji: '⭐', name: '', color: '#FFE082' };
 
   var vocab = null;          // zawartość vocabulary.json
   var state = { screen: 'home', depth: 0 };
@@ -28,6 +75,8 @@
     dialog: document.getElementById('settings'),
     voiceList: document.getElementById('voice-list'),
     rate: document.getElementById('rate'),
+    langWrap: document.getElementById('lang-wrap'),
+    langSelect: document.getElementById('lang'),
     rateValue: document.getElementById('rate-value'),
     test: document.getElementById('btn-test')
   };
@@ -75,9 +124,8 @@
     return r;
   }
 
-  function isPolish(v) {
-    return !!v && typeof v.lang === 'string' && v.lang.replace('_', '-').toLowerCase().indexOf('pl') === 0;
-  }
+  function voiceLang(v) { return typeof v.lang === 'string' ? v.lang.replace('_', '-').toLowerCase() : ''; }
+  function matchesLang(v) { return !!v && voiceLang(v).indexOf(L().speech.slice(0, 2).toLowerCase()) === 0; }
 
   function voiceScore(v) {
     var n = (v.name || '').toLowerCase();
@@ -87,11 +135,16 @@
     return 0;
   }
 
-  function polishVoices() {
-    return voices.filter(isPolish).sort(function (a, b) {
-      return voiceScore(b) - voiceScore(a) || String(a.name).localeCompare(String(b.name), 'pl');
+  // Głosy dla bieżącego języka: najpierw najlepsza jakość, potem dokładny wariant (np. en-US).
+  function langVoices() {
+    var exact = L().speech.toLowerCase();
+    return voices.filter(matchesLang).sort(function (a, b) {
+      return voiceScore(b) - voiceScore(a) ||
+        (voiceLang(b) === exact) - (voiceLang(a) === exact) ||
+        String(a.name).localeCompare(String(b.name), 'pl');
     });
   }
+  function voiceKey() { return lang === 'pl' ? LS_VOICE : LS_VOICE + '.' + lang; }
 
   function refreshVoices() {
     try { voices = (synth && synth.getVoices()) || []; } catch (e) { voices = []; }
@@ -99,9 +152,9 @@
   }
 
   function chosenVoice() {
-    var pl = polishVoices();
+    var pl = langVoices();
     if (!pl.length) return null;
-    var uri = lsGet(LS_VOICE);
+    var uri = lsGet(voiceKey());
     if (uri) {
       for (var i = 0; i < pl.length; i++) if (pl[i].voiceURI === uri) return pl[i];
     }
@@ -114,7 +167,7 @@
       synth.cancel(); // iOS potrafi się zawiesić bez tego
       if (synth.paused && synth.resume) synth.resume();
       var u = new window.SpeechSynthesisUtterance(text);
-      u.lang = (vocab && vocab.language) || 'pl-PL';
+      u.lang = (vocab && vocab.language) || L().speech;
       u.rate = rate();
       var v = chosenVoice();
       if (v) u.voice = v;
@@ -231,7 +284,7 @@
     star.className = 'star' + (on ? ' on' : '');
     star.textContent = on ? '★' : '☆';
     star.setAttribute('aria-pressed', on ? 'true' : 'false');
-    star.setAttribute('aria-label', on ? 'Usuń z ulubionych' : 'Dodaj do ulubionych');
+    star.setAttribute('aria-label', on ? ui('removeFav') : ui('addFav'));
   }
 
   // c = kategoria ze słownika albo specjalny kafelek Ulubionych (bez gwiazdki).
@@ -283,9 +336,10 @@
     el.back.disabled = isHome;
     el.home.disabled = isHome;
     el.settingsWrap.hidden = !isHome || !vocab;
+    el.langWrap.hidden = !isHome;
 
     if (!vocab) {
-      setTitle('', 'Moje Słowa');
+      setTitle('', ui('appTitle'));
       return;
     }
 
@@ -298,21 +352,22 @@
       favFirst(c.words, function (w) { return isFav(w.text); })
         .forEach(function (w) { el.list.appendChild(wordTile(w, c.color)); });
     } else if (state.screen === 'favorites') {
-      setTitle('⭐', 'Ulubione');
+      setTitle('⭐', ui('favorites'));
       var fc = allCategories().filter(function (c) { return isFavCat(c.id); });
       var fw = favoriteWords();
       if (!fw.length && !fc.length) {
         var e = document.createElement('div');
         e.className = 'empty';
         e.appendChild(span('big', '☆'));
-        e.appendChild(document.createTextNode('Nie masz jeszcze ulubionych. Dotknij gwiazdki ☆ obok słowa albo kategorii.'));
+        e.appendChild(document.createTextNode(ui('emptyFav')));
         el.list.appendChild(e);
       } else {
         fc.forEach(function (c) { el.list.appendChild(categoryTile(c)); });
         fw.forEach(function (w) { el.list.appendChild(wordTile(w, w.color)); });
       }
     } else {
-      setTitle('', 'Moje Słowa');
+      setTitle('', ui('appTitle'));
+      FAV_TILE.name = ui('favorites');
       el.list.appendChild(categoryTile(FAV_TILE, true));
       favFirst(vocab.categories, function (c) { return isFavCat(c.id); })
         .forEach(function (c) { el.list.appendChild(categoryTile(c)); });
@@ -386,7 +441,7 @@
     if (cat) {
       if (cat.getAttribute('data-cat') === FAV_ID) {
         go({ screen: 'favorites' });
-        say('⭐', 'Ulubione');
+        say('⭐', ui('favorites'));
         return;
       }
       var c = categoryById(cat.getAttribute('data-cat'));
@@ -416,13 +471,11 @@
   /* ---------------- Ustawienia głosu ---------------- */
   function renderVoiceList() {
     clear(el.voiceList);
-    var pl = polishVoices();
+    var pl = langVoices();
     if (!pl.length) {
       var p = document.createElement('p');
       p.className = 'none';
-      p.textContent = synth
-        ? 'Nie znaleziono polskiego głosu. Zostanie użyty głos domyślny. Zobacz podpowiedź poniżej, jak pobrać polski głos.'
-        : 'Ta przeglądarka nie obsługuje mowy.';
+      p.textContent = synth ? ui('noVoice') : ui('noSpeech');
       el.voiceList.appendChild(p);
       return;
     }
@@ -435,8 +488,8 @@
       input.value = v.voiceURI;
       input.checked = current && current.voiceURI === v.voiceURI;
       input.addEventListener('change', function () {
-        lsSet(LS_VOICE, v.voiceURI);
-        speak('Cześć!');
+        lsSet(voiceKey(), v.voiceURI);
+        speak(ui('hello'));
       });
       label.appendChild(input);
       label.appendChild(document.createTextNode(v.name + (v.localService === false ? ' (online)' : '')));
@@ -472,7 +525,7 @@
     lsSet(LS_RATE, String(pct / 100));
   });
 
-  el.test.addEventListener('click', function () { speak('Cześć! To jest mój głos.'); });
+  el.test.addEventListener('click', function () { speak(ui('testPhrase')); });
 
   /* ---------------- Start ---------------- */
   function showError(msg) {
@@ -495,19 +548,79 @@
   try { history.replaceState(state, ''); } catch (e) { /* ignoruj */ }
   render();
 
-  fetch('vocabulary.json')
-    .then(function (r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.json();
-    })
-    .then(function (data) {
-      if (!valid(data)) throw new Error('Zły format');
-      vocab = data;
-      render();
-    })
-    .catch(function () {
-      showError('Nie udało się wczytać słów. Sprawdź połączenie z internetem i otwórz aplikację ponownie.');
+  // Teksty interfejsu w bieżącym języku.
+  function applyUi() {
+    document.documentElement.lang = lang;
+    document.title = ui('appTitle');
+    Array.prototype.forEach.call(document.querySelectorAll('[data-i18n]'), function (n) {
+      n.textContent = ui(n.getAttribute('data-i18n'));
     });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-i18n-html]'), function (n) {
+      n.innerHTML = ui(n.getAttribute('data-i18n-html')); // stałe teksty z kodu, nie od użytkownika
+    });
+    el.back.setAttribute('aria-label', ui('back'));
+    el.home.setAttribute('aria-label', ui('home'));
+    el.fav.setAttribute('aria-label', ui('favorites'));
+    el.last.setAttribute('aria-label', ui('repeat'));
+    if (!lastSpoken) el.lastText.textContent = ui('tapPicture');
+  }
+
+  function resetLast() {
+    lastSpoken = null;
+    clear(el.lastEmoji);
+    el.lastEmoji.textContent = '💬';
+    el.lastText.classList.add('placeholder');
+    el.lastText.textContent = ui('tapPicture');
+  }
+
+  var loadSeq = 0;
+  function loadVocab(onLoaded) {
+    var seq = ++loadSeq;
+    fetch(L().file)
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function (data) {
+        if (seq !== loadSeq) return; // w międzyczasie wybrano inny język
+        if (!valid(data)) throw new Error('bad format');
+        vocab = data;
+        render();
+        if (onLoaded) onLoaded();
+      })
+      .catch(function () {
+        if (seq === loadSeq) showError(ui('loadError'));
+      });
+  }
+
+  Object.keys(LANGS).forEach(function (code) {
+    var o = document.createElement('option');
+    o.value = code;
+    o.textContent = LANGS[code].label;
+    el.langSelect.appendChild(o);
+  });
+  el.langSelect.value = lang;
+  el.langSelect.addEventListener('change', function () {
+    if (!LANGS[el.langSelect.value] || el.langSelect.value === lang) return;
+    lang = el.langSelect.value;
+    lsSet(LS_LANG, lang);
+    vocab = null;
+    resetLast();
+    applyUi();
+    render();
+    loadVocab(function () { speak(ui('langSpoken')); });
+  });
+
+  // Przewijanie do elementu (np. focus, czytnik ekranu) nie chowa go pod przyklejonym nagłówkiem.
+  function syncScrollPadding() {
+    var h = document.querySelector('header.sticky');
+    if (h) document.documentElement.style.scrollPaddingTop = (h.offsetHeight + 8) + 'px';
+  }
+  window.addEventListener('resize', syncScrollPadding);
+
+  applyUi();
+  syncScrollPadding();
+  loadVocab();
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {

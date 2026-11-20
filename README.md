@@ -36,6 +36,14 @@ początkowego wygląda jak zwykła aplikacja i działa także bez internetu.
 **Głos polski:** Ustawienia → Zamiana tekstu na mowę (zwykle w: Ułatwienia dostępu) →
 silnik Google → zainstaluj dane głosowe dla języka polskiego.
 
+## Języki
+
+Na górze ekranu startowego jest lista **🌐 Język**: 🇵🇱 Polski albo 🇺🇸 English. Zmienia słowa, napisy i głos.
+Wybór jest zapamiętywany. Głos w Ustawieniach wybiera się osobno dla każdego języka.
+
+Słowa angielskie są w `vocabulary.en.json` (ten sam format, `"language": "en-US"`, te same `id` kategorii i obrazki).
+Dodając słowo po polsku, dodaj je też w pliku angielskim, w tym samym miejscu.
+
 ## Jak zmieniać słowa
 
 Wszystkie słowa są w pliku [`vocabulary.json`](vocabulary.json). Format:
