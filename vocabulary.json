@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "dictionaryVersion": "1.01",
+  "dictionaryVersion": "1.02",
   "language": "pl-PL",
   "categories": [
     {
@@ -415,7 +415,13 @@
             },
             {
               "emoji": "🥣",
-              "text": "Płatki"
+              "text": "Płatki",
+              "image": "images/platki.svg"
+            },
+            {
+              "emoji": "🥣",
+              "text": "Granola",
+              "image": "images/granola.svg"
             },
             {
               "emoji": "🥚",
