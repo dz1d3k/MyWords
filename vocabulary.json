@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "dictionaryVersion": "1.03",
+  "dictionaryVersion": "1.04",
   "language": "pl-PL",
   "categories": [
     {
@@ -439,6 +439,10 @@
               "image": "images/mieszanka-studencka.svg"
             },
             {
+              "emoji": "🍿",
+              "text": "Popcorn"
+            },
+            {
               "emoji": "🥚",
               "text": "Jajko"
             },
@@ -447,8 +451,46 @@
               "text": "Ser"
             },
             {
+              "emoji": "🥓",
+              "text": "Szynka",
+              "image": "images/szynka.svg"
+            },
+            {
               "emoji": "🥪❓",
               "text": "Inna przekąska"
+            }
+          ]
+        },
+        {
+          "id": "dodatki",
+          "emoji": "🧂",
+          "name": "Dodatki",
+          "color": "#FFAB91",
+          "image": "images/dodatki.svg",
+          "words": [
+            {
+              "emoji": "🍅",
+              "text": "Ketchup",
+              "image": "images/ketchup.svg"
+            },
+            {
+              "emoji": "🟡",
+              "text": "Musztarda",
+              "image": "images/musztarda.svg"
+            },
+            {
+              "emoji": "🌶️",
+              "text": "Ostry sos",
+              "image": "images/ostry-sos.svg"
+            },
+            {
+              "emoji": "🧄",
+              "text": "Sos czosnkowy",
+              "image": "images/sos-czosnkowy.svg"
+            },
+            {
+              "emoji": "🧂❓",
+              "text": "Inny dodatek"
             }
           ]
         },

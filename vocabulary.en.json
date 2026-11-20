@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "dictionaryVersion": "1.03",
+  "dictionaryVersion": "1.04",
   "language": "en-US",
   "categories": [
     {
@@ -439,6 +439,10 @@
               "image": "images/mieszanka-studencka.svg"
             },
             {
+              "emoji": "🍿",
+              "text": "Popcorn"
+            },
+            {
               "emoji": "🥚",
               "text": "Egg"
             },
@@ -447,8 +451,46 @@
               "text": "Cheese"
             },
             {
+              "emoji": "🥓",
+              "text": "Ham",
+              "image": "images/szynka.svg"
+            },
+            {
               "emoji": "🥪❓",
               "text": "Other snack"
+            }
+          ]
+        },
+        {
+          "id": "dodatki",
+          "emoji": "🧂",
+          "name": "Condiments",
+          "color": "#FFAB91",
+          "image": "images/dodatki.svg",
+          "words": [
+            {
+              "emoji": "🍅",
+              "text": "Ketchup",
+              "image": "images/ketchup.svg"
+            },
+            {
+              "emoji": "🟡",
+              "text": "Mustard",
+              "image": "images/musztarda.svg"
+            },
+            {
+              "emoji": "🌶️",
+              "text": "Hot sauce",
+              "image": "images/ostry-sos.svg"
+            },
+            {
+              "emoji": "🧄",
+              "text": "Garlic sauce",
+              "image": "images/sos-czosnkowy.svg"
+            },
+            {
+              "emoji": "🧂❓",
+              "text": "Other condiment"
             }
           ]
         },

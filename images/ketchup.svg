@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><rect width="128" height="128" fill="#FFFFFF"/><ellipse cx="64" cy="118" rx="44" ry="5" fill="#000" opacity=".1"/><g transform="translate(56 116) scale(1.5)">
+    <path d="M-6 -66 L6 -66 L4 -56 L-4 -56 Z" fill="#FFFFFF" stroke="#9E9E9E" stroke-width="1"/>
+    <rect x="-12" y="-58" width="24" height="12" rx="3" fill="#FFFFFF" stroke="#9E9E9E" stroke-width="1"/>
+    <path d="M-18 -46 Q-20 -40 -20 -30 L-20 -4 Q-20 2 -14 2 L14 2 Q20 2 20 -4 L20 -30 Q20 -40 18 -46 Z" fill="#D32F2F" stroke="#00000040" stroke-width="1.2"/>
+    <rect x="-16" y="-34" width="32" height="22" rx="4" fill="#FFFFFF"/>
+    <text x="0" y="-19" text-anchor="middle" font-family="Arial Rounded MT Bold, Arial, Helvetica, sans-serif" font-weight="900" font-size="6.3" fill="#D32F2F">KETCHUP</text>
+    <path d="M-14 -40 V-8" stroke="#FFF" stroke-width="3" opacity=".3" stroke-linecap="round"/>
+  </g><circle cx="104" cy="104" r="14" fill="#E53935"/><path d="M99 92 l5 3 l5 -3 l-2 5 h-6 Z" fill="#43A047"/><ellipse cx="99.33333333333333" cy="99.33333333333333" rx="3.5" ry="2.3333333333333335" fill="#FFF" opacity=".5"/></svg>

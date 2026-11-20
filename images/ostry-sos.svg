@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><rect width="128" height="128" fill="#FFFFFF"/><ellipse cx="64" cy="118" rx="44" ry="5" fill="#000" opacity=".1"/>
+  <g transform="translate(52 0)">
+    <rect x="-6" y="6" width="12" height="16" rx="2" fill="#2E7D32"/>
+    <path d="M-5 22 L5 22 L6 40 Q20 48 20 62 L20 112 Q20 116 16 116 L-16 116 Q-20 116 -20 112 L-20 62 Q-20 48 -6 40 Z" fill="#C62828"/>
+    <rect x="-17" y="66" width="34" height="34" rx="4" fill="#FFF8E1"/>
+    <text x="0" y="79" text-anchor="middle" font-family="Arial Rounded MT Bold, Arial, Helvetica, sans-serif" font-weight="900" font-size="9" fill="#C62828">HOT</text>
+    <path d="M-8 92 Q0 82 10 86 Q6 96 -8 92 Z" fill="#E53935"/><path d="M10 86 l4 -4" stroke="#2E7D32" stroke-width="2"/>
+    <path d="M-15 50 V108" stroke="#FFF" stroke-width="3" opacity=".3" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(100 96) rotate(-30)">
+    <path d="M-14 0 Q-12 -9 4 -7 Q14 -6 18 2 Q8 4 -2 6 Q-12 8 -14 0 Z" fill="#E53935" stroke="#B71C1C" stroke-width="1.2"/>
+    <path d="M-14 0 Q-20 -2 -22 -8" stroke="#2E7D32" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+  <path d="M96 30 q6 -10 0 -18 M106 34 q6 -10 0 -18" stroke="#FF7043" stroke-width="3" fill="none" stroke-linecap="round" opacity=".7"/>
+</svg>
