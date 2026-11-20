@@ -187,22 +187,80 @@
     return pl[0];
   }
 
+  // Stan mowy do diagnostyki w Ustawieniach.
+  var speechInfo = { last: '', started: false, error: '', retried: false };
+
+  function makeUtterance(text) {
+    var u = new window.SpeechSynthesisUtterance(text);
+    u.lang = (vocab && vocab.language) || L().speech;
+    u.rate = rate();
+    var v = chosenVoice();
+    if (v) u.voice = v;
+    return u;
+  }
+
   function speak(text) {
     try {
       if (!synth || typeof window.SpeechSynthesisUtterance !== 'function' || !text) return;
-      synth.cancel(); // iOS potrafi się zawiesić bez tego
+      // iOS: cancel() wywołane, gdy nic nie mówi, potrafi „zjeść” następne zdanie –
+      // przerywamy tylko wtedy, gdy coś naprawdę mówi albo czeka w kolejce.
+      if (synth.speaking || synth.pending) synth.cancel();
       if (synth.paused && synth.resume) synth.resume();
-      var u = new window.SpeechSynthesisUtterance(text);
-      u.lang = (vocab && vocab.language) || L().speech;
-      u.rate = rate();
-      var v = chosenVoice();
-      if (v) u.voice = v;
+      var u = makeUtterance(text);
+      speechInfo = { last: text, started: false, error: '', retried: false };
       currentUtterance = u;
-      u.onend = u.onerror = function () { if (currentUtterance === u) currentUtterance = null; };
+      u.onstart = function () { if (currentUtterance === u) speechInfo.started = true; };
+      u.onend = function () { if (currentUtterance === u) currentUtterance = null; };
+      u.onerror = function (e) {
+        if (currentUtterance === u) { currentUtterance = null; speechInfo.error = (e && e.error) || 'error'; }
+      };
       synth.speak(u);
+      // Strażnik: jeśli po 2,5 s nic nie zaczęło mówić, silnik utknął – resetujemy i próbujemy raz jeszcze.
+      setTimeout(function () {
+        try {
+          if (currentUtterance !== u || speechInfo.started || speechInfo.error) return;
+          speechInfo.retried = true;
+          synth.cancel();
+          if (synth.resume) synth.resume();
+          var u2 = makeUtterance(text);
+          currentUtterance = u2;
+          u2.onstart = function () { if (currentUtterance === u2) speechInfo.started = true; };
+          u2.onend = u2.onerror = function () { if (currentUtterance === u2) currentUtterance = null; };
+          synth.speak(u2);
+        } catch (e) { /* ignoruj */ }
+      }, 2500);
     } catch (e) {
+      speechInfo.error = String(e && e.message || e);
       /* Brak mowy nie może zatrzymać aplikacji. */
     }
+  }
+
+  // Po powrocie aplikacji z tła iOS potrafi zostawić mowę „zawieszoną” – czyścimy ją.
+  document.addEventListener('visibilitychange', function () {
+    try {
+      if (document.visibilityState === 'visible' && synth) {
+        if (synth.speaking || synth.pending) synth.cancel();
+        if (synth.paused && synth.resume) synth.resume();
+        currentUtterance = null;
+      }
+    } catch (e) { /* ignoruj */ }
+  });
+
+  function speechDiagnostics() {
+    var parts = [];
+    if (!synth) return 'Mowa: brak w tej przeglądarce';
+    var all = 0, mine = 0;
+    try { all = synth.getVoices().length; mine = langVoices().length; } catch (e) { /* ignoruj */ }
+    var v = chosenVoice();
+    parts.push('głosy: ' + all + ' (ten język: ' + mine + ')');
+    parts.push('wybrany: ' + (v ? v.name : 'domyślny'));
+    parts.push('stan: ' + (synth.speaking ? 'mówi' : 'cisza') + (synth.pending ? ', w kolejce' : '') + (synth.paused ? ', pauza' : ''));
+    if (speechInfo.last) {
+      parts.push('ostatnio: „' + speechInfo.last.slice(0, 20) + '” ' +
+        (speechInfo.error ? 'błąd: ' + speechInfo.error : speechInfo.started ? 'zaczęło mówić' : 'NIE zaczęło mówić') +
+        (speechInfo.retried ? ' (ponowiono)' : ''));
+    }
+    return parts.join(' · ');
   }
 
   // Słowo: wypowiedz i dopisz na koniec paska zdania.
@@ -554,6 +612,7 @@
     refreshVoices();
     renderVoiceList();
     syncRate();
+    showDiag();
     try {
       if (typeof el.dialog.showModal === 'function') el.dialog.showModal();
       else el.dialog.setAttribute('open', '');
@@ -572,7 +631,15 @@
     lsSet(LS_RATE, String(pct / 100));
   });
 
-  el.test.addEventListener('click', function () { speak(ui('testPhrase')); });
+  el.test.addEventListener('click', function () {
+    speak(ui('testPhrase'));
+    setTimeout(showDiag, 300);
+    setTimeout(showDiag, 3000);
+  });
+  function showDiag() {
+    var d = document.getElementById('speech-diag');
+    if (d) d.textContent = speechDiagnostics();
+  }
 
   /* ---------------- Start ---------------- */
   function showError(msg) {

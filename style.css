@@ -432,3 +432,5 @@ legend { font-weight: 700; font-size: 18px; margin-bottom: 8px; }
   .tile-text.long { font-size: 18px; }
   .star { flex-basis: 54px; width: 54px; height: 54px; font-size: 30px; }
 }
+
+.speech-diag { margin: -6px 0 0; font-size: 12px; line-height: 1.4; color: var(--muted); -webkit-user-select: text; user-select: text; }
