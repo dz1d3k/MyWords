@@ -16,11 +16,31 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="logged-out">
+  <!-- Ekran logowania: wybór użytkownika (profile na tym urządzeniu, bez haseł) -->
+  <section id="login" class="login">
+    <img class="login-logo" src="icons/icon.svg" alt="">
+    <h1 class="login-title" data-i18n="appTitle">Moje Słowa</h1>
+    <label class="login-label" for="user-select" data-i18n="userLabel">Użytkownik</label>
+    <select id="user-select" class="login-select"></select>
+    <button id="btn-login" class="login-btn" type="button" data-i18n="login" disabled>Zaloguj</button>
+  </section>
+
+  <dialog id="add-user" class="settings">
+    <form method="dialog" class="settings-inner" id="add-user-form">
+      <h2 data-i18n="newUserTitle">Nowy użytkownik</h2>
+      <input id="new-user-name" class="name-input" type="text" maxlength="30" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="Imię">
+      <p id="new-user-error" class="form-error" hidden></p>
+      <button id="btn-save-user" class="dlg-btn save" type="submit" value="save" data-i18n="save">Zapisz</button>
+      <button id="btn-cancel-user" class="dlg-btn cancel" type="button" data-i18n="cancel">Anuluj</button>
+    </form>
+  </dialog>
+
   <header class="sticky">
     <nav class="topbar">
       <button id="btn-back" class="barbtn" type="button" aria-label="Wstecz">⬅️</button>
       <button id="btn-home" class="barbtn" type="button" aria-label="Start">🏠</button>
+      <button id="btn-logout" class="barbtn logout" type="button" aria-label="Wyloguj">🚪</button>
       <h1 id="title">Moje Słowa</h1>
       <button id="btn-fav" class="barbtn" type="button" aria-label="Ulubione">⭐</button>
     </nav>

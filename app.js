@@ -9,6 +9,13 @@
   var DEFAULT_RATE = 0.9;
   var FAV_ID = '__ulubione';
   var LS_LANG = 'mojeSlowa.lang';
+  // Klucze wspólne dla urządzenia; wszystkie inne są zapisywane osobno dla każdego użytkownika.
+  var LS_USERS = 'mojeSlowa.users';
+  var LS_LAST_USER = 'mojeSlowa.lastUser';
+  var GLOBAL_KEYS = {};
+  GLOBAL_KEYS[LS_USERS] = true;
+  GLOBAL_KEYS[LS_LAST_USER] = true;
+  var currentUser = null;   // { id, name } zalogowanego użytkownika
 
   /* ---------------- Języki ----------------
    * Każdy język ma własny plik słownika w tym samym formacie. */
@@ -17,6 +24,9 @@
       label: '🇵🇱 Polski', file: 'dictionary/vocabulary.json', speech: 'pl-PL',
       ui: {
         appTitle: 'Moje Słowa', tapPicture: 'Dotknij obrazka', favorites: 'Ulubione',
+        userLabel: 'Użytkownik', chooseUser: 'Wybierz…', addUser: '➕ Dodaj nowego użytkownika', login: 'Zaloguj',
+        logout: 'Wyloguj', newUserTitle: 'Nowy użytkownik', namePlaceholder: 'Imię', save: 'Zapisz', cancel: 'Anuluj',
+        nameEmpty: 'Wpisz imię.', nameTaken: 'Taki użytkownik już istnieje.',
         back: 'Wstecz', home: 'Start', stripClear: 'Usuń', stripPlay: 'Odtwórz', stripLeft: 'Przewiń w lewo', stripRight: 'Przewiń w prawo',
         addFav: 'Dodaj do ulubionych', removeFav: 'Usuń z ulubionych',
         emptyFav: 'Nie masz jeszcze ulubionych. Dotknij gwiazdki ☆ obok słowa albo kategorii.',
@@ -35,6 +45,9 @@
       label: '🇺🇸 English', file: 'dictionary/vocabulary.en.json', speech: 'en-US',
       ui: {
         appTitle: 'My Words', tapPicture: 'Tap a picture', favorites: 'Favorites',
+        userLabel: 'User', chooseUser: 'Choose…', addUser: '➕ Add a new user', login: 'Log in',
+        logout: 'Log out', newUserTitle: 'New user', namePlaceholder: 'Name', save: 'Save', cancel: 'Cancel',
+        nameEmpty: 'Enter a name.', nameTaken: 'This user already exists.',
         back: 'Back', home: 'Home', stripClear: 'Delete', stripPlay: 'Play', stripLeft: 'Scroll left', stripRight: 'Scroll right',
         addFav: 'Add to favorites', removeFav: 'Remove from favorites',
         emptyFav: 'No favorites yet. Tap the star ☆ next to a word or a category.',
@@ -50,7 +63,7 @@
       }
     }
   };
-  var lang = LANGS[lsGetRaw(LS_LANG)] ? lsGetRaw(LS_LANG) : 'pl';
+  var lang = 'pl'; // ustawiany przy logowaniu z ustawień użytkownika
   function L() { return LANGS[lang]; }
   function ui(key) { return L().ui[key]; }
   function lsGetRaw(key) { try { return window.localStorage.getItem(key); } catch (e) { return null; } }
@@ -71,6 +84,15 @@
     home: document.getElementById('btn-home'),
     fav: document.getElementById('btn-fav'),
     stripItems: document.getElementById('strip-items'),
+    logout: document.getElementById('btn-logout'),
+    loginScreen: document.getElementById('login'),
+    userSelect: document.getElementById('user-select'),
+    loginBtn: document.getElementById('btn-login'),
+    addDialog: document.getElementById('add-user'),
+    addForm: document.getElementById('add-user-form'),
+    newName: document.getElementById('new-user-name'),
+    newErr: document.getElementById('new-user-error'),
+    cancelUser: document.getElementById('btn-cancel-user'),
     stripClear: document.getElementById('strip-clear'),
     stripPlay: document.getElementById('strip-play'),
     stripLeft: document.getElementById('strip-left'),
@@ -87,11 +109,17 @@
   };
 
   /* ---------------- localStorage (zawsze w try/catch) ---------------- */
+  // Klucz w pamięci: ustawienia zalogowanego użytkownika trafiają do jego własnej „szuflady”.
+  function userKey(key, user) {
+    var u = user || currentUser;
+    if (!u || GLOBAL_KEYS[key]) return key;
+    return 'mojeSlowa.u.' + u.id + '.' + key.replace(/^mojeSlowa\./, '');
+  }
   function lsGet(key) {
-    try { return window.localStorage.getItem(key); } catch (e) { return null; }
+    try { return window.localStorage.getItem(userKey(key)); } catch (e) { return null; }
   }
   function lsSet(key, value) {
-    try { window.localStorage.setItem(key, value); } catch (e) { /* brak pamięci – trudno */ }
+    try { window.localStorage.setItem(userKey(key), value); } catch (e) { /* brak pamięci – trudno */ }
   }
 
   function loadJSONList(key) {
@@ -112,8 +140,8 @@
     try { lsSet(key, JSON.stringify(list)); } catch (e) { /* ignoruj */ }
     return i === -1;
   }
-  var favs = loadList(LS_FAVS);        // ulubione słowa (po tekście)
-  var favCats = loadList(LS_FAVCATS);  // ulubione kategorie (po id)
+  var favs = [];      // ulubione słowa (po tekście) – wczytywane przy logowaniu
+  var favCats = [];   // ulubione kategorie (po id)
   function isFav(text) { return favs.indexOf(text) !== -1; }
   function isFavCat(id) { return favCats.indexOf(id) !== -1; }
 
@@ -519,6 +547,7 @@
   }
 
   window.addEventListener('popstate', function (ev) {
+    if (!currentUser) return; // ekran logowania – nawigacja aplikacji nieaktywna
     var s = ev.state;
     if (!s || !s.screen || s.screen === 'home' || !s.depth) s = { screen: 'home', depth: 0, scroll: s && s.scroll };
     if (s.screen === 'category' && !categoryById(s.cat)) s = { screen: 'home', depth: 0 };
@@ -675,6 +704,9 @@
     el.back.setAttribute('aria-label', ui('back'));
     el.home.setAttribute('aria-label', ui('home'));
     el.fav.setAttribute('aria-label', ui('favorites'));
+    el.logout.setAttribute('aria-label', ui('logout'));
+    el.newName.setAttribute('placeholder', ui('namePlaceholder'));
+    if (!currentUser) fillUserSelect(el.userSelect.value);
     el.stripClear.setAttribute('aria-label', ui('stripClear'));
     el.stripPlay.setAttribute('aria-label', ui('stripPlay'));
     el.stripLeft.setAttribute('aria-label', ui('stripLeft'));
@@ -847,10 +879,136 @@
   }
   window.addEventListener('resize', syncScrollPadding);
 
-  applyUi();
-  loadStrip();
-  syncScrollPadding();
-  loadVocab();
+  /* ---------------- Użytkownicy ----------------
+   * Profile na tym urządzeniu (bez haseł). Ulubione, język, głos, tempo i pasek zdania
+   * są zapisywane osobno dla każdego użytkownika, automatycznie przy każdej zmianie. */
+  function loadUsers() {
+    return loadJSONList(LS_USERS).filter(function (u) { return u && typeof u.id === 'string' && typeof u.name === 'string'; });
+  }
+  function saveUsers(list) { lsSet(LS_USERS, JSON.stringify(list)); }
+  function userById(id) {
+    var list = loadUsers();
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
+    return null;
+  }
+  function rawGet(key) { try { return window.localStorage.getItem(key); } catch (e) { return null; } }
+  function rawSet(key, v) { try { window.localStorage.setItem(key, v); } catch (e) { /* ignoruj */ } }
+
+  // Dane sprzed wprowadzenia użytkowników przechodzą do pierwszego utworzonego użytkownika.
+  var LEGACY_KEYS = [LS_FAVS, LS_FAVCATS, LS_VOICE, LS_VOICE + '.en', LS_RATE, LS_LANG, 'mojeSlowa.strip.pl', 'mojeSlowa.strip.en'];
+  function migrateLegacy(user) {
+    LEGACY_KEYS.forEach(function (k) {
+      var v = rawGet(k);
+      if (v !== null && rawGet(userKey(k, user)) === null) rawSet(userKey(k, user), v);
+    });
+  }
+
+  function fillUserSelect(selectedId) {
+    var users = loadUsers().slice().sort(function (a, b) { return a.name.localeCompare(b.name, 'pl'); });
+    clear(el.userSelect);
+    var ph = document.createElement('option');
+    ph.value = ''; ph.textContent = ui('chooseUser'); ph.disabled = true;
+    el.userSelect.appendChild(ph);
+    users.forEach(function (u) {
+      var o = document.createElement('option');
+      o.value = u.id; o.textContent = u.name;
+      el.userSelect.appendChild(o);
+    });
+    var add = document.createElement('option');
+    add.value = '__add'; add.textContent = ui('addUser');
+    el.userSelect.appendChild(add);
+    el.userSelect.value = (selectedId && userById(selectedId)) ? selectedId : '';
+    el.loginBtn.disabled = !userById(el.userSelect.value);
+  }
+
+  var selectedBeforeAdd = '';
+  el.userSelect.addEventListener('focus', function () { selectedBeforeAdd = el.userSelect.value; });
+  el.userSelect.addEventListener('change', function () {
+    if (el.userSelect.value === '__add') { openAddUser(); return; }
+    selectedBeforeAdd = el.userSelect.value;
+    el.loginBtn.disabled = !userById(el.userSelect.value);
+  });
+
+  function openAddUser() {
+    el.newName.value = '';
+    el.newErr.hidden = true;
+    try {
+      if (typeof el.addDialog.showModal === 'function') el.addDialog.showModal();
+      else el.addDialog.setAttribute('open', '');
+    } catch (e) { el.addDialog.setAttribute('open', ''); }
+    setTimeout(function () { try { el.newName.focus(); } catch (e) { /* ignoruj */ } }, 50);
+  }
+  function closeAddUser() {
+    try { if (typeof el.addDialog.close === 'function') el.addDialog.close(); } catch (e) { /* ignoruj */ }
+    el.addDialog.removeAttribute('open');
+  }
+  el.cancelUser.addEventListener('click', function () {
+    closeAddUser();
+    fillUserSelect(selectedBeforeAdd);
+  });
+  el.addDialog.addEventListener('cancel', function () { fillUserSelect(selectedBeforeAdd); }); // klawisz Esc
+  el.newName.addEventListener('input', function () { el.newErr.hidden = true; });
+  el.addForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = el.newName.value.replace(/\s+/g, ' ').trim();
+    var users = loadUsers();
+    var err = !name ? ui('nameEmpty') :
+      users.some(function (u) { return u.name.toLowerCase() === name.toLowerCase(); }) ? ui('nameTaken') : '';
+    if (err) { el.newErr.textContent = err; el.newErr.hidden = false; return; }
+    var user = { id: 'u' + Date.now().toString(36) + Math.floor(Math.random() * 1e4).toString(36), name: name };
+    if (!users.length) migrateLegacy(user);
+    users.push(user);
+    saveUsers(users);
+    closeAddUser();
+    fillUserSelect(user.id);
+    selectedBeforeAdd = user.id;
+  });
+
+  el.loginBtn.addEventListener('click', function () {
+    var u = userById(el.userSelect.value);
+    if (u) loginAs(u);
+  });
+
+  function loginAs(user) {
+    currentUser = user;
+    rawSet(LS_LAST_USER, user.id);
+    lang = LANGS[lsGet(LS_LANG)] ? lsGet(LS_LANG) : 'pl';
+    el.langSelect.value = lang;
+    favs = loadList(LS_FAVS);
+    favCats = loadList(LS_FAVCATS);
+    document.body.classList.remove('logged-out');
+    state = { screen: 'home', depth: 0 };
+    try { history.replaceState(state, ''); } catch (e) { /* ignoruj */ }
+    vocab = null;
+    applyUi();
+    loadStrip();
+    render();
+    syncScrollPadding();
+    window.scrollTo(0, 0);
+    loadVocab();
+  }
+
+  function showLogin() {
+    currentUser = null;
+    var last = userById(rawGet(LS_LAST_USER));
+    // ekran logowania w języku ostatniego użytkownika
+    var l = last ? rawGet(userKey(LS_LANG, last)) : null;
+    lang = LANGS[l] ? l : 'pl';
+    document.body.classList.add('logged-out');
+    applyUi();
+    fillUserSelect(last ? last.id : '');
+    window.scrollTo(0, 0);
+  }
+
+  el.logout.addEventListener('click', function () {
+    try { if (synth && (synth.speaking || synth.pending)) synth.cancel(); } catch (e) { /* ignoruj */ }
+    var depth = state.depth || 0;
+    state = { screen: 'home', depth: 0 };
+    showLogin();
+    if (depth) { try { history.go(-depth); } catch (e) { /* ignoruj */ } }
+  });
+
+  showLogin();
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {

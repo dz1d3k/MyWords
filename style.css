@@ -368,7 +368,7 @@ legend { font-weight: 700; font-size: 18px; margin-bottom: 8px; }
   font-weight: 700;
 }
 .dlg-btn.test { background: #FFE0B2; color: #1A1A1A; }
-.dlg-btn.close { background: #FF8A00; color: #FFFFFF; }
+.dlg-btn.close, .dlg-btn.save { background: #FF8A00; color: #FFFFFF; }
 
 .hint { font-size: 16px; line-height: 1.45; }
 .hint summary { font-weight: 700; padding: 6px 0; cursor: pointer; }
@@ -434,3 +434,59 @@ legend { font-weight: 700; font-size: 18px; margin-bottom: 8px; }
 }
 
 .speech-diag { margin: -6px 0 0; font-size: 12px; line-height: 1.4; color: var(--muted); -webkit-user-select: text; user-select: text; }
+
+/* ---------- Logowanie (wybór użytkownika) ---------- */
+.login { display: none; }
+body.logged-out .login {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: calc(env(safe-area-inset-top) + 40px) 20px 40px;
+  min-height: 100vh;
+}
+body.logged-out header.sticky,
+body.logged-out #list,
+body.logged-out #lang-wrap,
+body.logged-out #settings-wrap { display: none !important; }
+.login-logo { width: 96px; height: 96px; border-radius: 22px; align-self: center; box-shadow: var(--shadow); }
+.login-title { margin: 0 0 18px; text-align: center; font-size: 30px; font-weight: 800; }
+.login-label { font-size: 20px; font-weight: 700; color: var(--muted); }
+.login-select, .name-input {
+  font: inherit;
+  font-size: 24px;
+  font-weight: 700;
+  min-height: 64px;
+  padding: 8px 14px;
+  border-radius: 16px;
+  border: 2px solid var(--muted);
+  background: var(--bar-bg);
+  color: var(--bar-fg);
+  width: 100%;
+}
+.name-input { -webkit-user-select: text; user-select: text; }
+.login-btn {
+  min-height: 72px;
+  margin-top: 10px;
+  border-radius: 18px;
+  background: #FF8A00;
+  color: #FFFFFF;
+  font-size: 26px;
+  font-weight: 800;
+  box-shadow: var(--shadow);
+}
+.login-btn:disabled { opacity: .4; box-shadow: none; }
+.login-btn:active:not(:disabled) { transform: scale(.97); }
+.dlg-btn.cancel { background: var(--btn-bg); color: var(--dlg-fg); }
+.form-error { margin: -6px 0 0; color: #D32F2F; font-weight: 700; }
+
+/* Przycisk wylogowania – mniejszy i mniej widoczny (funkcja dla dorosłego) */
+.barbtn.logout { flex-basis: 44px; width: 44px; height: 44px; font-size: 22px; opacity: .7; }
+@media (max-width: 480px) {
+  .barbtn { flex-basis: 56px; width: 56px; height: 56px; font-size: 30px; }
+  .barbtn.logout { flex-basis: 40px; width: 40px; height: 40px; font-size: 20px; }
+  .topbar { gap: 6px; }
+  #title { font-size: 20px; }
+}

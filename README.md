@@ -8,6 +8,12 @@ początkowego wygląda jak zwykła aplikacja i działa także bez internetu.
 
 ## Jak używać
 
+- **Logowanie** – po uruchomieniu wybierz użytkownika z listy i dotknij **Zaloguj** (ostatni użytkownik jest już wybrany).
+  Na dole listy jest **➕ Dodaj nowego użytkownika** – wpisz imię i **Zapisz**.
+  Każdy użytkownik ma własne: ulubione, język, głos, tempo mowy i pasek zdania – zapisywane automatycznie.
+  To profile na tym telefonie (bez haseł); nie przenoszą się na inne urządzenia.
+  **🚪** w górnym pasku wylogowuje (wraca do wyboru użytkownika).
+
 - **Ekran startowy** – na górze kafelek **⭐ Ulubione**, pod nim kategorie (Potrzeby, Jedzenie…). Dotknięcie otwiera kategorię i mówi jej nazwę.
 - **Słowo** – dotknięcie wypowiada słowo i dokłada jego obrazek na **pasek zdania** u góry (do 30 ostatnich).
 - **Pasek zdania:**
