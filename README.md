@@ -8,10 +8,12 @@ początkowego wygląda jak zwykła aplikacja i działa także bez internetu.
 
 ## Jak używać
 
-- **Ekran startowy** – kategorie (Potrzeby, Jedzenie, Picie…). Dotknięcie otwiera kategorię i mówi jej nazwę.
+- **Ekran startowy** – na górze kafelek **⭐ Ulubione**, pod nim kategorie (Potrzeby, Jedzenie…). Dotknięcie otwiera kategorię i mówi jej nazwę.
 - **Słowo** – dotknięcie wypowiada słowo. Duży pasek u góry pokazuje ostatnie słowo; dotknij go, żeby powtórzyć.
 - **⬅️ / 🏠** – powrót do ekranu startowego (systemowy przycisk Wstecz na Androidzie też działa).
-- **☆ / ★** – dodaje / usuwa słowo z ulubionych (gwiazdka nie mówi). **⭐** u góry otwiera Ulubione.
+- **☆ / ★** – dodaje / usuwa słowo lub kategorię z ulubionych (gwiazdka nie mówi). Ulubione są na górze każdej listy –
+  kolejność zmienia się przy następnym otwarciu ekranu, nie od razu (żeby kafelek nie uciekał spod palca).
+  **⭐** u góry albo kafelek „Ulubione” pokazuje wszystkie ulubione.
 - **⚙️ Ustawienia głosu** – na samym dole ekranu startowego: wybór polskiego głosu, tempo mowy, test.
 
 ## Instalacja na iPhonie

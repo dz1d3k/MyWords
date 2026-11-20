@@ -1,6 +1,6 @@
 /* Service worker „Moje Słowa”.
  * PODBIJ VERSION przy każdej zmianie plików aplikacji lub vocabulary.json. */
-var VERSION = 'v5';
+var VERSION = 'v6';
 var CACHE = 'moje-slowa-' + VERSION;
 var FILES = [
   './',

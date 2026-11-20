@@ -3,9 +3,12 @@
   'use strict';
 
   var LS_FAVS = 'mojeSlowa.favorites';
+  var LS_FAVCATS = 'mojeSlowa.favoriteCategories';
   var LS_VOICE = 'mojeSlowa.voiceURI';
   var LS_RATE = 'mojeSlowa.rate';
   var DEFAULT_RATE = 0.9;
+  var FAV_ID = '__ulubione';
+  var FAV_TILE = { id: FAV_ID, emoji: '⭐', name: 'Ulubione', color: '#FFE082' };
 
   var vocab = null;          // zawartość vocabulary.json
   var state = { screen: 'home' };
@@ -38,18 +41,27 @@
     try { window.localStorage.setItem(key, value); } catch (e) { /* brak pamięci – trudno */ }
   }
 
-  function loadFavs() {
+  function loadList(key) {
     try {
-      var arr = JSON.parse(lsGet(LS_FAVS) || '[]');
+      var arr = JSON.parse(lsGet(key) || '[]');
       return Array.isArray(arr) ? arr.filter(function (x) { return typeof x === 'string'; }) : [];
     } catch (e) { return []; }
   }
-  var favs = loadFavs();
+  function toggleIn(list, key, value) {
+    var i = list.indexOf(value);
+    if (i === -1) list.push(value); else list.splice(i, 1);
+    try { lsSet(key, JSON.stringify(list)); } catch (e) { /* ignoruj */ }
+    return i === -1;
+  }
+  var favs = loadList(LS_FAVS);        // ulubione słowa (po tekście)
+  var favCats = loadList(LS_FAVCATS);  // ulubione kategorie (po id)
   function isFav(text) { return favs.indexOf(text) !== -1; }
-  function toggleFav(text) {
-    var i = favs.indexOf(text);
-    if (i === -1) favs.push(text); else favs.splice(i, 1);
-    try { lsSet(LS_FAVS, JSON.stringify(favs)); } catch (e) { /* ignoruj */ }
+  function isFavCat(id) { return favCats.indexOf(id) !== -1; }
+
+  // Ulubione na górę, reszta w kolejności słownika. Sortujemy tylko przy
+  // rysowaniu ekranu – kliknięcie gwiazdki nie przesuwa kafelka pod palcem.
+  function favFirst(items, test) {
+    return items.filter(test).concat(items.filter(function (x) { return !test(x); }));
   }
 
   /* ---------------- Mowa ---------------- */
@@ -186,15 +198,34 @@
     return document.createTextNode(emoji || '');
   }
 
-  function categoryTile(c) {
-    var b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'tile category';
-    b.style.background = c.color;
-    b.setAttribute('data-cat', c.id);
-    b.appendChild(span('tile-emoji', c.emoji));
-    b.appendChild(span('tile-text', c.name));
-    return b;
+  function starButton(on, attr, value) {
+    var star = document.createElement('button');
+    star.type = 'button';
+    star.setAttribute(attr, value);
+    setStar(star, on);
+    return star;
+  }
+  function setStar(star, on) {
+    star.className = 'star' + (on ? ' on' : '');
+    star.textContent = on ? '★' : '☆';
+    star.setAttribute('aria-pressed', on ? 'true' : 'false');
+    star.setAttribute('aria-label', on ? 'Usuń z ulubionych' : 'Dodaj do ulubionych');
+  }
+
+  // c = kategoria ze słownika albo specjalny kafelek Ulubionych (bez gwiazdki).
+  function categoryTile(c, special) {
+    var d = document.createElement('div');
+    d.className = 'tile category' + (special ? ' fav-tile' : '');
+    d.style.background = c.color;
+    var main = document.createElement('button');
+    main.type = 'button';
+    main.className = 'tile-main';
+    main.setAttribute('data-cat', c.id);
+    main.appendChild(span('tile-emoji', c.emoji));
+    main.appendChild(span('tile-text', c.name));
+    d.appendChild(main);
+    if (!special) d.appendChild(starButton(isFavCat(c.id), 'data-star-cat', c.id));
+    return d;
   }
 
   function wordTile(w, color) {
@@ -214,15 +245,7 @@
     main.appendChild(span('tile-text', w.text));
     d.appendChild(main);
 
-    var on = isFav(w.text);
-    var star = document.createElement('button');
-    star.type = 'button';
-    star.className = 'star' + (on ? ' on' : '');
-    star.setAttribute('data-star', w.text);
-    star.setAttribute('aria-pressed', on ? 'true' : 'false');
-    star.setAttribute('aria-label', on ? 'Usuń z ulubionych' : 'Dodaj do ulubionych');
-    star.textContent = on ? '★' : '☆';
-    d.appendChild(star);
+    d.appendChild(starButton(isFav(w.text), 'data-star', w.text));
     return d;
   }
 
@@ -248,22 +271,27 @@
       var c = categoryById(state.cat);
       if (!c) { state = { screen: 'home' }; return render(); }
       setTitle(c.emoji, c.name);
-      c.words.forEach(function (w) { el.list.appendChild(wordTile(w, c.color)); });
+      favFirst(c.words, function (w) { return isFav(w.text); })
+        .forEach(function (w) { el.list.appendChild(wordTile(w, c.color)); });
     } else if (state.screen === 'favorites') {
       setTitle('⭐', 'Ulubione');
+      var fc = vocab.categories.filter(function (c) { return isFavCat(c.id); });
       var fw = favoriteWords();
-      if (!fw.length) {
+      if (!fw.length && !fc.length) {
         var e = document.createElement('div');
         e.className = 'empty';
         e.appendChild(span('big', '☆'));
-        e.appendChild(document.createTextNode('Nie masz jeszcze ulubionych słów. Otwórz kategorię i dotknij gwiazdki ☆ obok słowa.'));
+        e.appendChild(document.createTextNode('Nie masz jeszcze ulubionych. Dotknij gwiazdki ☆ obok słowa albo kategorii.'));
         el.list.appendChild(e);
       } else {
+        fc.forEach(function (c) { el.list.appendChild(categoryTile(c)); });
         fw.forEach(function (w) { el.list.appendChild(wordTile(w, w.color)); });
       }
     } else {
       setTitle('', 'Moje Słowa');
-      vocab.categories.forEach(function (c) { el.list.appendChild(categoryTile(c)); });
+      el.list.appendChild(categoryTile(FAV_TILE, true));
+      favFirst(vocab.categories, function (c) { return isFavCat(c.id); })
+        .forEach(function (c) { el.list.appendChild(categoryTile(c)); });
     }
   }
 
@@ -299,25 +327,26 @@
   /* ---------------- Zdarzenia ---------------- */
   el.list.addEventListener('click', function (ev) {
     var t = ev.target;
-    var star = t.closest && t.closest('[data-star]');
+    var star = t.closest && t.closest('.star');
     if (star) {
       ev.stopPropagation();
-      var text = star.getAttribute('data-star');
-      toggleFav(text);
-      if (state.screen === 'favorites') {
-        render(); // słowo znika z listy ulubionych
-      } else {
-        var on = isFav(text);
-        star.classList.toggle('on', on);
-        star.textContent = on ? '★' : '☆';
-        star.setAttribute('aria-pressed', on ? 'true' : 'false');
-        star.setAttribute('aria-label', on ? 'Usuń z ulubionych' : 'Dodaj do ulubionych');
-      }
+      var isCat = star.hasAttribute('data-star-cat');
+      var on = isCat
+        ? toggleIn(favCats, LS_FAVCATS, star.getAttribute('data-star-cat'))
+        : toggleIn(favs, LS_FAVS, star.getAttribute('data-star'));
+      if (state.screen === 'favorites') render(); // odznaczone znika z listy
+      else setStar(star, on);
       return; // gwiazdka NIE mówi
     }
 
-    var cat = t.closest && t.closest('[data-cat]');
+    var catTile = t.closest && t.closest('.tile.category');
+    var cat = catTile && catTile.querySelector('[data-cat]');
     if (cat) {
+      if (cat.getAttribute('data-cat') === FAV_ID) {
+        go({ screen: 'favorites' });
+        say('⭐', 'Ulubione');
+        return;
+      }
       var c = categoryById(cat.getAttribute('data-cat'));
       if (!c) return;
       go({ screen: 'category', cat: c.id }); // najpierw nawigacja…
