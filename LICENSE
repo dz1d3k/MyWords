@@ -1,21 +1,27 @@
-MIT License
 
 Copyright (c) 2026 Adrian Widera
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+MeTalk - All Rights Reserved.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+MeTalk, including its source code, software architecture,
+documentation, design, graphics, and associated materials,
+is the proprietary intellectual property of Adrian Widera.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+No permission is granted to any person or entity to:
+
+- Copy, reproduce, or redistribute the software.
+- Modify, adapt, or create derivative works.
+- Sell, sublicense, rent, or commercially exploit the software.
+- Publish or distribute the source code.
+- Incorporate the software into other products or services.
+
+Any use, reproduction, modification, or distribution of
+MeTalk requires prior written permission from the copyright
+owner.
+
+No license or rights are granted, whether express or implied,
+except as explicitly authorized in writing by the copyright
+owner.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED.
