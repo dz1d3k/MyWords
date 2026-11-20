@@ -141,12 +141,24 @@
           "text": "Kaszlę"
         },
         {
+          "emoji": "🤢",
+          "text": "Niedobrze mi"
+        },
+        {
           "emoji": "🤮",
           "text": "Chce mi się wymiotować"
         },
         {
           "emoji": "😵‍💫",
           "text": "Kręci mi się w głowie"
+        },
+        {
+          "emoji": "🥴",
+          "text": "Słabo mi"
+        },
+        {
+          "emoji": "💩",
+          "text": "Mam biegunkę"
         },
         {
           "emoji": "🦟",
