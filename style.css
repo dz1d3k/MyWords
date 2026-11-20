@@ -596,3 +596,23 @@ body.logged-out #settings-wrap { display: none !important; }
   box-shadow: var(--shadow);
 }
 .big-back:active { transform: scale(.97); }
+
+/* Komunikat dla opiekuna: brak głosu (0.28) */
+.voice-warning {
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #FFF3CD;
+  color: #5C4400;
+  border: 2px solid #E0B400;
+  font-size: 15px;
+  line-height: 1.4;
+}
+.voice-warning[hidden] { display: none; }
+.voice-warning p { margin: 0 0 10px; }
+.voice-warning-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.voice-warning-btns button {
+  padding: 10px 14px; border-radius: 10px; font-size: 15px; font-weight: 700;
+  background: #FFFFFF; border: 1px solid #C9A100; color: #5C4400;
+}
+.voice-warning-btns button[hidden] { display: none; }

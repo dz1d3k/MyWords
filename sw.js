@@ -15,6 +15,7 @@ var FILES = [
   'style.css',
   'app.js',
   'version.js',
+  'speech.js',
   'manifest.webmanifest',
   'icons/icon.svg',
   'icons/icon-192.png',

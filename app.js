@@ -6,6 +6,8 @@
   var LS_FAVCATS = 'mojeSlowa.favoriteCategories';
   var LS_VOICE = 'mojeSlowa.voiceURI';
   var LS_RATE = 'mojeSlowa.rate';
+  var LS_VOLUME = 'mojeSlowa.volume';
+  var LS_PITCH = 'mojeSlowa.pitch';
   var DEFAULT_RATE = 0.9;
   var FAV_ID = '__ulubione';
   var LS_LANG = 'mojeSlowa.lang';
@@ -35,6 +37,11 @@
         back: 'Wstecz', home: 'Start', stripClear: 'Usuń', stripPlay: 'Odtwórz', stripLeft: 'Przewiń w lewo', stripRight: 'Przewiń w prawo',
         addFav: 'Dodaj do ulubionych', removeFav: 'Usuń z ulubionych',
         emptyFav: 'Nie masz jeszcze ulubionych. Dotknij gwiazdki ☆ obok słowa albo kategorii.',
+        volume: 'Głośność', pitch: 'Wysokość głosu', installVoice: 'Zainstaluj głos', gotIt: 'Rozumiem',
+        warnNoVoice: '⚠️ Dla opiekuna: w tym urządzeniu nie ma polskiego głosu, więc aplikacja nie będzie mówić.',
+        warnNoVoiceNative: ' Dotknij „Zainstaluj głos” i pobierz polski głos (internet potrzebny tylko do pobrania).',
+        warnNoVoiceWeb: ' iPhone: Ustawienia → Dostępność → Treść mówiona → Głosy → Polski. Android: Ustawienia → Zamiana tekstu na mowę.',
+        warnOnline: '⚠️ Dla opiekuna: polski głos działa tylko z internetem. Pobierz głos offline, żeby aplikacja mówiła zawsze.',
         language: '🌐 Język', version: 'Wersja aplikacji', dictVersion: 'słownik', settingsBtn: '⚙️ Ustawienia głosu', settingsTitle: 'Ustawienia głosu',
         voice: 'Głos', rate: 'Tempo', test: '🔊 Test', done: 'Gotowe', hintSummary: 'Jak pobrać lepszy głos?',
         hintHtml: '<p><strong>iPhone:</strong> Ustawienia → Dostępność → Treść mówiona → Głosy → Polski. Pobierz głos „Premium” lub „Rozszerzony”, potem wróć tutaj i wybierz go.</p>' +
@@ -61,6 +68,11 @@
         back: 'Back', home: 'Home', stripClear: 'Delete', stripPlay: 'Play', stripLeft: 'Scroll left', stripRight: 'Scroll right',
         addFav: 'Add to favorites', removeFav: 'Remove from favorites',
         emptyFav: 'No favorites yet. Tap the star ☆ next to a word or a category.',
+        volume: 'Volume', pitch: 'Pitch', installVoice: 'Install voice', gotIt: 'Got it',
+        warnNoVoice: '⚠️ For the caregiver: this device has no English voice, so the app will not speak.',
+        warnNoVoiceNative: ' Tap “Install voice” and download an English voice (internet needed only to download).',
+        warnNoVoiceWeb: ' iPhone: Settings → Accessibility → Spoken Content → Voices → English. Android: Settings → Text-to-speech output.',
+        warnOnline: '⚠️ For the caregiver: the English voice works only online. Download an offline voice so the app always speaks.',
         language: '🌐 Language', version: 'App version', dictVersion: 'dictionary', settingsBtn: '⚙️ Voice settings', settingsTitle: 'Voice settings',
         voice: 'Voice', rate: 'Speed', test: '🔊 Test', done: 'Done', hintSummary: 'How to get a better voice?',
         hintHtml: '<p><strong>iPhone:</strong> Settings → Accessibility → Spoken Content → Voices → English. Download a “Premium” or “Enhanced” voice, then come back here and choose it.</p>' +
@@ -132,6 +144,14 @@
     langWrap: document.getElementById('lang-wrap'),
     langSelect: document.getElementById('lang'),
     rateValue: document.getElementById('rate-value'),
+    volume: document.getElementById('volume'),
+    volumeValue: document.getElementById('volume-value'),
+    pitch: document.getElementById('pitch'),
+    pitchValue: document.getElementById('pitch-value'),
+    voiceWarning: document.getElementById('voice-warning'),
+    voiceWarningText: document.getElementById('voice-warning-text'),
+    installVoice: document.getElementById('btn-install-voice'),
+    hideWarning: document.getElementById('btn-hide-warning'),
     test: document.getElementById('btn-test')
   };
 
@@ -183,6 +203,17 @@
   try { synth = window.speechSynthesis || null; } catch (e) { synth = null; }
   var voices = [];
   var currentUtterance = null; // trzymamy referencję – Chrome potrafi zgubić zdarzenia
+
+  function volume() {
+    var v = parseFloat(lsGet(LS_VOLUME));
+    return isFinite(v) && v >= 0.1 && v <= 1 ? v : 1;
+  }
+  function pitch() {
+    var p = parseFloat(lsGet(LS_PITCH));
+    return isFinite(p) && p >= 0.5 && p <= 1.5 ? p : 1;
+  }
+  function TTS() { return window.MeTalkSpeech || null; }
+  function nativeTTS() { try { return !!(TTS() && TTS().usesNative()); } catch (e) { return false; } }
 
   function rate() {
     var r = parseFloat(lsGet(LS_RATE));
@@ -249,12 +280,26 @@
     var u = new window.SpeechSynthesisUtterance(text);
     u.lang = (vocab && vocab.language) || L().speech;
     u.rate = rate();
+    u.volume = volume();
+    u.pitch = pitch();
     var v = chosenVoice();
     if (v) u.voice = v;
     return u;
   }
 
   function speak(text) {
+    // Android (Capacitor): mowa przez silnik telefonu (plugin), działa offline.
+    if (text && nativeTTS()) {
+      speechInfo = { last: text, started: false, error: '', retried: false };
+      TTS().speak(text, {
+        lang: (vocab && vocab.language) || L().speech,
+        rate: rate(), pitch: pitch(), volume: volume(),
+        voiceURI: lsGet(voiceKey())
+      }).then(function () { speechInfo.started = true; })
+        .catch(function (e) { speechInfo.error = String(e && e.message || e); });
+      speechInfo.started = true; // plugin mówi od razu; zakończenie zgłasza po wypowiedzeniu
+      return;
+    }
     try {
       if (!synth || typeof window.SpeechSynthesisUtterance !== 'function' || !text) return;
       // iOS: cancel() wywołane, gdy nic nie mówi, potrafi „zjeść” następne zdanie –
@@ -303,6 +348,12 @@
 
   function speechDiagnostics() {
     var parts = [];
+    if (nativeTTS()) {
+      parts.push('silnik: Android TTS');
+      parts.push('głos: ' + (lsGet(voiceKey()) || 'domyślny'));
+      if (speechInfo.last) parts.push('ostatnio: „' + speechInfo.last.slice(0, 20) + '” ' + (speechInfo.error ? 'błąd: ' + speechInfo.error : 'OK'));
+      return parts.join(' · ');
+    }
     if (!synth) return 'Mowa: brak w tej przeglądarce';
     var all = 0, mine = 0;
     try { all = synth.getVoices().length; mine = langVoices().length; } catch (e) { /* ignoruj */ }
@@ -644,7 +695,40 @@
   document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
 
   /* ---------------- Ustawienia głosu ---------------- */
+  function renderNativeVoiceList() {
+    clear(el.voiceList);
+    TTS().getVoices(L().speech).then(function (list) {
+      clear(el.voiceList);
+      if (!list.length) {
+        var p = document.createElement('p');
+        p.className = 'none';
+        p.textContent = ui('noVoice');
+        el.voiceList.appendChild(p);
+        return;
+      }
+      var saved = lsGet(voiceKey());
+      var has = list.some(function (v) { return v.voiceURI === saved; });
+      var def = (list.filter(function (v) { return v.localService; })[0] || list[0]).voiceURI;
+      list.forEach(function (v) {
+        var label = document.createElement('label');
+        var input = document.createElement('input');
+        input.type = 'radio';
+        input.name = 'voice';
+        input.value = v.voiceURI;
+        input.checked = (has ? saved : def) === v.voiceURI;
+        input.addEventListener('change', function () {
+          lsSet(voiceKey(), v.voiceURI);
+          speak(ui('hello'));
+        });
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(v.name + ' · ' + v.voiceURI + (v.localService ? '' : ' (online)')));
+        el.voiceList.appendChild(label);
+      });
+    }).catch(function () { /* brak listy – zostaje pusto */ });
+  }
+
   function renderVoiceList() {
+    if (nativeTTS()) { renderNativeVoiceList(); return; }
     clear(el.voiceList);
     var pl = langVoices();
     if (!pl.length) {
@@ -676,7 +760,23 @@
     var pct = Math.round(rate() * 100);
     el.rate.value = String(pct);
     el.rateValue.textContent = pct + '%';
+    var vol = Math.round(volume() * 100);
+    el.volume.value = String(vol);
+    el.volumeValue.textContent = vol + '%';
+    var pit = Math.round(pitch() * 100);
+    el.pitch.value = String(pit);
+    el.pitchValue.textContent = pit + '%';
   }
+  el.volume.addEventListener('input', function () {
+    var v = parseInt(el.volume.value, 10) || 100;
+    el.volumeValue.textContent = v + '%';
+    lsSet(LS_VOLUME, String(v / 100));
+  });
+  el.pitch.addEventListener('input', function () {
+    var v = parseInt(el.pitch.value, 10) || 100;
+    el.pitchValue.textContent = v + '%';
+    lsSet(LS_PITCH, String(v / 100));
+  });
 
   el.settingsBtn.addEventListener('click', function () {
     refreshVoices();
@@ -764,6 +864,28 @@
     if (vocab && vocab.dictionaryVersion) txt += ' · ' + ui('dictVersion') + ' ' + vocab.dictionaryVersion;
     ver.textContent = txt;
   }
+
+  /* ---------------- Sprawdzenie głosu (komunikat dla opiekuna) ---------------- */
+  var warningDismissed = {};
+  function checkVoice() {
+    var tts = TTS();
+    if (!tts) return;
+    var forLang = lang;
+    tts.checkLanguage(L().speech).then(function (r) {
+      if (forLang !== lang || !currentUser) return;
+      var msg = '';
+      if (!r.ok) msg = ui('warnNoVoice') + (tts.usesNative() ? ui('warnNoVoiceNative') : ui('warnNoVoiceWeb'));
+      else if (tts.usesNative() && !r.offline) msg = ui('warnOnline');
+      el.installVoice.hidden = !tts.usesNative();
+      el.voiceWarningText.textContent = msg;
+      el.voiceWarning.hidden = !msg || !!warningDismissed[lang];
+    }).catch(function () { /* brak sprawdzenia – bez komunikatu */ });
+  }
+  el.hideWarning.addEventListener('click', function () {
+    warningDismissed[lang] = true; // do następnego uruchomienia aplikacji
+    el.voiceWarning.hidden = true;
+  });
+  el.installVoice.addEventListener('click', function () { if (TTS()) TTS().openInstall(); });
 
   /* ---------------- Pasek zdania ---------------- */
   function stripKey() { return 'mojeSlowa.strip.' + lang; }
@@ -889,6 +1011,7 @@
         render();
         showVersion();
         cacheDictionary(data);
+        checkVoice();
         if (onLoaded) onLoaded();
       })
       .catch(function () {
@@ -1121,6 +1244,7 @@
 
   function logout() {
     try { if (synth && (synth.speaking || synth.pending)) synth.cancel(); } catch (e) { /* ignoruj */ }
+    if (nativeTTS()) TTS().stop();
     var depth = state.depth || 0;
     state = { screen: 'home', depth: 0 };
     showLogin();

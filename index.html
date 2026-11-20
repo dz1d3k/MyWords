@@ -96,6 +96,14 @@
       <select id="lang" class="lang-select"></select>
     </label>
     <div id="app-version" class="app-version"></div>
+    <!-- Komunikat dla opiekuna, gdy telefon nie ma głosu w wybranym języku -->
+    <div id="voice-warning" class="voice-warning" hidden>
+      <p id="voice-warning-text"></p>
+      <div class="voice-warning-btns">
+        <button id="btn-install-voice" type="button" data-i18n="installVoice" hidden>Zainstaluj głos</button>
+        <button id="btn-hide-warning" type="button" data-i18n="gotIt">Rozumiem</button>
+      </div>
+    </div>
   </div>
 
   <main id="list" class="list" aria-live="polite"></main>
@@ -115,6 +123,14 @@
         <span><span data-i18n="rate">Tempo</span>: <strong id="rate-value">90%</strong></span>
         <input id="rate" type="range" min="50" max="130" step="5" value="90">
       </label>
+      <label class="rate">
+        <span><span data-i18n="volume">Głośność</span>: <strong id="volume-value">100%</strong></span>
+        <input id="volume" type="range" min="10" max="100" step="5" value="100">
+      </label>
+      <label class="rate">
+        <span><span data-i18n="pitch">Wysokość głosu</span>: <strong id="pitch-value">100%</strong></span>
+        <input id="pitch" type="range" min="50" max="150" step="5" value="100">
+      </label>
       <button id="btn-test" class="dlg-btn test" type="button" data-i18n="test">🔊 Test</button>
       <p id="speech-diag" class="speech-diag"></p>
       <details class="hint">
@@ -130,6 +146,7 @@
   </dialog>
 
   <script src="version.js"></script>
+  <script src="speech.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

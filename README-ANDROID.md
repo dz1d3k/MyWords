@@ -56,3 +56,21 @@ npm run run:android      # albo: buduje i instaluje na podłączonym telefonie/e
 - Wersja APK (`versionName`/`versionCode`) brana automatycznie z `version.js`.
 - Ikona i ekran startowy z logo MeTalk.
 - W aplikacji Android service worker przeglądarki jest wyłączony (wszystko jest w APK, działa offline).
+
+## Mowa (etap 2)
+
+- Moduł `speech.js` (`window.MeTalkSpeech`): `speak`, `stop`, `isAvailable`, `checkLanguage`, `getVoices`, `openInstall`.
+- **Android:** silnik mowy telefonu przez plugin `@capacitor-community/text-to-speech`, wołany przez
+  `Capacitor.nativePromise` – bez importów, więc wersja webowa nie potrzebuje kroku budowania.
+  Domyślnie używany jest pierwszy **głos offline** dla wybranego języka (pl-PL / en-US).
+- **Przeglądarka:** Web Speech API jak dotąd (logika w `app.js`, sprawdzona na iPhonie).
+- **Ustawienia głosu** (na dole ekranu startowego): głos, tempo, **głośność**, **wysokość głosu** – osobno dla każdego użytkownika.
+- **Komunikat dla opiekuna** na ekranie startowym, gdy w telefonie brak głosu w wybranym języku
+  (albo gdy działa on tylko z internetem). Na Androidzie przycisk **Zainstaluj głos** otwiera systemową instalację.
+
+### Polski głos offline na Samsungu (XCover 5)
+
+1. Ustawienia → Ogólne zarządzanie → **Zamiana tekstu na mowę**.
+2. Preferowany mechanizm: **Samsung TTS** albo **Usługi mowy Google** (Google ma zwykle lepszy polski głos).
+3. Ikona ⚙️ obok mechanizmu → **Zainstaluj dane głosowe** → **Polski** → pobierz (przy Wi‑Fi).
+4. Język: **Polski**. Test: „Odtwórz” – potem włącz tryb samolotowy i sprawdź, czy dalej mówi.

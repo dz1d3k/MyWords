@@ -1,6 +1,6 @@
 {
   "name": "metalk",
-  "version": "0.27.0",
+  "version": "0.28.0",
   "private": true,
   "description": "MeTalk – aplikacja AAC (komunikacja wspomagająca). Wersja webowa + opakowanie Android (Capacitor).",
   "scripts": {
@@ -11,6 +11,7 @@
     "run:android": "npm run build:android && npx cap run android"
   },
   "dependencies": {
+    "@capacitor-community/text-to-speech": "^8.0.2",
     "@capacitor/android": "^8.6.2",
     "@capacitor/core": "^8.6.2"
   },
