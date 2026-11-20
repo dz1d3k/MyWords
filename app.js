@@ -311,7 +311,9 @@
     main.type = 'button';
     main.className = 'tile-main';
     main.setAttribute('data-cat', c.id);
-    main.appendChild(span('tile-emoji', c.emoji));
+    var cpic = span('tile-emoji', '');
+    cpic.appendChild(pictureNode(c.emoji, c.image));
+    main.appendChild(cpic);
     main.appendChild(textSpan(c.name));
     d.appendChild(main);
     if (!special) d.appendChild(starButton(isFavCat(c.id), 'data-star-cat', c.id));
@@ -462,7 +464,7 @@
       var c = categoryById(cat.getAttribute('data-cat'));
       if (!c) return;
       go({ screen: 'category', cat: c.id }); // najpierw nawigacja…
-      say(c.emoji, c.name);                   // …potem mowa
+      say(c.emoji, c.name, c.image);          // …potem mowa
       return;
     }
 

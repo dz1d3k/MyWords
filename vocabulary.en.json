@@ -629,7 +629,7 @@
     },
     {
       "id": "miejsca",
-      "emoji": "📍",
+      "emoji": "🏞️",
       "name": "Places",
       "color": "#D1C4E9",
       "words": [
@@ -642,16 +642,14 @@
           "text": "School"
         },
         {
-          "emoji": "🧸",
-          "text": "Kindergarten"
-        },
-        {
           "emoji": "🌳",
-          "text": "Park"
+          "text": "Park",
+          "image": "images/park.svg"
         },
         {
           "emoji": "🤸",
-          "text": "Playground"
+          "text": "Playground",
+          "image": "images/plac-zabaw.svg"
         },
         {
           "emoji": "🤸",
@@ -677,7 +675,8 @@
         },
         {
           "emoji": "🌲",
-          "text": "Forest"
+          "text": "Forest",
+          "image": "images/las.svg"
         },
         {
           "emoji": "🏖️",
@@ -689,7 +688,13 @@
         },
         {
           "emoji": "🏡",
-          "text": "Grandma and Grandpa's house"
+          "text": "Grandma and Grandpa's house",
+          "image": "images/dom-babci.svg"
+        },
+        {
+          "emoji": "🌳",
+          "text": "Grandma and Grandpa's garden",
+          "image": "images/ogrodek-babci.svg"
         },
         {
           "emoji": "🚗",
@@ -716,10 +721,11 @@
           "text": "Garden"
         },
         {
-          "emoji": "📍❓",
+          "emoji": "🏞️❓",
           "text": "Somewhere else"
         }
-      ]
+      ],
+      "image": "images/miejsca.svg"
     },
     {
       "id": "osoby",
