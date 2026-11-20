@@ -17,7 +17,7 @@
       label: '🇵🇱 Polski', file: 'dictionary/vocabulary.json', speech: 'pl-PL',
       ui: {
         appTitle: 'Moje Słowa', tapPicture: 'Dotknij obrazka', favorites: 'Ulubione',
-        back: 'Wstecz', home: 'Start', repeat: 'Powtórz ostatnie słowo',
+        back: 'Wstecz', home: 'Start', stripClear: 'Usuń', stripPlay: 'Odtwórz', stripLeft: 'Przewiń w lewo', stripRight: 'Przewiń w prawo',
         addFav: 'Dodaj do ulubionych', removeFav: 'Usuń z ulubionych',
         emptyFav: 'Nie masz jeszcze ulubionych. Dotknij gwiazdki ☆ obok słowa albo kategorii.',
         language: '🌐 Język', version: 'Wersja aplikacji', dictVersion: 'słownik', settingsBtn: '⚙️ Ustawienia głosu', settingsTitle: 'Ustawienia głosu',
@@ -35,7 +35,7 @@
       label: '🇺🇸 English', file: 'dictionary/vocabulary.en.json', speech: 'en-US',
       ui: {
         appTitle: 'My Words', tapPicture: 'Tap a picture', favorites: 'Favorites',
-        back: 'Back', home: 'Home', repeat: 'Repeat the last word',
+        back: 'Back', home: 'Home', stripClear: 'Delete', stripPlay: 'Play', stripLeft: 'Scroll left', stripRight: 'Scroll right',
         addFav: 'Add to favorites', removeFav: 'Remove from favorites',
         emptyFav: 'No favorites yet. Tap the star ☆ next to a word or a category.',
         language: '🌐 Language', version: 'App version', dictVersion: 'dictionary', settingsBtn: '⚙️ Voice settings', settingsTitle: 'Voice settings',
@@ -59,7 +59,10 @@
 
   var vocab = null;          // zawartość vocabulary.json
   var state = { screen: 'home', depth: 0 };
-  var lastSpoken = null;     // { emoji, text, image }
+  // Pasek zdania: ostatnie wybrane słowa (same obrazki) i podświetlony kafelek.
+  var STRIP_MAX = 30;
+  var strip = [];            // [{ emoji, text, image }]
+  var hl = null;             // indeks podświetlonego kafelka albo null
   
   var el = {
     list: document.getElementById('list'),
@@ -67,9 +70,11 @@
     back: document.getElementById('btn-back'),
     home: document.getElementById('btn-home'),
     fav: document.getElementById('btn-fav'),
-    last: document.getElementById('lastword'),
-    lastEmoji: document.getElementById('lastword-emoji'),
-    lastText: document.getElementById('lastword-text'),
+    stripItems: document.getElementById('strip-items'),
+    stripClear: document.getElementById('strip-clear'),
+    stripPlay: document.getElementById('strip-play'),
+    stripLeft: document.getElementById('strip-left'),
+    stripRight: document.getElementById('strip-right'),
     settingsWrap: document.getElementById('settings-wrap'),
     settingsBtn: document.getElementById('btn-settings'),
     dialog: document.getElementById('settings'),
@@ -89,6 +94,12 @@
     try { window.localStorage.setItem(key, value); } catch (e) { /* brak pamięci – trudno */ }
   }
 
+  function loadJSONList(key) {
+    try {
+      var arr = JSON.parse(lsGet(key) || '[]');
+      return Array.isArray(arr) ? arr : [];
+    } catch (e) { return []; }
+  }
   function loadList(key) {
     try {
       var arr = JSON.parse(lsGet(key) || '[]');
@@ -194,17 +205,10 @@
     }
   }
 
+  // Słowo: wypowiedz i dopisz na koniec paska zdania.
   function say(emoji, text, image) {
-    setLast(emoji, text, image);
+    addToStrip({ emoji: emoji || '', text: text, image: image || null });
     speak(text);
-  }
-
-  function setLast(emoji, text, image) {
-    lastSpoken = { emoji: emoji, text: text, image: image || null };
-    clear(el.lastEmoji);
-    el.lastEmoji.appendChild(pictureNode(emoji || '💬', image));
-    el.lastText.textContent = text;
-    el.lastText.classList.remove('placeholder');
   }
 
   if (synth) {
@@ -379,6 +383,7 @@
     el.back.disabled = isHome;
     el.home.disabled = isHome;
     el.settingsWrap.hidden = !isHome || !vocab;
+    if (isHome && hl !== null) { hl = null; renderStrip(false); } // na ekranie startowym nic nie jest podświetlone
     el.langWrap.hidden = !isHome;
 
     if (!vocab) {
@@ -484,13 +489,13 @@
     if (cat) {
       if (cat.getAttribute('data-cat') === FAV_ID) {
         go({ screen: 'favorites' });
-        say('⭐', ui('favorites'));
+        speak(ui('favorites'));
         return;
       }
       var c = categoryById(cat.getAttribute('data-cat'));
       if (!c) return;
       go({ screen: 'category', cat: c.id }); // najpierw nawigacja…
-      say(c.emoji, c.name, c.image);          // …potem mowa
+      speak(c.name);                          // …potem mowa (kategorie nie trafiają na pasek)
       return;
     }
 
@@ -504,7 +509,6 @@
   el.back.addEventListener('click', goBack);
   el.home.addEventListener('click', goHome);
   el.fav.addEventListener('click', function () { if (state.screen !== 'favorites') go({ screen: 'favorites' }); });
-  el.last.addEventListener('click', function () { if (lastSpoken) speak(lastSpoken.text); });
 
   // Pozwala działać :active na iOS dla elementów innych niż przyciski.
   document.addEventListener('touchstart', function () {}, { passive: true });
@@ -604,9 +608,12 @@
     el.back.setAttribute('aria-label', ui('back'));
     el.home.setAttribute('aria-label', ui('home'));
     el.fav.setAttribute('aria-label', ui('favorites'));
-    el.last.setAttribute('aria-label', ui('repeat'));
+    el.stripClear.setAttribute('aria-label', ui('stripClear'));
+    el.stripPlay.setAttribute('aria-label', ui('stripPlay'));
+    el.stripLeft.setAttribute('aria-label', ui('stripLeft'));
+    el.stripRight.setAttribute('aria-label', ui('stripRight'));
     showVersion();
-    if (!lastSpoken) el.lastText.textContent = ui('tapPicture');
+    if (!strip.length) renderStrip(false);
   }
 
   // „Wersja aplikacji 0.14 · słownik 1.01” – wersja słownika pochodzi z wczytanego pliku.
@@ -618,13 +625,97 @@
     ver.textContent = txt;
   }
 
-  function resetLast() {
-    lastSpoken = null;
-    clear(el.lastEmoji);
-    el.lastEmoji.textContent = '💬';
-    el.lastText.classList.add('placeholder');
-    el.lastText.textContent = ui('tapPicture');
+  /* ---------------- Pasek zdania ---------------- */
+  function stripKey() { return 'mojeSlowa.strip.' + lang; }
+
+  function loadStrip() {
+    strip = loadJSONList(stripKey()).filter(function (x) { return x && typeof x.text === 'string'; }).slice(-STRIP_MAX);
+    hl = null;
+    renderStrip(true);
   }
+  function saveStrip() { try { lsSet(stripKey(), JSON.stringify(strip)); } catch (e) { /* ignoruj */ } }
+
+  function addToStrip(item) {
+    strip.push(item);
+    if (strip.length > STRIP_MAX) {
+      strip.shift();
+      if (hl !== null) { hl -= 1; if (hl < 0) hl = null; }
+    }
+    saveStrip();
+    renderStrip(true);
+  }
+
+  function renderStrip(scrollToEnd) {
+    var keep = el.stripItems.scrollLeft;
+    clear(el.stripItems);
+    if (!strip.length) {
+      el.stripItems.appendChild(span('strip-placeholder', ui('tapPicture')));
+    }
+    strip.forEach(function (it, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'strip-item' + (i === hl ? ' hl' : '');
+      b.setAttribute('data-i', String(i));
+      b.setAttribute('aria-label', it.text);
+      b.setAttribute('aria-pressed', i === hl ? 'true' : 'false');
+      b.appendChild(pictureNode(it.emoji, it.image));
+      el.stripItems.appendChild(b);
+    });
+    el.stripClear.disabled = !strip.length;
+    el.stripPlay.disabled = !strip.length;
+    el.stripItems.scrollLeft = scrollToEnd ? el.stripItems.scrollWidth : keep;
+    updateArrows();
+  }
+
+  function updateArrows() {
+    var s = el.stripItems;
+    var overflow = s.scrollWidth > s.clientWidth + 1;
+    el.stripLeft.hidden = !overflow;
+    el.stripRight.hidden = !overflow;
+    // pokazanie strzałek zwęża pasek – sprawdzamy jeszcze raz
+    overflow = s.scrollWidth > s.clientWidth + 1;
+    el.stripLeft.hidden = !overflow;
+    el.stripRight.hidden = !overflow;
+    el.stripLeft.disabled = s.scrollLeft <= 1;
+    el.stripRight.disabled = s.scrollLeft + s.clientWidth >= s.scrollWidth - 1;
+  }
+
+  el.stripItems.addEventListener('scroll', updateArrows, { passive: true });
+  window.addEventListener('resize', updateArrows);
+  el.stripLeft.addEventListener('click', function () {
+    el.stripItems.scrollBy({ left: -el.stripItems.clientWidth * 0.8, behavior: 'smooth' });
+  });
+  el.stripRight.addEventListener('click', function () {
+    el.stripItems.scrollBy({ left: el.stripItems.clientWidth * 0.8, behavior: 'smooth' });
+  });
+
+  // Dotknięcie kafelka na pasku: powtórz; podświetl albo – jeśli już był podświetlony – zgaś.
+  el.stripItems.addEventListener('click', function (ev) {
+    var b = ev.target.closest && ev.target.closest('.strip-item');
+    if (!b) return;
+    var i = parseInt(b.getAttribute('data-i'), 10);
+    if (!strip[i]) return;
+    speak(strip[i].text);
+    hl = (hl === i) ? null : i;
+    renderStrip(false);
+  });
+
+  // X: usuwa podświetlony kafelek, a gdy nic nie jest podświetlone – cały pasek.
+  el.stripClear.addEventListener('click', function () {
+    if (!strip.length) return;
+    if (hl !== null) strip.splice(hl, 1);
+    else strip = [];
+    hl = null;
+    saveStrip();
+    renderStrip(false);
+  });
+
+  // Play: bez podświetlenia – wszystko; z podświetleniem – od podświetlonego do końca.
+  el.stripPlay.addEventListener('click', function () {
+    if (!strip.length) return;
+    var from = hl === null ? 0 : hl;
+    speak(strip.slice(from).map(function (it) { return it.text; }).join(' '));
+  });
 
   var loadSeq = 0;
   function loadVocab(onLoaded) {
@@ -660,7 +751,7 @@
     lang = el.langSelect.value;
     lsSet(LS_LANG, lang);
     vocab = null;
-    resetLast();
+    loadStrip();
     applyUi();
     render();
     loadVocab(function () { speak(ui('langSpoken')); });
@@ -674,6 +765,7 @@
   window.addEventListener('resize', syncScrollPadding);
 
   applyUi();
+  loadStrip();
   syncScrollPadding();
   loadVocab();
 

@@ -24,10 +24,13 @@
       <h1 id="title">Moje Słowa</h1>
       <button id="btn-fav" class="barbtn" type="button" aria-label="Ulubione">⭐</button>
     </nav>
-    <button id="lastword" class="lastword" type="button" aria-label="Powtórz ostatnie słowo">
-      <span id="lastword-emoji" class="lw-emoji">💬</span>
-      <span id="lastword-text" class="lw-text placeholder">Dotknij obrazka</span>
-    </button>
+    <div id="strip" class="strip">
+      <button id="strip-clear" class="strip-btn clear" type="button" aria-label="Usuń">✖️</button>
+      <button id="strip-left" class="strip-arrow" type="button" aria-label="Przewiń w lewo" hidden>‹</button>
+      <div id="strip-items" class="strip-items"></div>
+      <button id="strip-right" class="strip-arrow" type="button" aria-label="Przewiń w prawo" hidden>›</button>
+      <button id="strip-play" class="strip-btn play" type="button" aria-label="Odtwórz">▶️</button>
+    </div>
   </header>
 
   <div id="lang-wrap" class="lang-wrap">

@@ -9,7 +9,13 @@ początkowego wygląda jak zwykła aplikacja i działa także bez internetu.
 ## Jak używać
 
 - **Ekran startowy** – na górze kafelek **⭐ Ulubione**, pod nim kategorie (Potrzeby, Jedzenie…). Dotknięcie otwiera kategorię i mówi jej nazwę.
-- **Słowo** – dotknięcie wypowiada słowo. Duży pasek u góry pokazuje ostatnie słowo; dotknij go, żeby powtórzyć.
+- **Słowo** – dotknięcie wypowiada słowo i dokłada jego obrazek na **pasek zdania** u góry (do 30 ostatnich).
+- **Pasek zdania:**
+  - dotknięcie obrazka na pasku – powtarza słowo i je podświetla; ponowne dotknięcie podświetlonego – powtarza i gasi podświetlenie,
+  - **✖️** – usuwa podświetlony obrazek; gdy nic nie jest podświetlone – czyści cały pasek,
+  - **▶️** – czyta wszystko; gdy coś jest podświetlone – od podświetlonego do końca,
+  - **‹ ›** – przewijanie, gdy obrazków jest więcej niż miejsca,
+  - powrót na ekran startowy gasi podświetlenie; kategorie nie trafiają na pasek.
 - **⬅️** – poziom wyżej (np. z Zupy do Jedzenia; systemowy Wstecz na Androidzie działa tak samo). **🏠** – od razu ekran startowy.
 - **☆ / ★** – dodaje / usuwa słowo lub kategorię z ulubionych (gwiazdka nie mówi). Ulubione są na górze każdej listy –
   kolejność zmienia się przy następnym otwarciu ekranu, nie od razu (żeby kafelek nie uciekał spod palca).
