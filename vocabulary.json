@@ -318,7 +318,8 @@
         },
         {
           "emoji": "🐻",
-          "text": "Żelki"
+          "text": "Żelki Haribo",
+          "image": "images/zelki.svg"
         },
         {
           "emoji": "⚪",
@@ -654,27 +655,33 @@
       "words": [
         {
           "emoji": "🥷",
-          "text": "Gra Zool"
+          "text": "Gra Zool",
+          "image": "images/zool.svg"
         },
         {
           "emoji": "😎",
-          "text": "Gra Cool Spot"
+          "text": "Gra Cool Spot",
+          "image": "images/cool-spot.svg"
         },
         {
           "emoji": "🐷",
-          "text": "Świnka Peppa"
+          "text": "Świnka Peppa",
+          "image": "images/swinka.svg"
         },
         {
           "emoji": "🐑",
-          "text": "Baranek Shaun"
+          "text": "Baranek Shaun",
+          "image": "images/baranek.svg"
         },
         {
           "emoji": "🐕‍🦺",
-          "text": "Psi Patrol"
+          "text": "Psi Patrol",
+          "image": "images/psi-patrol.svg"
         },
         {
           "emoji": "▶️",
-          "text": "YouTube"
+          "text": "YouTube",
+          "image": "images/youtube.svg"
         }
       ]
     },

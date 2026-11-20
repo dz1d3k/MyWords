@@ -9,7 +9,7 @@
 
   var vocab = null;          // zawartość vocabulary.json
   var state = { screen: 'home' };
-  var lastSpoken = null;     // { emoji, text }
+  var lastSpoken = null;     // { emoji, text, image }
   var homeScroll = 0;
 
   var el = {
@@ -115,14 +115,15 @@
     }
   }
 
-  function say(emoji, text) {
-    setLast(emoji, text);
+  function say(emoji, text, image) {
+    setLast(emoji, text, image);
     speak(text);
   }
 
-  function setLast(emoji, text) {
-    lastSpoken = { emoji: emoji, text: text };
-    el.lastEmoji.textContent = emoji || '💬';
+  function setLast(emoji, text, image) {
+    lastSpoken = { emoji: emoji, text: text, image: image || null };
+    clear(el.lastEmoji);
+    el.lastEmoji.appendChild(pictureNode(emoji || '💬', image));
     el.lastText.textContent = text;
     el.lastText.classList.remove('placeholder');
   }
@@ -154,7 +155,7 @@
       c.words.forEach(function (w) {
         if (isFav(w.text) && !seen[w.text]) {
           seen[w.text] = true;
-          out.push({ emoji: w.emoji, text: w.text, color: c.color });
+          out.push({ emoji: w.emoji, text: w.text, image: w.image, color: c.color });
         }
       });
     });
@@ -169,6 +170,20 @@
     s.className = cls;
     s.textContent = text;
     return s;
+  }
+
+  // Obrazek (opcjonalne pole "image" w słowniku) albo emoji jako zapas.
+  function pictureNode(emoji, image) {
+    if (image) {
+      var img = document.createElement('img');
+      img.className = 'pic';
+      img.src = image;
+      img.alt = '';
+      img.draggable = false;
+      img.onerror = function () { img.replaceWith(document.createTextNode(emoji || '')); };
+      return img;
+    }
+    return document.createTextNode(emoji || '');
   }
 
   function categoryTile(c) {
@@ -192,7 +207,10 @@
     main.className = 'tile-main';
     main.setAttribute('data-say', w.text);
     main.setAttribute('data-emoji', w.emoji);
-    main.appendChild(span('tile-emoji', w.emoji));
+    if (w.image) main.setAttribute('data-image', w.image);
+    var pic = span('tile-emoji', '');
+    pic.appendChild(pictureNode(w.emoji, w.image));
+    main.appendChild(pic);
     main.appendChild(span('tile-text', w.text));
     d.appendChild(main);
 
@@ -310,7 +328,7 @@
     var tile = t.closest && t.closest('.tile.word');
     if (tile) {
       var main = tile.querySelector('[data-say]');
-      if (main) say(main.getAttribute('data-emoji'), main.getAttribute('data-say'));
+      if (main) say(main.getAttribute('data-emoji'), main.getAttribute('data-say'), main.getAttribute('data-image'));
     }
   });
 

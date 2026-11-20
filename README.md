@@ -59,6 +59,9 @@ Wszystkie słowa są w pliku [`vocabulary.json`](vocabulary.json). Format:
 - Nowe słowo: dopisz `{ "emoji": "…", "text": "…" }` do listy `words` w wybranej kategorii.
 - Nowa kategoria: dodaj obiekt do `categories` z unikalnym `id` (małe litery, bez polskich znaków i spacji).
 - Kolor: jasny kolor w zapisie `#RRGGBB` (tekst na kafelku jest czarny).
+- Obrazek zamiast emoji (opcjonalnie): dodaj do słowa pole `"image": "images/nazwa.svg"` (może być też `.png`/`.jpg`,
+  najlepiej kwadratowy). Pole `emoji` zostaw – jest używane, gdy obrazka brak. Nowy plik dopisz też do listy `FILES` w `sw.js`,
+  żeby działał offline.
 - Pilnuj przecinków i cudzysłowów – błąd w pliku = aplikacja nie wczyta słów.
   Sprawdź plik np. na https://jsonlint.com przed zapisaniem.
 - Ulubione są zapamiętywane po tekście słowa – po zmianie tekstu trzeba je zaznaczyć ponownie.
