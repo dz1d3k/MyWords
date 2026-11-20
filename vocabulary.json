@@ -71,6 +71,102 @@
       ]
     },
     {
+      "id": "zdrowie",
+      "emoji": "🩺",
+      "name": "Zdrowie",
+      "color": "#F0F4C3",
+      "words": [
+        {
+          "emoji": "🤕",
+          "text": "Boli mnie głowa"
+        },
+        {
+          "emoji": "😖",
+          "text": "Boli mnie brzuch"
+        },
+        {
+          "emoji": "🦷",
+          "text": "Boli mnie ząb"
+        },
+        {
+          "emoji": "👂",
+          "text": "Boli mnie ucho"
+        },
+        {
+          "emoji": "🗣️",
+          "text": "Boli mnie gardło"
+        },
+        {
+          "emoji": "👁️",
+          "text": "Boli mnie oko"
+        },
+        {
+          "emoji": "✋",
+          "text": "Boli mnie ręka"
+        },
+        {
+          "emoji": "🦵",
+          "text": "Boli mnie noga"
+        },
+        {
+          "emoji": "🦶",
+          "text": "Boli mnie stopa"
+        },
+        {
+          "emoji": "🚶",
+          "text": "Bolą mnie plecy"
+        },
+        {
+          "emoji": "👇",
+          "text": "Boli mnie tutaj"
+        },
+        {
+          "emoji": "😣",
+          "text": "Trochę boli"
+        },
+        {
+          "emoji": "😭",
+          "text": "Bardzo boli"
+        },
+        {
+          "emoji": "🤒",
+          "text": "Mam gorączkę"
+        },
+        {
+          "emoji": "🤧",
+          "text": "Mam katar"
+        },
+        {
+          "emoji": "😷",
+          "text": "Kaszlę"
+        },
+        {
+          "emoji": "🤮",
+          "text": "Chce mi się wymiotować"
+        },
+        {
+          "emoji": "😵‍💫",
+          "text": "Kręci mi się w głowie"
+        },
+        {
+          "emoji": "🦟",
+          "text": "Swędzi mnie"
+        },
+        {
+          "emoji": "🩸",
+          "text": "Leci mi krew"
+        },
+        {
+          "emoji": "🩹",
+          "text": "Plaster"
+        },
+        {
+          "emoji": "💊",
+          "text": "Lekarstwo"
+        }
+      ]
+    },
+    {
       "id": "uczucia",
       "emoji": "😊",
       "name": "Uczucia",
@@ -199,7 +295,15 @@
         {
           "emoji": "🥒",
           "text": "Ogórek"
-        },
+        }
+      ]
+    },
+    {
+      "id": "slodycze",
+      "emoji": "🍭",
+      "name": "Słodycze",
+      "color": "#E1BEE7",
+      "words": [
         {
           "emoji": "🍪",
           "text": "Ciastko"
@@ -211,6 +315,22 @@
         {
           "emoji": "🍫",
           "text": "Czekolada"
+        },
+        {
+          "emoji": "🐻",
+          "text": "Żelki"
+        },
+        {
+          "emoji": "⚪",
+          "text": "Białe cukierki"
+        },
+        {
+          "emoji": "⚫",
+          "text": "Czarne cukierki"
+        },
+        {
+          "emoji": "🍬",
+          "text": "Gumy"
         }
       ]
     },
@@ -523,6 +643,38 @@
         {
           "emoji": "🎈",
           "text": "Balony"
+        }
+      ]
+    },
+    {
+      "id": "tv",
+      "emoji": "📺",
+      "name": "TV",
+      "color": "#CFD8DC",
+      "words": [
+        {
+          "emoji": "🥷",
+          "text": "Gra Zool"
+        },
+        {
+          "emoji": "😎",
+          "text": "Gra Cool Spot"
+        },
+        {
+          "emoji": "🐷",
+          "text": "Świnka Peppa"
+        },
+        {
+          "emoji": "🐑",
+          "text": "Baranek Shaun"
+        },
+        {
+          "emoji": "🐕‍🦺",
+          "text": "Psi Patrol"
+        },
+        {
+          "emoji": "▶️",
+          "text": "YouTube"
         }
       ]
     },
