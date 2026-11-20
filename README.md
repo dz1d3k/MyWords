@@ -1,4 +1,4 @@
-# Moje Słowa
+# MeTalk
 
 Prosta aplikacja do komunikacji wspomagającej (AAC) dla niemówiących dzieci.
 Dziecko przewija listę dużych obrazków ze słowami – po dotknięciu telefon mówi słowo po polsku.
@@ -33,7 +33,7 @@ początkowego wygląda jak zwykła aplikacja i działa także bez internetu.
 1. Otwórz adres aplikacji w **Safari** (nie w Chrome – na iPhonie tylko Safari dodaje aplikacje poprawnie).
 2. Dotknij **Udostępnij** (kwadrat ze strzałką w górę).
 3. Wybierz **Do ekranu początkowego** → **Dodaj**.
-4. Uruchom „Moje Słowa” z ikony. Przy pierwszym uruchomieniu musi być internet – potem działa offline.
+4. Uruchom „MeTalk” z ikony. Przy pierwszym uruchomieniu musi być internet – potem działa offline.
 5. Sprawdź, czy przełącznik wyciszenia (z boku telefonu) nie jest włączony – wyciszony iPhone może nie mówić.
 
 **Lepszy głos:** Ustawienia → Dostępność → Treść mówiona → Głosy → Polski → pobierz głos

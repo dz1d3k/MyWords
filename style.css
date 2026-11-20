@@ -231,7 +231,7 @@ button {
   align-items: center;
   gap: 16px;
   width: 100%;
-  min-height: 96px;
+  min-height: var(--tile-h, 96px);
   padding: 12px 16px;
   border-radius: var(--radius);
   color: var(--tile-fg);
@@ -489,4 +489,51 @@ body.logged-out #settings-wrap { display: none !important; }
   .barbtn.logout { flex-basis: 40px; width: 40px; height: 40px; font-size: 20px; }
   .topbar { gap: 6px; }
   #title { font-size: 20px; }
+}
+
+/* ---------- Większe sterowanie: ⬅️ 🏠 ⏻ ⭐ i pasek zdania (0.24) ---------- */
+.topbar { padding: 8px 10px; gap: 6px; }
+.barbtn, .barbtn.logout {
+  flex: 0 0 68px; width: 68px; height: 68px; font-size: 40px; opacity: 1;
+}
+.barbtn.logout { color: #E53935; }
+.barbtn.logout svg { width: 42px; height: 42px; display: block; }
+#title {
+  font-size: 18px;
+  line-height: 1.15;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+.title-emoji { display: none; }
+.strip { min-height: 90px; }
+.strip-btn { flex: 0 0 60px; width: 60px; height: 74px; font-size: 34px; }
+.strip-arrow { height: 74px; }
+@media (min-width: 600px) {
+  #title { font-size: 26px; }
+  .title-emoji { display: inline; }
+  .barbtn, .barbtn.logout { flex-basis: 76px; width: 76px; height: 76px; }
+}
+@media (max-width: 359px) {
+  .topbar { padding: 6px; gap: 4px; }
+  .barbtn, .barbtn.logout { flex-basis: 58px; width: 58px; height: 58px; font-size: 32px; }
+  .barbtn.logout svg { width: 34px; height: 34px; }
+  #title { font-size: 15px; }
+  .strip-btn { flex-basis: 48px; width: 48px; height: 64px; font-size: 28px; }
+  .strip-arrow { height: 64px; }
+}
+
+/* Logo i nazwa MeTalk na ekranie logowania */
+.login-logo { width: 132px; height: 132px; border-radius: 30px; }
+.login-title { font-size: 44px; letter-spacing: -.5px; }
+.login-title .me { color: #FF6A2B; }
+.login-title .talk { color: var(--bar-fg); }
+@media (max-width: 359px) {
+  .tile { padding: 8px 10px; }
+  .tile-main { min-height: 0; }
 }

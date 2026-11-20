@@ -1,4 +1,4 @@
-/* Service worker „Moje Słowa”.
+/* Service worker „MeTalk”.
  *
  * Dwie niezależne pamięci offline:
  *  - APLIKACJA (index.html, app.js, style.css, ikony…) – nazwa zależy od APP_VERSION z version.js.

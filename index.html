@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-  <title>Moje Słowa</title>
+  <title>MeTalk</title>
   <meta name="description" content="Prosta aplikacja do komunikacji wspomagającej (AAC) dla dzieci.">
-  <meta name="theme-color" content="#FF8A00">
+  <meta name="theme-color" content="#FF7A2B">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Moje Słowa">
+  <meta name="apple-mobile-web-app-title" content="MeTalk">
   <meta name="format-detection" content="telephone=no">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
@@ -20,7 +20,7 @@
   <!-- Ekran logowania: wybór użytkownika (profile na tym urządzeniu, bez haseł) -->
   <section id="login" class="login">
     <img class="login-logo" src="icons/icon.svg" alt="">
-    <h1 class="login-title" data-i18n="appTitle">Moje Słowa</h1>
+    <h1 class="login-title"><span class="me">Me</span><span class="talk">Talk</span></h1>
     <label class="login-label" for="user-select" data-i18n="userLabel">Użytkownik</label>
     <select id="user-select" class="login-select"></select>
     <button id="btn-login" class="login-btn" type="button" data-i18n="login" disabled>Zaloguj</button>
@@ -40,8 +40,8 @@
     <nav class="topbar">
       <button id="btn-back" class="barbtn" type="button" aria-label="Wstecz">⬅️</button>
       <button id="btn-home" class="barbtn" type="button" aria-label="Start">🏠</button>
-      <button id="btn-logout" class="barbtn logout" type="button" aria-label="Wyloguj">🚪</button>
-      <h1 id="title">Moje Słowa</h1>
+      <button id="btn-logout" class="barbtn logout" type="button" aria-label="Wyloguj"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" fill="none"/><path d="M7.05 6.4a7.5 7.5 0 1 0 9.9 0" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" fill="none"/></svg></button>
+      <h1 id="title">MeTalk</h1>
       <button id="btn-fav" class="barbtn" type="button" aria-label="Ulubione">⭐</button>
     </nav>
     <div id="strip" class="strip">

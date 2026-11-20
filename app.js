@@ -1,4 +1,4 @@
-/* Moje Słowa – prosta aplikacja AAC. Czysty JS, bez frameworków. */
+/* MeTalk – prosta aplikacja AAC. Czysty JS, bez frameworków. */
 (function () {
   'use strict';
 
@@ -23,7 +23,7 @@
     pl: {
       label: '🇵🇱 Polski', file: 'dictionary/vocabulary.json', speech: 'pl-PL',
       ui: {
-        appTitle: 'Moje Słowa', tapPicture: 'Dotknij obrazka', favorites: 'Ulubione',
+        appTitle: 'MeTalk', tapPicture: 'Dotknij obrazka', favorites: 'Ulubione',
         userLabel: 'Użytkownik', chooseUser: 'Wybierz…', addUser: '➕ Dodaj nowego użytkownika', login: 'Zaloguj',
         logout: 'Wyloguj', newUserTitle: 'Nowy użytkownik', namePlaceholder: 'Imię', save: 'Zapisz', cancel: 'Anuluj',
         nameEmpty: 'Wpisz imię.', nameTaken: 'Taki użytkownik już istnieje.',
@@ -44,7 +44,7 @@
     en: {
       label: '🇺🇸 English', file: 'dictionary/vocabulary.en.json', speech: 'en-US',
       ui: {
-        appTitle: 'My Words', tapPicture: 'Tap a picture', favorites: 'Favorites',
+        appTitle: 'MeTalk', tapPicture: 'Tap a picture', favorites: 'Favorites',
         userLabel: 'User', chooseUser: 'Choose…', addUser: '➕ Add a new user', login: 'Log in',
         logout: 'Log out', newUserTitle: 'New user', namePlaceholder: 'Name', save: 'Save', cancel: 'Cancel',
         nameEmpty: 'Enter a name.', nameTaken: 'This user already exists.',
@@ -461,6 +461,20 @@
     clear(el.title);
     if (emoji) el.title.appendChild(span('title-emoji', emoji + ' '));
     el.title.appendChild(document.createTextNode(text));
+    fitTitle();
+  }
+
+  // Zmniejsza czcionkę tytułu, aż najdłuższe słowo zmieści się w szerokości (bez łamania w środku słowa).
+  function fitTitle() {
+    var t = el.title;
+    t.style.fontSize = '';
+    if (!t.clientWidth) return;
+    var size = parseFloat(getComputedStyle(t).fontSize) || 18;
+    var guard = 0;
+    while (t.scrollWidth > t.clientWidth + 1 && size > 11 && guard++ < 20) {
+      size -= 1;
+      t.style.fontSize = size + 'px';
+    }
   }
 
   function render() {
@@ -771,13 +785,14 @@
    * mały telefon 4, telefon 5, mały tablet 8, duży tablet 10 – ale nigdy mniejsze niż STRIP_MIN px
    * (czytelność ważniejsza niż liczba). Miejsce na strzałki jest zawsze zarezerwowane,
    * więc rozmiar się nie zmienia, gdy strzałki się pojawiają. */
-  var STRIP_MIN = 46, STRIP_MAXPX = 88, STRIP_GAP = 4, stripPerPage = 4;
+  var STRIP_MIN = 52, STRIP_MAXPX = 88, STRIP_GAP = 4, stripPerPage = 4;
   function layoutStrip() {
     var w = el.stripItems.clientWidth - 4; // padding
     if (w <= 0) return;
     var vw = window.innerWidth;
     var target = vw < 375 ? 4 : vw < 480 ? 5 : vw < 900 ? 8 : 10;
-    var fit = Math.max(1, Math.floor((w + STRIP_GAP) / (STRIP_MIN + STRIP_GAP)));
+    var min = vw < 360 ? 46 : STRIP_MIN; // najmniejszy telefon: trochę mniejsze, żeby zmieściły się 3
+    var fit = Math.max(1, Math.floor((w + STRIP_GAP) / (min + STRIP_GAP)));
     var n = Math.max(1, Math.min(target, fit));
     var size = Math.floor((w - STRIP_GAP * (n - 1)) / n);
     size = Math.min(size, STRIP_MAXPX);
@@ -878,6 +893,23 @@
     if (h) document.documentElement.style.scrollPaddingTop = (h.offsetHeight + 8) + 'px';
   }
   window.addEventListener('resize', syncScrollPadding);
+
+  /* Wysokość kafelków dobierana do ekranu: telefon – 5 kafelków na ekranie,
+   * mały telefon (niski ekran) – 4. Nigdy mniej niż 80 px i nie więcej niż 140 px. */
+  function layoutTiles() {
+    var h = document.querySelector('header.sticky');
+    if (!h || !h.offsetHeight) return;
+    var vh = window.innerHeight;
+    var n = vh >= 680 ? 5 : 4;
+    var gap = 12, top = 14, bottom = 12;
+    var avail = vh - h.offsetHeight - top - bottom;
+    var tile = Math.floor((avail - gap * (n - 1)) / n);
+    tile = Math.max(80, Math.min(140, tile));
+    document.documentElement.style.setProperty('--tile-h', tile + 'px');
+  }
+  window.addEventListener('resize', layoutTiles);
+  window.addEventListener('resize', function () { fitTitle(); });
+  window.addEventListener('orientationchange', layoutTiles);
 
   /* ---------------- Użytkownicy ----------------
    * Profile na tym urządzeniu (bez haseł). Ulubione, język, głos, tempo i pasek zdania
@@ -984,6 +1016,8 @@
     loadStrip();
     render();
     syncScrollPadding();
+    layoutTiles();
+    fitTitle();
     window.scrollTo(0, 0);
     loadVocab();
   }
