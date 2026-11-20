@@ -1,77 +1,30 @@
 /* Service worker „Moje Słowa”.
- * Numer wersji jest w version.js – podbij go przy każdej zmianie plików aplikacji lub słowników. */
+ *
+ * Dwie niezależne pamięci offline:
+ *  - APLIKACJA (index.html, app.js, style.css, ikony…) – nazwa zależy od APP_VERSION z version.js.
+ *    Podbij APP_VERSION tylko przy zmianie kodu/wyglądu aplikacji.
+ *  - SŁOWNIK (dictionary/: pliki słów i obrazki) – jedna stała pamięć, uzupełniana na bieżąco.
+ *    Zmiana słownika NIE wymaga zmiany wersji aplikacji (podbija się "dictionaryVersion" w pliku słów).
+ */
 importScripts('version.js');
-var CACHE = 'moje-slowa-' + APP_VERSION;
+var APP_CACHE = 'moje-slowa-app-' + APP_VERSION;
+var DICT_CACHE = 'moje-slowa-dict';
 var FILES = [
   './',
   'index.html',
   'style.css',
   'app.js',
   'version.js',
-  'vocabulary.json',
-  'vocabulary.en.json',
   'manifest.webmanifest',
   'icons/icon.svg',
   'icons/icon-192.png',
   'icons/icon-512.png',
-  'icons/apple-touch-icon.png',
-  'images/baranek.svg',
-  'images/batonik.svg',
-  'images/bulka.svg',
-  'images/chipsy.svg',
-  'images/chlebek-ryzowy.svg',
-  'images/cool-spot.svg',
-  'images/dodatki.svg',
-  'images/dom-babci.svg',
-  'images/draze.svg',
-  'images/gonitwa.svg',
-  'images/granola.svg',
-  'images/gumy.svg',
-  'images/herbata.svg',
-  'images/jajko-niespodzianka.svg',
-  'images/ketchup.svg',
-  'images/kielbasa.svg',
-  'images/las.svg',
-  'images/laskotki.svg',
-  'images/makaron.svg',
-  'images/mala-pilka.svg',
-  'images/miejsca.svg',
-  'images/mielone.svg',
-  'images/mieszanka-studencka.svg',
-  'images/musztarda.svg',
-  'images/nachos.svg',
-  'images/ogrodek-babci.svg',
-  'images/orzeszki.svg',
-  'images/ostry-sos.svg',
-  'images/paletka.svg',
-  'images/park.svg',
-  'images/plac-zabaw.svg',
-  'images/platki.svg',
-  'images/psi-patrol.svg',
-  'images/puszka.svg',
-  'images/rodzynki.svg',
-  'images/sala-zabaw.svg',
-  'images/sos-czosnkowy.svg',
-  'images/swinka.svg',
-  'images/szynka.svg',
-  'images/trampolina.svg',
-  'images/youtube.svg',
-  'images/zabawa.svg',
-  'images/zabawki.svg',
-  'images/zelki.svg',
-  'images/ziemniaki.svg',
-  'images/zool.svg',
-  'images/zupa-barszcz.svg',
-  'images/zupa-krem.svg',
-  'images/zupa-pomidorowa.svg',
-  'images/zupa-rosol.svg',
-  'images/zupa-warzywna.svg',
-  'images/zupa-zurek.svg'
+  'icons/apple-touch-icon.png'
 ];
 
 self.addEventListener('install', function (event) {
   event.waitUntil(
-    caches.open(CACHE).then(function (cache) {
+    caches.open(APP_CACHE).then(function (cache) {
       return cache.addAll(FILES.map(function (f) { return new Request(f, { cache: 'reload' }); }));
     }).then(function () { return self.skipWaiting(); })
   );
@@ -81,21 +34,42 @@ self.addEventListener('activate', function (event) {
   event.waitUntil(
     caches.keys().then(function (keys) {
       return Promise.all(keys.map(function (k) {
-        if (k.indexOf('moje-slowa-') === 0 && k !== CACHE) return caches.delete(k);
+        // usuń stare pamięci aplikacji (także sprzed podziału: "moje-slowa-v11", "moje-slowa-0.18"…)
+        if (k.indexOf('moje-slowa-') === 0 && k !== APP_CACHE && k !== DICT_CACHE) return caches.delete(k);
       }));
     }).then(function () { return self.clients.claim(); })
   );
 });
 
-// Odpowiedź z cache, a w tle pobranie świeżej wersji (stale-while-revalidate).
+function isDictionary(url) { return url.pathname.indexOf('/dictionary/') !== -1; }
+function isWordFile(url) { return isDictionary(url) && /\.json$/.test(url.pathname); }
+
 self.addEventListener('fetch', function (event) {
   var req = event.request;
   if (req.method !== 'GET') return;
   var url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
+  // Pliki słów: najpierw sieć (nowe słowa od razu), bez sieci – ostatnia zapisana wersja.
+  if (isWordFile(url)) {
+    event.respondWith(
+      fetch(req, { cache: 'no-cache' }).then(function (res) {
+        if (res && res.ok) {
+          var copy = res.clone();
+          event.waitUntil(caches.open(DICT_CACHE).then(function (c) { return c.put(req, copy); }));
+        }
+        return res;
+      }).catch(function () {
+        return caches.match(req, { ignoreSearch: true }).then(function (r) { return r || Response.error(); });
+      })
+    );
+    return;
+  }
+
+  // Obrazki słownika i pliki aplikacji: z pamięci, w tle odświeżenie (stale-while-revalidate).
+  var cacheName = isDictionary(url) ? DICT_CACHE : APP_CACHE;
   event.respondWith(
-    caches.open(CACHE).then(function (cache) {
+    caches.open(cacheName).then(function (cache) {
       return cache.match(req, { ignoreSearch: true }).then(function (cached) {
         var network = fetch(req).then(function (res) {
           if (res && res.ok && res.type === 'basic') cache.put(req, res.clone());

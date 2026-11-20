@@ -41,16 +41,23 @@ silnik Google → zainstaluj dane głosowe dla języka polskiego.
 Na górze ekranu startowego jest lista **🌐 Język**: 🇵🇱 Polski albo 🇺🇸 English. Zmienia słowa, napisy i głos.
 Wybór jest zapamiętywany. Głos w Ustawieniach wybiera się osobno dla każdego języka.
 
-Słowa angielskie są w `vocabulary.en.json` (ten sam format, `"language": "en-US"`, te same `id` kategorii i obrazki).
+Słowa angielskie są w `dictionary/vocabulary.en.json` (ten sam format, `"language": "en-US"`, te same `id` kategorii i obrazki).
 Dodając słowo po polsku, dodaj je też w pliku angielskim, w tym samym miejscu.
 
 ## Jak zmieniać słowa
 
-Wszystkie słowa są w pliku [`vocabulary.json`](vocabulary.json). Format:
+**Słownik jest oddzielony od aplikacji** – wszystko, co dotyczy słów, jest w folderze [`dictionary/`](dictionary):
+
+- [`dictionary/vocabulary.json`](dictionary/vocabulary.json) – słowa po polsku,
+- [`dictionary/vocabulary.en.json`](dictionary/vocabulary.en.json) – słowa po angielsku,
+- `dictionary/images/` – obrazki do słów i kategorii.
+
+Format pliku słów:
 
 ```json
 {
   "version": 1,
+  "dictionaryVersion": "1.04",
   "language": "pl-PL",
   "categories": [
     {
@@ -73,31 +80,37 @@ Wszystkie słowa są w pliku [`vocabulary.json`](vocabulary.json). Format:
 - „Inny …”: ostatnie słowo w kategorii ma emoji kategorii z `❓` na końcu, np. `{ "emoji": "🍲❓", "text": "Inna zupa" }` –
   aplikacja pokazuje wtedy emoji z małym znakiem zapytania.
 - Kolor: jasny kolor w zapisie `#RRGGBB` (tekst na kafelku jest czarny).
-- Obrazek zamiast emoji (opcjonalnie): dodaj do słowa pole `"image": "images/nazwa.svg"` (może być też `.png`/`.jpg`,
-  najlepiej kwadratowy). Pole `emoji` zostaw – jest używane, gdy obrazka brak. Nowy plik dopisz też do listy `FILES` w `sw.js`,
-  żeby działał offline.
+- Obrazek zamiast emoji (opcjonalnie): wrzuć plik do `dictionary/images/` i dodaj do słowa (albo kategorii) pole
+  `"image": "images/nazwa.svg"` – ścieżka jest **względem pliku słów** (może być też `.png`/`.jpg`, najlepiej kwadratowy).
+  Pole `emoji` zostaw – jest używane, gdy obrazka brak. Nic więcej nie trzeba: obrazek sam trafi do pamięci offline.
 - Pilnuj przecinków i cudzysłowów – błąd w pliku = aplikacja nie wczyta słów.
   Sprawdź plik np. na https://jsonlint.com przed zapisaniem.
 - Ulubione są zapamiętywane po tekście słowa – po zmianie tekstu trzeba je zaznaczyć ponownie.
 
-**Są dwie wersje:**
+**Są dwie niezależne wersje:**
 
-- **Wersja słownika** – pole `"dictionaryVersion"` w `vocabulary.json` i `vocabulary.en.json` (np. `"1.01"` → `"1.02"`).
-  Podbij ją przy każdej zmianie słów. Pole `"version": 1` to numer *formatu* pliku – nie zmieniaj go.
-- **Wersja aplikacji** – `version.js` (np. `'0.14'` → `'0.15'`). Podbij ją przy zmianie kodu, wyglądu
-  albo przy dodaniu nowych obrazków (wtedy też dopisz je do listy `FILES` w `sw.js`, żeby działały offline).
+- **Wersja słownika** – pole `"dictionaryVersion"` w obu plikach słów (np. `"1.04"` → `"1.05"`).
+  Zmieniasz **tylko słowa lub obrazki** → podbijasz tylko tę wersję. Wersji aplikacji nie ruszasz.
+  Pole `"version": 1` to numer *formatu* pliku – nie zmieniaj go.
+- **Wersja aplikacji** – `version.js` (np. `'0.19'` → `'0.20'`). Podbijasz ją **tylko** przy zmianie kodu
+  lub wyglądu aplikacji (pliki poza folderem `dictionary/`).
 
 Obie wersje widać na ekranie startowym pod wyborem języka – tak sprawdzisz, czy telefon ma już nowość.
-Nowa wersja pojawia się na telefonie przy drugim otwarciu aplikacji (pierwsze pobiera ją w tle).
 
-Ten sam plik `vocabulary.json` ma być później używany przez aplikację Flutter – nie zmieniaj jego struktury.
+- Nowy **słownik** (słowa, obrazki) pojawia się przy **najbliższym** otwarciu aplikacji z internetem.
+  Bez internetu aplikacja używa ostatnio pobranego słownika.
+- Nowa **wersja aplikacji** pojawia się przy **drugim** otwarciu (pierwsze pobiera ją w tle).
+
+Aplikacja Flutter ma wczytywać ten sam plik `dictionary/vocabulary.json` (obrazki: ścieżka z pola `image`
+względem tego pliku) – nie zmieniaj jego struktury.
 
 ## Pliki
 
 | Plik | Co to jest |
 |---|---|
 | `index.html`, `style.css`, `app.js` | aplikacja |
-| `vocabulary.json` | słowa i kategorie |
+| `version.js` | wersja aplikacji |
+| `dictionary/` | **słownik**: pliki słów (PL, EN) i obrazki – niezależny od aplikacji |
 | `manifest.webmanifest` | opis aplikacji dla telefonu (nazwa, ikona) |
 | `sw.js` | tryb offline (service worker) |
 | `icons/` | ikona SVG i wygenerowane z niej PNG 180/192/512 |

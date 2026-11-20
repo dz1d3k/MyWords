@@ -14,7 +14,7 @@
    * Każdy język ma własny plik słownika w tym samym formacie. */
   var LANGS = {
     pl: {
-      label: '🇵🇱 Polski', file: 'vocabulary.json', speech: 'pl-PL',
+      label: '🇵🇱 Polski', file: 'dictionary/vocabulary.json', speech: 'pl-PL',
       ui: {
         appTitle: 'Moje Słowa', tapPicture: 'Dotknij obrazka', favorites: 'Ulubione',
         back: 'Wstecz', home: 'Start', repeat: 'Powtórz ostatnie słowo',
@@ -32,7 +32,7 @@
       }
     },
     en: {
-      label: '🇺🇸 English', file: 'vocabulary.en.json', speech: 'en-US',
+      label: '🇺🇸 English', file: 'dictionary/vocabulary.en.json', speech: 'en-US',
       ui: {
         appTitle: 'My Words', tapPicture: 'Tap a picture', favorites: 'Favorites',
         back: 'Back', home: 'Home', repeat: 'Repeat the last word',
@@ -261,12 +261,38 @@
     return s;
   }
 
+  // Ścieżki obrazków w słowniku są względne wobec pliku słów (np. "images/x.svg" → dictionary/images/x.svg).
+  function dictUrl(path) {
+    try { return new URL(path, new URL(L().file, document.baseURI)).href; } catch (e) { return path; }
+  }
+
+  // Słownik offline: po wczytaniu zapisujemy oba pliki słów i wszystkie obrazki
+  // w osobnej pamięci, niezależnej od wersji aplikacji.
+  function cacheDictionary(data) {
+    try {
+      if (!('caches' in window)) return;
+      var urls = Object.keys(LANGS).map(function (k) { return new URL(LANGS[k].file, document.baseURI).href; });
+      (function walk(list) {
+        list.forEach(function (c) {
+          if (c.image) urls.push(dictUrl(c.image));
+          c.words.forEach(function (w) { if (w.image) urls.push(dictUrl(w.image)); });
+          walk(subcats(c));
+        });
+      })(data.categories);
+      caches.open('moje-slowa-dict').then(function (cache) {
+        urls.forEach(function (u) {
+          cache.match(u).then(function (hit) { if (!hit) cache.add(u).catch(function () {}); });
+        });
+      }).catch(function () {});
+    } catch (e) { /* bez pamięci offline aplikacja i tak działa */ }
+  }
+
   // Obrazek (opcjonalne pole "image" w słowniku) albo emoji jako zapas.
   function pictureNode(emoji, image) {
     if (image) {
       var img = document.createElement('img');
       img.className = 'pic';
-      img.src = image;
+      img.src = dictUrl(image);
       img.alt = '';
       img.draggable = false;
       img.onerror = function () { img.replaceWith(document.createTextNode(emoji || '')); };
@@ -614,6 +640,7 @@
         vocab = data;
         render();
         showVersion();
+        cacheDictionary(data);
         if (onLoaded) onLoaded();
       })
       .catch(function () {
