@@ -1,0 +1,694 @@
+{
+  "version": 1,
+  "language": "pl-PL",
+  "categories": [
+    {
+      "id": "potrzeby",
+      "emoji": "🙋",
+      "name": "Potrzeby",
+      "color": "#FFCDD2",
+      "words": [
+        {
+          "emoji": "👍",
+          "text": "Tak"
+        },
+        {
+          "emoji": "👎",
+          "text": "Nie"
+        },
+        {
+          "emoji": "🆘",
+          "text": "Pomocy"
+        },
+        {
+          "emoji": "🚽",
+          "text": "Toaleta"
+        },
+        {
+          "emoji": "🍽️",
+          "text": "Chcę jeść"
+        },
+        {
+          "emoji": "🥤",
+          "text": "Chcę pić"
+        },
+        {
+          "emoji": "😴",
+          "text": "Chcę spać"
+        },
+        {
+          "emoji": "🤕",
+          "text": "Boli mnie"
+        },
+        {
+          "emoji": "➕",
+          "text": "Jeszcze"
+        },
+        {
+          "emoji": "✋",
+          "text": "Koniec"
+        },
+        {
+          "emoji": "⏸️",
+          "text": "Przerwa"
+        },
+        {
+          "emoji": "🤗",
+          "text": "Przytul mnie"
+        },
+        {
+          "emoji": "🤷",
+          "text": "Nie wiem"
+        },
+        {
+          "emoji": "🙏",
+          "text": "Proszę"
+        },
+        {
+          "emoji": "💛",
+          "text": "Dziękuję"
+        }
+      ]
+    },
+    {
+      "id": "uczucia",
+      "emoji": "😊",
+      "name": "Uczucia",
+      "color": "#FFF9C4",
+      "words": [
+        {
+          "emoji": "😄",
+          "text": "Wesoło mi"
+        },
+        {
+          "emoji": "😢",
+          "text": "Smutno mi"
+        },
+        {
+          "emoji": "😠",
+          "text": "Złoszczę się"
+        },
+        {
+          "emoji": "😨",
+          "text": "Boję się"
+        },
+        {
+          "emoji": "😴",
+          "text": "Chce mi się spać"
+        },
+        {
+          "emoji": "😐",
+          "text": "Nudzi mi się"
+        },
+        {
+          "emoji": "🥶",
+          "text": "Zimno mi"
+        },
+        {
+          "emoji": "🥵",
+          "text": "Gorąco mi"
+        },
+        {
+          "emoji": "🤢",
+          "text": "Niedobrze mi"
+        },
+        {
+          "emoji": "🙂",
+          "text": "Dobrze się czuję"
+        },
+        {
+          "emoji": "😞",
+          "text": "Źle się czuję"
+        },
+        {
+          "emoji": "🔊",
+          "text": "Za głośno"
+        }
+      ]
+    },
+    {
+      "id": "jedzenie",
+      "emoji": "🍽️",
+      "name": "Jedzenie",
+      "color": "#FFE0B2",
+      "words": [
+        {
+          "emoji": "🍞",
+          "text": "Chleb"
+        },
+        {
+          "emoji": "🥪",
+          "text": "Kanapka"
+        },
+        {
+          "emoji": "🥣",
+          "text": "Płatki"
+        },
+        {
+          "emoji": "🍲",
+          "text": "Zupa"
+        },
+        {
+          "emoji": "🍝",
+          "text": "Makaron"
+        },
+        {
+          "emoji": "🍕",
+          "text": "Pizza"
+        },
+        {
+          "emoji": "🍗",
+          "text": "Kurczak"
+        },
+        {
+          "emoji": "🥔",
+          "text": "Ziemniaki"
+        },
+        {
+          "emoji": "🍚",
+          "text": "Ryż"
+        },
+        {
+          "emoji": "🥚",
+          "text": "Jajko"
+        },
+        {
+          "emoji": "🧀",
+          "text": "Ser"
+        },
+        {
+          "emoji": "🍎",
+          "text": "Jabłko"
+        },
+        {
+          "emoji": "🍌",
+          "text": "Banan"
+        },
+        {
+          "emoji": "🍓",
+          "text": "Truskawki"
+        },
+        {
+          "emoji": "🍇",
+          "text": "Winogrona"
+        },
+        {
+          "emoji": "🥕",
+          "text": "Marchewka"
+        },
+        {
+          "emoji": "🥒",
+          "text": "Ogórek"
+        },
+        {
+          "emoji": "🍪",
+          "text": "Ciastko"
+        },
+        {
+          "emoji": "🍦",
+          "text": "Lody"
+        },
+        {
+          "emoji": "🍫",
+          "text": "Czekolada"
+        }
+      ]
+    },
+    {
+      "id": "picie",
+      "emoji": "🥤",
+      "name": "Picie",
+      "color": "#B3E5FC",
+      "words": [
+        {
+          "emoji": "💧",
+          "text": "Woda"
+        },
+        {
+          "emoji": "🥛",
+          "text": "Mleko"
+        },
+        {
+          "emoji": "🧃",
+          "text": "Sok"
+        },
+        {
+          "emoji": "🍵",
+          "text": "Herbata"
+        },
+        {
+          "emoji": "☕",
+          "text": "Kakao"
+        },
+        {
+          "emoji": "🥤",
+          "text": "Lemoniada"
+        }
+      ]
+    },
+    {
+      "id": "obowiazki",
+      "emoji": "🧹",
+      "name": "Obowiązki",
+      "color": "#C8E6C9",
+      "words": [
+        {
+          "emoji": "🦷",
+          "text": "Mycie zębów"
+        },
+        {
+          "emoji": "🧼",
+          "text": "Mycie rąk"
+        },
+        {
+          "emoji": "🛁",
+          "text": "Kąpiel"
+        },
+        {
+          "emoji": "👕",
+          "text": "Ubieranie się"
+        },
+        {
+          "emoji": "🧹",
+          "text": "Sprzątanie"
+        },
+        {
+          "emoji": "🧸",
+          "text": "Sprzątanie zabawek"
+        },
+        {
+          "emoji": "🍽️",
+          "text": "Nakrywanie do stołu"
+        },
+        {
+          "emoji": "🧽",
+          "text": "Zmywanie"
+        },
+        {
+          "emoji": "🧺",
+          "text": "Pranie"
+        },
+        {
+          "emoji": "🛏️",
+          "text": "Ścielenie łóżka"
+        },
+        {
+          "emoji": "🗑️",
+          "text": "Wynoszenie śmieci"
+        },
+        {
+          "emoji": "🌷",
+          "text": "Podlewanie kwiatów"
+        },
+        {
+          "emoji": "🐕",
+          "text": "Karmienie zwierzaka"
+        }
+      ]
+    },
+    {
+      "id": "miejsca",
+      "emoji": "📍",
+      "name": "Miejsca",
+      "color": "#D1C4E9",
+      "words": [
+        {
+          "emoji": "🏠",
+          "text": "Dom"
+        },
+        {
+          "emoji": "🏫",
+          "text": "Szkoła"
+        },
+        {
+          "emoji": "🧸",
+          "text": "Przedszkole"
+        },
+        {
+          "emoji": "🌳",
+          "text": "Park"
+        },
+        {
+          "emoji": "🤸",
+          "text": "Plac zabaw"
+        },
+        {
+          "emoji": "🛒",
+          "text": "Sklep"
+        },
+        {
+          "emoji": "🏥",
+          "text": "Lekarz"
+        },
+        {
+          "emoji": "🏊",
+          "text": "Basen"
+        },
+        {
+          "emoji": "🌲",
+          "text": "Las"
+        },
+        {
+          "emoji": "🏖️",
+          "text": "Plaża"
+        },
+        {
+          "emoji": "🎬",
+          "text": "Kino"
+        },
+        {
+          "emoji": "👵",
+          "text": "Do babci"
+        },
+        {
+          "emoji": "🚗",
+          "text": "Samochód"
+        },
+        {
+          "emoji": "🚌",
+          "text": "Autobus"
+        },
+        {
+          "emoji": "🛏️",
+          "text": "Mój pokój"
+        },
+        {
+          "emoji": "🚿",
+          "text": "Łazienka"
+        },
+        {
+          "emoji": "🍳",
+          "text": "Kuchnia"
+        },
+        {
+          "emoji": "🌻",
+          "text": "Ogród"
+        }
+      ]
+    },
+    {
+      "id": "osoby",
+      "emoji": "👪",
+      "name": "Osoby",
+      "color": "#F8BBD0",
+      "words": [
+        {
+          "emoji": "👩",
+          "text": "Mama"
+        },
+        {
+          "emoji": "👨",
+          "text": "Tata"
+        },
+        {
+          "emoji": "👧",
+          "text": "Siostra"
+        },
+        {
+          "emoji": "👦",
+          "text": "Brat"
+        },
+        {
+          "emoji": "👵",
+          "text": "Babcia"
+        },
+        {
+          "emoji": "👴",
+          "text": "Dziadek"
+        },
+        {
+          "emoji": "👩‍🦰",
+          "text": "Ciocia"
+        },
+        {
+          "emoji": "🧔",
+          "text": "Wujek"
+        },
+        {
+          "emoji": "👩‍🏫",
+          "text": "Pani"
+        },
+        {
+          "emoji": "👨‍🏫",
+          "text": "Pan"
+        },
+        {
+          "emoji": "🧑‍⚕️",
+          "text": "Lekarz"
+        },
+        {
+          "emoji": "🧒",
+          "text": "Kolega"
+        },
+        {
+          "emoji": "👧",
+          "text": "Koleżanka"
+        },
+        {
+          "emoji": "🙋",
+          "text": "Ja"
+        },
+        {
+          "emoji": "👉",
+          "text": "Ty"
+        }
+      ]
+    },
+    {
+      "id": "zabawa",
+      "emoji": "🎨",
+      "name": "Zabawa",
+      "color": "#FFCCBC",
+      "words": [
+        {
+          "emoji": "🖍️",
+          "text": "Rysowanie"
+        },
+        {
+          "emoji": "🎨",
+          "text": "Malowanie"
+        },
+        {
+          "emoji": "🧱",
+          "text": "Klocki"
+        },
+        {
+          "emoji": "🧩",
+          "text": "Puzzle"
+        },
+        {
+          "emoji": "📖",
+          "text": "Książka"
+        },
+        {
+          "emoji": "📺",
+          "text": "Bajka"
+        },
+        {
+          "emoji": "📱",
+          "text": "Tablet"
+        },
+        {
+          "emoji": "⚽",
+          "text": "Piłka"
+        },
+        {
+          "emoji": "🚲",
+          "text": "Rower"
+        },
+        {
+          "emoji": "🚶",
+          "text": "Spacer"
+        },
+        {
+          "emoji": "🎵",
+          "text": "Muzyka"
+        },
+        {
+          "emoji": "💃",
+          "text": "Taniec"
+        },
+        {
+          "emoji": "🧸",
+          "text": "Pluszak"
+        },
+        {
+          "emoji": "🚂",
+          "text": "Pociąg"
+        },
+        {
+          "emoji": "🏊",
+          "text": "Pływanie"
+        },
+        {
+          "emoji": "🎈",
+          "text": "Balony"
+        }
+      ]
+    },
+    {
+      "id": "ubrania",
+      "emoji": "👕",
+      "name": "Ubrania",
+      "color": "#DCEDC8",
+      "words": [
+        {
+          "emoji": "👕",
+          "text": "Koszulka"
+        },
+        {
+          "emoji": "👖",
+          "text": "Spodnie"
+        },
+        {
+          "emoji": "👗",
+          "text": "Sukienka"
+        },
+        {
+          "emoji": "🧥",
+          "text": "Kurtka"
+        },
+        {
+          "emoji": "🧢",
+          "text": "Czapka"
+        },
+        {
+          "emoji": "🧣",
+          "text": "Szalik"
+        },
+        {
+          "emoji": "🧤",
+          "text": "Rękawiczki"
+        },
+        {
+          "emoji": "🧦",
+          "text": "Skarpetki"
+        },
+        {
+          "emoji": "👟",
+          "text": "Buty"
+        },
+        {
+          "emoji": "🩳",
+          "text": "Krótkie spodenki"
+        },
+        {
+          "emoji": "🌙",
+          "text": "Piżama"
+        }
+      ]
+    },
+    {
+      "id": "cialo",
+      "emoji": "🧍",
+      "name": "Ciało",
+      "color": "#FFECB3",
+      "words": [
+        {
+          "emoji": "👤",
+          "text": "Głowa"
+        },
+        {
+          "emoji": "🧍",
+          "text": "Brzuch"
+        },
+        {
+          "emoji": "🦷",
+          "text": "Ząb"
+        },
+        {
+          "emoji": "👂",
+          "text": "Ucho"
+        },
+        {
+          "emoji": "👁️",
+          "text": "Oko"
+        },
+        {
+          "emoji": "👃",
+          "text": "Nos"
+        },
+        {
+          "emoji": "👄",
+          "text": "Buzia"
+        },
+        {
+          "emoji": "🗣️",
+          "text": "Gardło"
+        },
+        {
+          "emoji": "✋",
+          "text": "Ręka"
+        },
+        {
+          "emoji": "🦵",
+          "text": "Noga"
+        },
+        {
+          "emoji": "🦶",
+          "text": "Stopa"
+        },
+        {
+          "emoji": "🚶",
+          "text": "Plecy"
+        }
+      ]
+    },
+    {
+      "id": "zwierzeta",
+      "emoji": "🐾",
+      "name": "Zwierzęta",
+      "color": "#B2DFDB",
+      "words": [
+        {
+          "emoji": "🐶",
+          "text": "Pies"
+        },
+        {
+          "emoji": "🐱",
+          "text": "Kot"
+        },
+        {
+          "emoji": "🐰",
+          "text": "Królik"
+        },
+        {
+          "emoji": "🐟",
+          "text": "Rybka"
+        },
+        {
+          "emoji": "🐦",
+          "text": "Ptak"
+        },
+        {
+          "emoji": "🐴",
+          "text": "Koń"
+        },
+        {
+          "emoji": "🐮",
+          "text": "Krowa"
+        },
+        {
+          "emoji": "🐷",
+          "text": "Świnka"
+        },
+        {
+          "emoji": "🐔",
+          "text": "Kura"
+        },
+        {
+          "emoji": "🦆",
+          "text": "Kaczka"
+        },
+        {
+          "emoji": "🐻",
+          "text": "Miś"
+        },
+        {
+          "emoji": "🦁",
+          "text": "Lew"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Moje Słowa</title>
+  <meta name="description" content="Prosta aplikacja do komunikacji wspomagającej (AAC) dla dzieci.">
+  <meta name="theme-color" content="#FF8A00">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Moje Słowa">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="sticky">
+    <nav class="topbar">
+      <button id="btn-back" class="barbtn" type="button" aria-label="Wstecz">⬅️</button>
+      <button id="btn-home" class="barbtn" type="button" aria-label="Start">🏠</button>
+      <h1 id="title">Moje Słowa</h1>
+      <button id="btn-fav" class="barbtn" type="button" aria-label="Ulubione">⭐</button>
+    </nav>
+    <button id="lastword" class="lastword" type="button" aria-label="Powtórz ostatnie słowo">
+      <span id="lastword-emoji" class="lw-emoji">💬</span>
+      <span id="lastword-text" class="lw-text placeholder">Dotknij obrazka</span>
+    </button>
+  </header>
+
+  <main id="list" class="list" aria-live="polite"></main>
+
+  <div id="settings-wrap" class="settings-wrap" hidden>
+    <button id="btn-settings" class="settings-btn" type="button">⚙️ Ustawienia głosu</button>
+  </div>
+
+  <dialog id="settings" class="settings">
+    <form method="dialog" class="settings-inner">
+      <h2>Ustawienia głosu</h2>
+      <fieldset>
+        <legend>Głos</legend>
+        <div id="voice-list" class="voice-list"></div>
+      </fieldset>
+      <label class="rate">
+        <span>Tempo: <strong id="rate-value">90%</strong></span>
+        <input id="rate" type="range" min="50" max="130" step="5" value="90">
+      </label>
+      <button id="btn-test" class="dlg-btn test" type="button">🔊 Test</button>
+      <details class="hint">
+        <summary>Jak pobrać lepszy głos?</summary>
+        <p><strong>iPhone:</strong> Ustawienia → Dostępność → Treść mówiona → Głosy → Polski. Pobierz głos „Premium” lub „Rozszerzony”, potem wróć tutaj i wybierz go.</p>
+        <p><strong>Android:</strong> Ustawienia → Zamiana tekstu na mowę (często w: Ułatwienia dostępu). Wybierz silnik Google, zainstaluj dane głosowe dla języka polskiego.</p>
+        <p>Po pobraniu głosu może być potrzebne ponowne uruchomienie aplikacji.</p>
+      </details>
+      <button class="dlg-btn close" value="close">Gotowe</button>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
