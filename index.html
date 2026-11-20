@@ -27,13 +27,26 @@
     <button id="btn-delete-user" class="login-delete" type="button" data-i18n="deleteUser" disabled>Usuń użytkownika</button>
   </section>
 
-  <!-- Potwierdzenie wylogowania -->
-  <dialog id="confirm-logout" class="settings">
+  <!-- Wylogowanie: trzeba wpisać wylosowaną liczbę 01–99 (żeby dziecko nie wylogowało się przypadkiem) -->
+  <dialog id="logout-dialog" class="settings">
+    <form class="settings-inner" id="logout-form">
+      <h2 data-i18n="logoutTitle">Wylogowanie</h2>
+      <p class="logout-instr" data-i18n="logoutInstr">Aby się wylogować, wpisz liczbę:</p>
+      <div id="logout-code" class="logout-code">00</div>
+      <input id="logout-input" class="name-input code-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" autocorrect="off" spellcheck="false">
+      <p id="logout-error" class="form-error" hidden></p>
+      <button id="btn-logout-confirm" class="dlg-btn danger" type="submit" data-i18n="logout">Wyloguj</button>
+      <button id="btn-logout-cancel" class="big-back" type="button" data-i18n="undo">Cofnij</button>
+    </form>
+  </dialog>
+
+  <!-- Okno Tak/Nie (👍/👎) – na razie nieużywane, gotowe do wykorzystania: askYesNo(pytanie, poTak) -->
+  <dialog id="confirm-yesno" class="settings">
     <div class="settings-inner">
-      <h2 data-i18n="logoutQuestion">Czy chcesz się wylogować?</h2>
+      <h2 id="yesno-question"></h2>
       <div class="confirm-row">
-        <button id="btn-logout-yes" class="confirm-btn yes" type="button"><span class="confirm-emoji">👍</span><span data-i18n="yes">Tak</span></button>
-        <button id="btn-logout-no" class="confirm-btn no" type="button"><span class="confirm-emoji">👎</span><span data-i18n="no">Nie</span></button>
+        <button id="btn-yes" class="confirm-btn yes" type="button"><span class="confirm-emoji">👍</span><span data-i18n="yes">Tak</span></button>
+        <button id="btn-no" class="confirm-btn no" type="button"><span class="confirm-emoji">👎</span><span data-i18n="no">Nie</span></button>
       </div>
     </div>
   </dialog>

@@ -572,3 +572,27 @@ body.logged-out #settings-wrap { display: none !important; }
 .login-delete:disabled { opacity: .35; }
 .delete-instr { margin: 0; font-size: 17px; line-height: 1.45; }
 .dlg-btn.danger { background: #D32F2F; color: #FFFFFF; }
+
+/* ---------- Wylogowanie z wpisaniem liczby (0.26) ---------- */
+.logout-instr { margin: 0; font-size: 19px; line-height: 1.4; }
+.logout-code {
+  align-self: center;
+  font-size: 64px;
+  font-weight: 900;
+  letter-spacing: 6px;
+  line-height: 1;
+  padding: 8px 22px;
+  border-radius: 16px;
+  background: var(--btn-bg);
+}
+.code-input { text-align: center; font-size: 34px; letter-spacing: 6px; }
+.big-back {
+  min-height: 84px;
+  border-radius: 18px;
+  background: #C8E6C9;
+  color: #1A1A1A;
+  font-size: 30px;
+  font-weight: 800;
+  box-shadow: var(--shadow);
+}
+.big-back:active { transform: scale(.97); }

@@ -28,6 +28,7 @@
         logout: 'Wyloguj', newUserTitle: 'Nowy użytkownik', namePlaceholder: 'Imię', save: 'Zapisz', cancel: 'Anuluj',
         nameEmpty: 'Wpisz imię.', nameTaken: 'Taki użytkownik już istnieje.',
         logoutQuestion: 'Czy chcesz się wylogować?', yes: 'Tak', no: 'Nie',
+        logoutTitle: 'Wylogowanie', logoutInstr: 'Aby się wylogować, wpisz liczbę:', logoutWrong: 'Błędna liczba.',
         deleteUser: 'Usuń użytkownika', deleteTitle: 'Usuń użytkownika', delete: 'Usuń', undo: 'Cofnij',
         deleteInstr: 'Aby usunąć użytkownika „{name}”, przepisz dokładnie jego nazwę i dopisz na końcu 12. Wielkość liter ma znaczenie. Wpisz: {code}',
         deleteWrong: 'Błędnie wpisana wartość.',
@@ -53,6 +54,7 @@
         logout: 'Log out', newUserTitle: 'New user', namePlaceholder: 'Name', save: 'Save', cancel: 'Cancel',
         nameEmpty: 'Enter a name.', nameTaken: 'This user already exists.',
         logoutQuestion: 'Do you want to log out?', yes: 'Yes', no: 'No',
+        logoutTitle: 'Log out', logoutInstr: 'To log out, type the number:', logoutWrong: 'Wrong number.',
         deleteUser: 'Delete user', deleteTitle: 'Delete user', delete: 'Delete', undo: 'Back',
         deleteInstr: 'To delete the user “{name}”, type the name exactly and add 12 at the end. Letter case matters. Type: {code}',
         deleteWrong: 'Wrong value.',
@@ -101,9 +103,16 @@
     newName: document.getElementById('new-user-name'),
     newErr: document.getElementById('new-user-error'),
     cancelUser: document.getElementById('btn-cancel-user'),
-    logoutDialog: document.getElementById('confirm-logout'),
-    logoutYes: document.getElementById('btn-logout-yes'),
-    logoutNo: document.getElementById('btn-logout-no'),
+    logoutDialog: document.getElementById('logout-dialog'),
+    logoutForm: document.getElementById('logout-form'),
+    logoutCode: document.getElementById('logout-code'),
+    logoutInput: document.getElementById('logout-input'),
+    logoutErr: document.getElementById('logout-error'),
+    logoutCancel: document.getElementById('btn-logout-cancel'),
+    yesNoDialog: document.getElementById('confirm-yesno'),
+    yesNoQuestion: document.getElementById('yesno-question'),
+    yesBtn: document.getElementById('btn-yes'),
+    noBtn: document.getElementById('btn-no'),
     deleteBtn: document.getElementById('btn-delete-user'),
     deleteDialog: document.getElementById('delete-user'),
     deleteForm: document.getElementById('delete-user-form'),
@@ -1065,13 +1074,50 @@
     d.removeAttribute('open');
   }
 
-  // ⏻ – najpierw pytanie „Czy chcesz się wylogować?” 👍 / 👎
-  el.logout.addEventListener('click', function () { openDialog(el.logoutDialog); });
-  el.logoutNo.addEventListener('click', function () { closeDialog(el.logoutDialog); });
-  el.logoutYes.addEventListener('click', function () {
+  // ⏻ – trzeba wpisać wylosowaną liczbę 01–99; duży „Cofnij” wraca do aplikacji.
+  var logoutCode = '';
+  el.logout.addEventListener('click', function () {
+    logoutCode = ('0' + (1 + Math.floor(Math.random() * 99))).slice(-2);
+    el.logoutCode.textContent = logoutCode;
+    el.logoutInput.value = '';
+    el.logoutErr.hidden = true;
+    openDialog(el.logoutDialog);
+  });
+  el.logoutInput.addEventListener('input', function () {
+    el.logoutInput.value = el.logoutInput.value.replace(/\D/g, '').slice(0, 2);
+    el.logoutErr.hidden = true;
+  });
+  el.logoutCancel.addEventListener('click', function () { closeDialog(el.logoutDialog); });
+  el.logoutDialog.addEventListener('cancel', function (e) { e.preventDefault(); closeDialog(el.logoutDialog); });
+  el.logoutForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = el.logoutInput.value.trim();
+    // „7” i „07” to ta sama liczba
+    if (!v || parseInt(v, 10) !== parseInt(logoutCode, 10)) {
+      el.logoutInput.value = '';
+      el.logoutErr.textContent = ui('logoutWrong');
+      el.logoutErr.hidden = false;
+      return;
+    }
     closeDialog(el.logoutDialog);
     logout();
   });
+
+  /* Okno Tak/Nie z kciukami 👍 / 👎 – na razie nieużywane (wcześniej potwierdzało wylogowanie).
+   * Użycie: askYesNo('Czy…?', function () { …po Tak… }); */
+  var yesNoCallback = null;
+  function askYesNo(question, onYes) {
+    el.yesNoQuestion.textContent = question;
+    yesNoCallback = onYes;
+    openDialog(el.yesNoDialog);
+  }
+  el.noBtn.addEventListener('click', function () { yesNoCallback = null; closeDialog(el.yesNoDialog); });
+  el.yesBtn.addEventListener('click', function () {
+    var cb = yesNoCallback; yesNoCallback = null;
+    closeDialog(el.yesNoDialog);
+    if (cb) cb();
+  });
+  window.MeTalk = { askYesNo: askYesNo }; // dostęp do okna Tak/Nie z zewnątrz (np. przyszłe funkcje)
 
   function logout() {
     try { if (synth && (synth.speaking || synth.pending)) synth.cancel(); } catch (e) { /* ignoruj */ }

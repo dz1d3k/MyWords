@@ -12,7 +12,8 @@ początkowego wygląda jak zwykła aplikacja i działa także bez internetu.
   Na dole listy jest **➕ Dodaj nowego użytkownika** – wpisz imię i **Zapisz**.
   Każdy użytkownik ma własne: ulubione, język, głos, tempo mowy i pasek zdania – zapisywane automatycznie.
   To profile na tym telefonie (bez haseł); nie przenoszą się na inne urządzenia.
-  **⏻** (czerwony) w górnym pasku wylogowuje – najpierw pyta „Czy chcesz się wylogować?” 👍 Tak / 👎 Nie.
+  **⏻** (czerwony) w górnym pasku wylogowuje – trzeba wpisać wylosowaną liczbę 01–99 i dotknąć **Wyloguj**
+  (błędna liczba: „Błędna liczba.”). Duży **Cofnij** wraca do aplikacji.
 - **Usuwanie użytkownika** – na ekranie logowania wybierz użytkownika i dotknij **Usuń użytkownika**.
   Trzeba przepisać dokładnie jego nazwę z dopisanym **12** na końcu (np. Jan → `Jan12`, wielkość liter ma znaczenie).
   Błędny wpis jest kasowany i pojawia się „Błędnie wpisana wartość.”; **Cofnij** wraca do logowania.
