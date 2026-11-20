@@ -1,6 +1,6 @@
 /* Service worker „Moje Słowa”.
  * PODBIJ VERSION przy każdej zmianie plików aplikacji lub vocabulary.json. */
-var VERSION = 'v4';
+var VERSION = 'v5';
 var CACHE = 'moje-slowa-' + VERSION;
 var FILES = [
   './',
@@ -19,7 +19,9 @@ var FILES = [
   'images/baranek.svg',
   'images/psi-patrol.svg',
   'images/youtube.svg',
-  'images/zelki.svg'
+  'images/zelki.svg',
+  'images/trampolina.svg',
+  'images/sala-zabaw.svg'
 ];
 
 self.addEventListener('install', function (event) {

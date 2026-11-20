@@ -49,12 +49,36 @@
           "text": "Koniec"
         },
         {
+          "emoji": "🛑",
+          "text": "Stój"
+        },
+        {
+          "emoji": "🙅",
+          "text": "Przestań"
+        },
+        {
           "emoji": "⏸️",
           "text": "Przerwa"
         },
         {
           "emoji": "🤗",
           "text": "Przytul mnie"
+        },
+        {
+          "emoji": "🧑‍🤝‍🧑",
+          "text": "Chodź ze mną"
+        },
+        {
+          "emoji": "☝️",
+          "text": "Podaj mi"
+        },
+        {
+          "emoji": "🤹",
+          "text": "Pobawmy się"
+        },
+        {
+          "emoji": "🛡️",
+          "text": "Obroń mnie"
         },
         {
           "emoji": "🤷",
@@ -466,6 +490,16 @@
           "text": "Plac zabaw"
         },
         {
+          "emoji": "🤸",
+          "text": "Trampoliny",
+          "image": "images/trampolina.svg"
+        },
+        {
+          "emoji": "🐒",
+          "text": "Sala zabaw",
+          "image": "images/sala-zabaw.svg"
+        },
+        {
           "emoji": "🛒",
           "text": "Sklep"
         },
@@ -490,8 +524,8 @@
           "text": "Kino"
         },
         {
-          "emoji": "👵",
-          "text": "Do babci"
+          "emoji": "🏡",
+          "text": "Dom babci i dziadka"
         },
         {
           "emoji": "🚗",
