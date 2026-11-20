@@ -1171,7 +1171,14 @@
 
   showLogin();
 
-  if ('serviceWorker' in navigator) {
+  // W aplikacji Android (Capacitor) wszystkie pliki są w paczce APK – service worker niepotrzebny.
+  // window.Capacitor istnieje tylko wewnątrz aplikacji natywnej; w przeglądarce go nie ma.
+  function isNativeApp() {
+    try { return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()); }
+    catch (e) { return false; }
+  }
+
+  if ('serviceWorker' in navigator && !isNativeApp()) {
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('sw.js').catch(function () { /* offline niedostępny */ });
     });

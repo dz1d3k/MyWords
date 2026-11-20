@@ -1,0 +1,13 @@
+# Node / build webowy
+node_modules/
+www/
+
+# Podpisywanie APK – klucze NIGDY w repo
+*.jks
+*.keystore
+keystore.properties
+android/keystore.properties
+
+# Lokalne ustawienia
+.DS_Store
+*.log

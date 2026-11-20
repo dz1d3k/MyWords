@@ -1,0 +1,9 @@
+{
+  "appId": "pl.widera.metalk",
+  "appName": "MeTalk",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true
+  }
+}
