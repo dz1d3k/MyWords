@@ -11,20 +11,29 @@ zapakowana w Capacitor – pliki strony są kopiowane do `www/`, a stamtąd do A
 |---|---|---|
 | Node.js | 20 LTS lub nowszy | https://nodejs.org (instalator .msi) |
 | Android Studio | aktualne | https://developer.android.com/studio |
-| JDK | **21** (Capacitor 8 wymaga 21) | jest w Android Studio (`jbr`) |
-| Android SDK + Platform-Tools (adb) | API 36 | Android Studio → More Actions → SDK Manager |
+| JDK | **dokładnie 21** | osobna instalacja – Eclipse Temurin 21: `winget install --id EclipseAdoptium.Temurin.21.JDK -e` albo ZIP z https://adoptium.net |
+| Android SDK + Platform-Tools (adb) | API 36, Build-Tools 36 | Android Studio → More Actions → SDK Manager |
+
+> **Nie używaj Javy wbudowanej w Android Studio (`jbr`).** Nowe wersje Studio mają tam Javę 25,
+> a projekt używa Gradle 8.14.3 (z Capacitor 8), który na Javie 25 nie działa (wymaga Gradle 9.1+).
+> Capacitor 8 wymaga Javy 21 – instaluj ją osobno.
 
 Zmienne środowiskowe (Panel sterowania → System → Zaawansowane → Zmienne środowiskowe):
 
 - `ANDROID_HOME` = `%LOCALAPPDATA%\Android\Sdk`
-- `JAVA_HOME` = `C:\Program Files\Android\Android Studio\jbr`
-- do `Path` dopisz: `%ANDROID_HOME%\platform-tools`
+- `JAVA_HOME` = folder JDK 21, np. `C:\Program Files\Eclipse Adoptium\jdk-21.0.x-hotspot`
+- do `Path` dopisz: `%ANDROID_HOME%\platform-tools` i `%JAVA_HOME%\bin`
 
-Sprawdzenie w PowerShell:
+W Android Studio ustaw ten sam JDK dla Gradle: **File → Settings → Build, Execution, Deployment →
+Build Tools → Gradle → Gradle JDK → `JAVA_HOME`** (domyślnie Studio wybiera swoją Javę 25 i budowanie się nie uda).
+
+Sprawdzenie w nowym oknie PowerShell (po zmianie zmiennych):
 
 ```powershell
-node -v; java -version; adb version; echo $env:ANDROID_HOME
+node -v; java -version; adb version; echo $env:ANDROID_HOME; echo $env:JAVA_HOME
 ```
+
+`java -version` musi pokazać **21**.
 
 ## Pierwsze uruchomienie
 
