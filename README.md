@@ -31,7 +31,8 @@ początkowego wygląda jak zwykła aplikacja i działa także bez internetu.
 - **☆ / ★** – dodaje / usuwa słowo lub kategorię z ulubionych (gwiazdka nie mówi). Ulubione są na górze każdej listy –
   kolejność zmienia się przy następnym otwarciu ekranu, nie od razu (żeby kafelek nie uciekał spod palca).
   **⭐** u góry albo kafelek „Ulubione” pokazuje wszystkie ulubione.
-- **⚙️ Ustawienia głosu** – na samym dole ekranu startowego: wybór polskiego głosu, tempo mowy, test.
+- **⚙️ Ustawienia głosu** – na samym dole ekranu startowego: **głos żeński albo męski** (aplikacja sama bierze
+  najlepszy głos tej płci, który działa bez internetu), tempo, głośność, wysokość głosu, test.
 
 ## Instalacja na iPhonie
 
@@ -42,7 +43,7 @@ początkowego wygląda jak zwykła aplikacja i działa także bez internetu.
 5. Sprawdź, czy przełącznik wyciszenia (z boku telefonu) nie jest włączony – wyciszony iPhone może nie mówić.
 
 **Lepszy głos:** Ustawienia → Dostępność → Treść mówiona → Głosy → Polski → pobierz głos
-„Premium” lub „Rozszerzony”. Potem w aplikacji: ⚙️ Ustawienia głosu → wybierz go.
+„Premium” lub „Rozszerzony”. Aplikacja sama go użyje dla wybranej płci głosu.
 
 ## Instalacja na Androidzie
 

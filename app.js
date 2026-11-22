@@ -44,11 +44,9 @@
         warnNoVoiceWeb: ' iPhone: Ustawienia → Dostępność → Treść mówiona → Głosy → Polski. Android: Ustawienia → Zamiana tekstu na mowę.',
         warnOnline: '⚠️ Dla opiekuna: polski głos działa tylko z internetem. Pobierz głos offline, żeby aplikacja mówiła zawsze.',
         language: '🌐 Język', version: 'Wersja aplikacji', dictVersion: 'słownik', settingsBtn: '⚙️ Ustawienia głosu', settingsTitle: 'Ustawienia głosu',
-        voice: 'Głos', rate: 'Tempo', test: '🔊 Test', done: 'Gotowe', hintSummary: 'Jak pobrać lepszy głos?',
-        hintHtml: '<p><strong>iPhone:</strong> Ustawienia → Dostępność → Treść mówiona → Głosy → Polski. Pobierz głos „Premium” lub „Rozszerzony”, potem wróć tutaj i wybierz go.</p>' +
-          '<p><strong>Android:</strong> Ustawienia → Zamiana tekstu na mowę (często w: Ułatwienia dostępu). Wybierz silnik Google, zainstaluj dane głosowe dla języka polskiego.</p>' +
-          '<p>Po pobraniu głosu może być potrzebne ponowne uruchomienie aplikacji.</p>',
-        noVoice: 'Nie znaleziono polskiego głosu. Zostanie użyty głos domyślny. Zobacz podpowiedź poniżej, jak pobrać polski głos.',
+        voice: 'Głos', rate: 'Tempo', test: '🔊 Test', done: 'Gotowe',
+        voiceFemale: '👩 Głos żeński', voiceMale: '👨 Głos męski', voiceDefault: 'Głos domyślny telefonu',
+        noVoice: 'Nie znaleziono polskiego głosu. Zostanie użyty głos domyślny.',
         noSpeech: 'Ta przeglądarka nie obsługuje mowy.',
         hello: 'Cześć!', testPhrase: 'Cześć! To jest mój głos.', langSpoken: 'Polski',
         loadError: 'Nie udało się wczytać słów. Sprawdź połączenie z internetem i otwórz aplikację ponownie.'
@@ -75,11 +73,9 @@
         warnNoVoiceWeb: ' iPhone: Settings → Accessibility → Spoken Content → Voices → English. Android: Settings → Text-to-speech output.',
         warnOnline: '⚠️ For the caregiver: the English voice works only online. Download an offline voice so the app always speaks.',
         language: '🌐 Language', version: 'App version', dictVersion: 'dictionary', settingsBtn: '⚙️ Voice settings', settingsTitle: 'Voice settings',
-        voice: 'Voice', rate: 'Speed', test: '🔊 Test', done: 'Done', hintSummary: 'How to get a better voice?',
-        hintHtml: '<p><strong>iPhone:</strong> Settings → Accessibility → Spoken Content → Voices → English. Download a “Premium” or “Enhanced” voice, then come back here and choose it.</p>' +
-          '<p><strong>Android:</strong> Settings → Text-to-speech output (often under Accessibility). Choose the Google engine and install English voice data.</p>' +
-          '<p>You may need to restart the app after downloading a voice.</p>',
-        noVoice: 'No English voice found. The default voice will be used. See the tip below on how to download one.',
+        voice: 'Voice', rate: 'Speed', test: '🔊 Test', done: 'Done',
+        voiceFemale: '👩 Female voice', voiceMale: '👨 Male voice', voiceDefault: 'Phone default voice',
+        noVoice: 'No English voice found. The default voice will be used.',
         noSpeech: 'This browser does not support speech.',
         hello: 'Hello!', testPhrase: 'Hello! This is my voice.', langSpoken: 'English',
         loadError: 'Could not load the words. Check your internet connection and open the app again.'
@@ -293,14 +289,71 @@
     if (el.dialog.open) renderVoiceList();
   }
 
+  /* Głos żeński / męski – w Ustawieniach zamiast listy technicznych nazw głosów.
+   * Silniki mowy nie podają płci głosu, więc rozpoznajemy ją po nazwie: kody głosów Google
+   * (np. pl-pl-x-oda-local) i nazwy głosów Apple/Microsoft (np. Zosia, Krzysztof).
+   * Kolejność na listach = pierwszeństwo przy wyborze; głos offline zawsze przed głosem z internetu. */
+  var FEMALE_VOICES = ['oda', 'afb', 'zfg', 'sfg', 'tpf', 'iob', 'iog', 'tpc',
+    'zosia', 'ewa', 'paulina', 'agnieszka', 'maja', 'samantha', 'ava', 'allison', 'susan', 'nicky', 'zoe',
+    'karen', 'moira', 'tessa', 'victoria', 'female'];
+  var MALE_VOICES = ['bmg', 'jmk', 'imk', 'iom', 'iol', 'tpd',
+    'krzysztof', 'jacek', 'adam', 'tom', 'alex', 'aaron', 'evan', 'daniel', 'male'];
+  function genderKey() { return lang === 'pl' ? 'mojeSlowa.voiceGender' : 'mojeSlowa.voiceGender.' + lang; }
+  function voiceTokens(v) { return (String(v.name || '') + ' ' + String(v.voiceURI || '')).toLowerCase().split(/[^a-z]+/); }
+  function genderRank(v, names) {
+    var best = -1;
+    voiceTokens(v).forEach(function (t) {
+      var i = names.indexOf(t);
+      if (i !== -1 && (best === -1 || i < best)) best = i;
+    });
+    return best;
+  }
+  function voiceGender(v) {
+    if (genderRank(v, FEMALE_VOICES) !== -1) return 'f';
+    if (genderRank(v, MALE_VOICES) !== -1) return 'm';
+    return '';
+  }
+  function isOfflineVoice(v) { return v.localService !== false && !/network/i.test(String(v.voiceURI || '')); }
+  function bestVoiceOf(list, g) {
+    var names = g === 'f' ? FEMALE_VOICES : MALE_VOICES;
+    return list.filter(function (v) { return voiceGender(v) === g; }).sort(function (a, b) {
+      return (isOfflineVoice(b) - isOfflineVoice(a)) || (genderRank(a, names) - genderRank(b, names)) ||
+        (voiceScore(b) - voiceScore(a));
+    })[0] || null;
+  }
+  // Wybrana płeć: zapisana w Ustawieniach, a dla starszych ustawień – płeć dawniej wybranego głosu; domyślnie żeński.
+  function chosenGender(list) {
+    var g = lsGet(genderKey());
+    if (g === 'f' || g === 'm') return g;
+    var uri = lsGet(voiceKey());
+    for (var i = 0; uri && i < list.length; i++) {
+      if (list[i].voiceURI === uri && voiceGender(list[i])) return voiceGender(list[i]);
+    }
+    return 'f';
+  }
+  // Głos do mówienia z listy głosów języka; null = domyślny głos silnika.
+  function genderVoice(list) {
+    if (!list || !list.length) return null;
+    var g = chosenGender(list);
+    return bestVoiceOf(list, g) || bestVoiceOf(list, g === 'f' ? 'm' : 'f');
+  }
+
+  // Głosy telefonu (Android) – lista wczytywana w tle, żeby speak() mógł wybrać głos od razu.
+  var nativeVoiceCache = {};
+  function loadNativeVoices() {
+    if (!nativeTTS()) return;
+    var forLang = lang;
+    TTS().getVoices(L().speech).then(function (list) { nativeVoiceCache[forLang] = list || []; }).catch(function () {});
+  }
+  function nativeVoiceURI() {
+    var v = genderVoice(nativeVoiceCache[lang]);
+    return v ? v.voiceURI : lsGet(voiceKey());
+  }
+
   function chosenVoice() {
     var pl = langVoices();
     if (!pl.length) return null;
-    var uri = lsGet(voiceKey());
-    if (uri) {
-      for (var i = 0; i < pl.length; i++) if (pl[i].voiceURI === uri) return pl[i];
-    }
-    return pl[0];
+    return genderVoice(pl) || pl[0];
   }
 
   // Stan mowy do diagnostyki w Ustawieniach.
@@ -324,7 +377,7 @@
       TTS().speak(text, {
         lang: (vocab && vocab.language) || L().speech,
         rate: rate(), pitch: pitch(), volume: volume(),
-        voiceURI: lsGet(voiceKey())
+        voiceURI: nativeVoiceURI()
       }).then(function () { speechInfo.started = true; })
         .catch(function (e) { speechInfo.error = String(e && e.message || e); });
       speechInfo.started = true; // plugin mówi od razu; zakończenie zgłasza po wypowiedzeniu
@@ -380,7 +433,7 @@
     var parts = [];
     if (nativeTTS()) {
       parts.push('silnik: Android TTS');
-      parts.push('głos: ' + (lsGet(voiceKey()) || 'domyślny'));
+      parts.push('głos: ' + (nativeVoiceURI() || 'domyślny'));
       if (speechInfo.last) parts.push('ostatnio: „' + speechInfo.last.slice(0, 20) + '” ' + (speechInfo.error ? 'błąd: ' + speechInfo.error : 'OK'));
       return parts.join(' · ');
     }
@@ -726,65 +779,51 @@
   document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
 
   /* ---------------- Ustawienia głosu ---------------- */
+  // Ustawienia: tylko „Głos żeński” / „Głos męski” (ta płeć, dla której telefon ma głos).
+  // Gdy telefon ma głosy, ale żadnego nie rozpoznamy – jedna opcja „Głos domyślny telefonu”.
+  function renderGenderList(list, emptyMsg) {
+    clear(el.voiceList);
+    if (!list.length) {
+      var p = document.createElement('p');
+      p.className = 'none';
+      p.textContent = emptyMsg;
+      el.voiceList.appendChild(p);
+      return;
+    }
+    var options = [['f', ui('voiceFemale')], ['m', ui('voiceMale')]].filter(function (o) { return bestVoiceOf(list, o[0]); });
+    if (!options.length) options = [['', ui('voiceDefault')]];
+    var current = genderVoice(list);
+    var currentG = current ? voiceGender(current) : '';
+    options.forEach(function (o) {
+      var label = document.createElement('label');
+      var input = document.createElement('input');
+      input.type = 'radio';
+      input.name = 'voice';
+      input.value = o[0];
+      input.checked = o[0] === currentG;
+      input.addEventListener('change', function () {
+        if (!o[0]) return;
+        lsSet(genderKey(), o[0]);
+        speak(ui('hello'));
+      });
+      label.appendChild(input);
+      label.appendChild(document.createTextNode(o[1]));
+      el.voiceList.appendChild(label);
+    });
+  }
+
   function renderNativeVoiceList() {
     clear(el.voiceList);
+    var forLang = lang;
     TTS().getVoices(L().speech).then(function (list) {
-      clear(el.voiceList);
-      if (!list.length) {
-        var p = document.createElement('p');
-        p.className = 'none';
-        p.textContent = ui('noVoice');
-        el.voiceList.appendChild(p);
-        return;
-      }
-      var saved = lsGet(voiceKey());
-      var has = list.some(function (v) { return v.voiceURI === saved; });
-      var def = (list.filter(function (v) { return v.localService; })[0] || list[0]).voiceURI;
-      list.forEach(function (v) {
-        var label = document.createElement('label');
-        var input = document.createElement('input');
-        input.type = 'radio';
-        input.name = 'voice';
-        input.value = v.voiceURI;
-        input.checked = (has ? saved : def) === v.voiceURI;
-        input.addEventListener('change', function () {
-          lsSet(voiceKey(), v.voiceURI);
-          speak(ui('hello'));
-        });
-        label.appendChild(input);
-        label.appendChild(document.createTextNode(v.name + ' · ' + v.voiceURI + (v.localService ? '' : ' (online)')));
-        el.voiceList.appendChild(label);
-      });
+      nativeVoiceCache[forLang] = list || [];
+      if (forLang === lang) renderGenderList(list || [], ui('noVoice'));
     }).catch(function () { /* brak listy – zostaje pusto */ });
   }
 
   function renderVoiceList() {
     if (nativeTTS()) { renderNativeVoiceList(); return; }
-    clear(el.voiceList);
-    var pl = langVoices();
-    if (!pl.length) {
-      var p = document.createElement('p');
-      p.className = 'none';
-      p.textContent = synth ? ui('noVoice') : ui('noSpeech');
-      el.voiceList.appendChild(p);
-      return;
-    }
-    var current = chosenVoice();
-    pl.forEach(function (v) {
-      var label = document.createElement('label');
-      var input = document.createElement('input');
-      input.type = 'radio';
-      input.name = 'voice';
-      input.value = v.voiceURI;
-      input.checked = current && current.voiceURI === v.voiceURI;
-      input.addEventListener('change', function () {
-        lsSet(voiceKey(), v.voiceURI);
-        speak(ui('hello'));
-      });
-      label.appendChild(input);
-      label.appendChild(document.createTextNode(v.name + (v.localService === false ? ' (online)' : '')));
-      el.voiceList.appendChild(label);
-    });
+    renderGenderList(langVoices(), synth ? ui('noVoice') : ui('noSpeech'));
   }
 
   function syncRate() {
@@ -1166,6 +1205,7 @@
         showVersion();
         if (!Object.keys(remoteImages).length) cacheDictionary(data); // zdalny słownik ma obrazki w pamięci telefonu
         checkVoice();
+        loadNativeVoices();
         checkRemoteDict();
         if (onLoaded) onLoaded();
       })

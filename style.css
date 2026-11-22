@@ -370,9 +370,6 @@ legend { font-weight: 700; font-size: 18px; margin-bottom: 8px; }
 .dlg-btn.test { background: #FFE0B2; color: #1A1A1A; }
 .dlg-btn.close, .dlg-btn.save { background: #FF8A00; color: #FFFFFF; }
 
-.hint { font-size: 16px; line-height: 1.45; }
-.hint summary { font-weight: 700; padding: 6px 0; cursor: pointer; }
-.hint p { margin: 8px 0; }
 
 /* Kafelek „Ulubione” na ekranie startowym */
 .tile.fav-tile { border: 3px solid #E6A100; }
