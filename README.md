@@ -83,14 +83,21 @@ Format pliku słów:
       "name": "Jedzenie",
       "color": "#FFE0B2",
       "words": [
-        { "emoji": "🍞", "text": "Chleb" }
+        { "id": "chleb", "emoji": "🍞", "text": "Chleb" }
       ]
     }
   ]
 }
 ```
 
-- Nowe słowo: dopisz `{ "emoji": "…", "text": "…" }` do listy `words` w wybranej kategorii.
+- Nowe słowo: dopisz `{ "id": "…", "emoji": "…", "text": "…" }` do listy `words` w wybranej kategorii –
+  w pliku polskim i angielskim, w tym samym miejscu i z **tym samym `id`**.
+- `id` słowa: nowe, niepowtarzalne w całym słowniku (małe litery, cyfry i myślniki, np. `pociag-zabawka`).
+  Po nim są zapamiętywane ulubione, więc **`id` raz nadanego słowa nigdy się nie zmienia** – zmieniaj spokojnie
+  `text`, `emoji` czy obrazek. Dwa słowa mogą mieć ten sam napis, ale nigdy to samo `id`.
+- Zmiana napisu słowa: dopisz do niego `"formerly": ["dawny napis"]` (w każdym języku jego dawny napis).
+  Dzięki temu ulubione zapisane jeszcze po napisie (wersje aplikacji do 0.29) przejdą na właściwe słowo,
+  nawet gdy dawny napis ma teraz inne słowo (np. „Pociąg” → „Pociąg zabawka”, a „Pociąg” w Miejscach jest nowy).
 - Nowa kategoria: dodaj obiekt do `categories` z unikalnym `id` (małe litery, bez polskich znaków i spacji).
 - Podkategorie: kategoria może mieć własne pole `"categories": [ … ]` z kategoriami w tym samym formacie
   (tak jest zrobione Jedzenie → Obiad, Zupa, Przekąski, Owoce i warzywa). Pole `words` musi być zawsze (może być `[]`).
@@ -101,8 +108,8 @@ Format pliku słów:
   `"image": "images/nazwa.svg"` – ścieżka jest **względem pliku słów** (może być też `.png`/`.jpg`, najlepiej kwadratowy).
   Pole `emoji` zostaw – jest używane, gdy obrazka brak. Nic więcej nie trzeba: obrazek sam trafi do pamięci offline.
 - Pilnuj przecinków i cudzysłowów – błąd w pliku = aplikacja nie wczyta słów.
-  Sprawdź plik np. na https://jsonlint.com przed zapisaniem.
-- Ulubione są zapamiętywane po tekście słowa – po zmianie tekstu trzeba je zaznaczyć ponownie.
+- Sprawdzenie: `npm run check:dict` – poprawny JSON, każde słowo ma unikalne `id`, PL i EN mają ten sam układ,
+  obrazki istnieją. `npm run build:web` (i build Androida) robi to samo i przerywa się przy błędzie.
 
 **Są dwie niezależne wersje:**
 

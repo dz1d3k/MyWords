@@ -5,10 +5,11 @@
   "description": "MeTalk – aplikacja AAC (komunikacja wspomagająca). Wersja webowa + opakowanie Android (Capacitor).",
   "scripts": {
     "dev": "node scripts/dev-server.mjs",
-    "build:web": "node scripts/build-web.mjs",
+    "build:web": "node scripts/check-dictionary.mjs && node scripts/build-web.mjs",
     "build:android": "npm run build:web && npx cap sync android",
     "open:android": "npx cap open android",
-    "run:android": "npm run build:android && npx cap run android"
+    "run:android": "npm run build:android && npx cap run android",
+    "check:dict": "node scripts/check-dictionary.mjs"
   },
   "dependencies": {
     "@capacitor-community/text-to-speech": "^8.0.2",

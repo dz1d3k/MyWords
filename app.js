@@ -2,7 +2,8 @@
 (function () {
   'use strict';
 
-  var LS_FAVS = 'mojeSlowa.favorites';
+  var LS_FAVS = 'mojeSlowa.favorites';          // stare ulubione – po napisie (czekają na przeniesienie)
+  var LS_FAV_IDS = 'mojeSlowa.favoriteWordIds'; // ulubione słowa – po "id" ze słownika
   var LS_FAVCATS = 'mojeSlowa.favoriteCategories';
   var LS_VOICE = 'mojeSlowa.voiceURI';
   var LS_RATE = 'mojeSlowa.rate';
@@ -187,10 +188,39 @@
     try { lsSet(key, JSON.stringify(list)); } catch (e) { /* ignoruj */ }
     return i === -1;
   }
-  var favs = [];      // ulubione słowa (po tekście) – wczytywane przy logowaniu
-  var favCats = [];   // ulubione kategorie (po id)
-  function isFav(text) { return favs.indexOf(text) !== -1; }
+  // Ulubione słowa są zapisywane po "id" słowa, nie po napisie – zmiana napisu w słowniku
+  // nie gubi gwiazdki, a te same id w PL i EN dają wspólne ulubione dla obu języków.
+  var favs = [];        // ulubione słowa (po id) – wczytywane przy logowaniu
+  var legacyFavs = [];  // stare ulubione po napisie, jeszcze nieprzeniesione na id
+  var favCats = [];     // ulubione kategorie (po id)
+  function isFav(w) { return !!w.id && favs.indexOf(w.id) !== -1; }
   function isFavCat(id) { return favCats.indexOf(id) !== -1; }
+
+  // Jednorazowe przeniesienie starych ulubionych (napisy) na id słów z wczytanego słownika.
+  // Słowo, które zmieniło nazwę, ma w słowniku "formerly": [dawne napisy] – wtedy stara gwiazdka
+  // trafia tylko do niego. Bez "formerly" napis pasuje do każdego słowa o takim napisie (jak dawniej).
+  // Napisy z drugiego języka czekają, aż ten język zostanie wczytany.
+  function migrateFavs() {
+    if (!legacyFavs.length || !vocab) return;
+    var byFormer = {}, byText = {};
+    allCategories().forEach(function (c) {
+      c.words.forEach(function (w) {
+        if (!w.id) return;
+        (w.formerly || []).forEach(function (t) { (byFormer[t] = byFormer[t] || []).push(w.id); });
+        (byText[w.text] = byText[w.text] || []).push(w.id);
+      });
+    });
+    var left = legacyFavs.filter(function (t) {
+      var ids = byFormer[t] || byText[t];
+      if (!ids) return true;
+      ids.forEach(function (id) { if (favs.indexOf(id) === -1) favs.push(id); });
+      return false;
+    });
+    if (left.length === legacyFavs.length) return;
+    legacyFavs = left;
+    lsSet(LS_FAV_IDS, JSON.stringify(favs));
+    lsSet(LS_FAVS, JSON.stringify(legacyFavs));
+  }
 
   // Ulubione na górę, reszta w kolejności słownika. Sortujemy tylko przy
   // rysowaniu ekranu – kliknięcie gwiazdki nie przesuwa kafelka pod palcem.
@@ -410,9 +440,9 @@
     var out = [], seen = {};
     allCategories().forEach(function (c) {
       c.words.forEach(function (w) {
-        if (isFav(w.text) && !seen[w.text]) {
-          seen[w.text] = true;
-          out.push({ emoji: w.emoji, text: w.text, image: w.image, color: c.color });
+        if (isFav(w) && !seen[w.id]) {
+          seen[w.id] = true;
+          out.push({ id: w.id, emoji: w.emoji, text: w.text, image: w.image, color: c.color });
         }
       });
     });
@@ -531,7 +561,7 @@
     main.appendChild(textSpan(w.text));
     d.appendChild(main);
 
-    d.appendChild(starButton(isFav(w.text), 'data-star', w.text));
+    if (w.id) d.appendChild(starButton(isFav(w), 'data-star', w.id));
     return d;
   }
 
@@ -575,7 +605,7 @@
       setTitle(c.emoji, c.name);
       favFirst(subcats(c), function (x) { return isFavCat(x.id); })
         .forEach(function (x) { el.list.appendChild(categoryTile(x)); });
-      favFirst(c.words, function (w) { return isFav(w.text); })
+      favFirst(c.words, isFav)
         .forEach(function (w) { el.list.appendChild(wordTile(w, c.color)); });
     } else if (state.screen === 'favorites') {
       setTitle('⭐', ui('favorites'));
@@ -657,7 +687,7 @@
       var isCat = star.hasAttribute('data-star-cat');
       var on = isCat
         ? toggleIn(favCats, LS_FAVCATS, star.getAttribute('data-star-cat'))
-        : toggleIn(favs, LS_FAVS, star.getAttribute('data-star'));
+        : toggleIn(favs, LS_FAV_IDS, star.getAttribute('data-star'));
       if (state.screen === 'favorites') render(); // odznaczone znika z listy
       else setStar(star, on);
       return; // gwiazdka NIE mówi
@@ -1008,6 +1038,7 @@
         if (seq !== loadSeq) return; // w międzyczasie wybrano inny język
         if (!valid(data)) throw new Error('bad format');
         vocab = data;
+        migrateFavs();
         render();
         showVersion();
         cacheDictionary(data);
@@ -1158,7 +1189,8 @@
     rawSet(LS_LAST_USER, user.id);
     lang = LANGS[lsGet(LS_LANG)] ? lsGet(LS_LANG) : 'pl';
     el.langSelect.value = lang;
-    favs = loadList(LS_FAVS);
+    favs = loadList(LS_FAV_IDS);
+    legacyFavs = loadList(LS_FAVS);
     favCats = loadList(LS_FAVCATS);
     document.body.classList.remove('logged-out');
     state = { screen: 'home', depth: 0 };

@@ -10,90 +10,112 @@
       "color": "#FFCDD2",
       "words": [
         {
+          "id": "tak",
           "emoji": "👍",
           "text": "Tak"
         },
         {
+          "id": "nie",
           "emoji": "👎",
           "text": "Nie"
         },
         {
+          "id": "pomocy",
           "emoji": "🆘",
           "text": "Pomocy"
         },
         {
+          "id": "toaleta",
           "emoji": "🚽",
           "text": "Toaleta"
         },
         {
+          "id": "chce-jesc",
           "emoji": "🍽️",
           "text": "Chcę jeść"
         },
         {
+          "id": "chce-pic",
           "emoji": "🥤",
           "text": "Chcę pić"
         },
         {
+          "id": "chce-spac",
           "emoji": "😴",
           "text": "Chcę spać"
         },
         {
+          "id": "boli-mnie",
           "emoji": "🤕",
           "text": "Boli mnie"
         },
         {
+          "id": "jeszcze",
           "emoji": "➕",
           "text": "Jeszcze"
         },
         {
+          "id": "koniec",
           "emoji": "✋",
           "text": "Koniec"
         },
         {
+          "id": "stoj",
           "emoji": "🛑",
           "text": "Stój"
         },
         {
+          "id": "przestan",
           "emoji": "🙅",
           "text": "Przestań"
         },
         {
+          "id": "przerwa",
           "emoji": "⏸️",
           "text": "Przerwa"
         },
         {
+          "id": "przytul-mnie",
           "emoji": "🤗",
           "text": "Przytul mnie"
         },
         {
+          "id": "chodz-ze-mna",
           "emoji": "🧑‍🤝‍🧑",
           "text": "Chodź ze mną"
         },
         {
+          "id": "podaj-mi",
           "emoji": "☝️",
           "text": "Podaj mi"
         },
         {
+          "id": "pobawmy-sie",
           "emoji": "🤹",
           "text": "Pobawmy się"
         },
         {
+          "id": "obron-mnie",
           "emoji": "🛡️",
           "text": "Obroń mnie"
         },
         {
+          "id": "nie-wiem",
           "emoji": "🤷",
           "text": "Nie wiem"
         },
         {
+          "id": "prosze",
           "emoji": "🙏",
           "text": "Proszę"
         },
         {
+          "id": "dziekuje",
           "emoji": "💛",
           "text": "Dziękuję"
         },
         {
+          "id": "cos-innego",
           "emoji": "🙋❓",
           "text": "Coś innego"
         }
@@ -106,106 +128,132 @@
       "color": "#F0F4C3",
       "words": [
         {
+          "id": "boli-mnie-glowa",
           "emoji": "🤕",
           "text": "Boli mnie głowa"
         },
         {
+          "id": "boli-mnie-brzuch",
           "emoji": "😖",
           "text": "Boli mnie brzuch"
         },
         {
+          "id": "boli-mnie-zab",
           "emoji": "🦷",
           "text": "Boli mnie ząb"
         },
         {
+          "id": "boli-mnie-ucho",
           "emoji": "👂",
           "text": "Boli mnie ucho"
         },
         {
+          "id": "boli-mnie-gardlo",
           "emoji": "🗣️",
           "text": "Boli mnie gardło"
         },
         {
+          "id": "boli-mnie-oko",
           "emoji": "👁️",
           "text": "Boli mnie oko"
         },
         {
+          "id": "boli-mnie-reka",
           "emoji": "✋",
           "text": "Boli mnie ręka"
         },
         {
+          "id": "boli-mnie-noga",
           "emoji": "🦵",
           "text": "Boli mnie noga"
         },
         {
+          "id": "boli-mnie-stopa",
           "emoji": "🦶",
           "text": "Boli mnie stopa"
         },
         {
+          "id": "bola-mnie-plecy",
           "emoji": "🚶",
           "text": "Bolą mnie plecy"
         },
         {
+          "id": "boli-mnie-tutaj",
           "emoji": "👇",
           "text": "Boli mnie tutaj"
         },
         {
+          "id": "troche-boli",
           "emoji": "😣",
           "text": "Trochę boli"
         },
         {
+          "id": "bardzo-boli",
           "emoji": "😭",
           "text": "Bardzo boli"
         },
         {
+          "id": "mam-goraczke",
           "emoji": "🤒",
           "text": "Mam gorączkę"
         },
         {
+          "id": "mam-katar",
           "emoji": "🤧",
           "text": "Mam katar"
         },
         {
+          "id": "kaszle",
           "emoji": "😷",
           "text": "Kaszlę"
         },
         {
+          "id": "niedobrze-mi",
           "emoji": "🤢",
           "text": "Niedobrze mi"
         },
         {
+          "id": "chce-mi-sie-wymiotowac",
           "emoji": "🤮",
           "text": "Chce mi się wymiotować"
         },
         {
+          "id": "kreci-mi-sie-w-glowie",
           "emoji": "😵‍💫",
           "text": "Kręci mi się w głowie"
         },
         {
+          "id": "slabo-mi",
           "emoji": "🥴",
           "text": "Słabo mi"
         },
         {
+          "id": "mam-biegunke",
           "emoji": "💩",
           "text": "Mam biegunkę"
         },
         {
+          "id": "swedzi-mnie",
           "emoji": "🦟",
           "text": "Swędzi mnie"
         },
         {
+          "id": "leci-mi-krew",
           "emoji": "🩸",
           "text": "Leci mi krew"
         },
         {
+          "id": "plaster",
           "emoji": "🩹",
           "text": "Plaster"
         },
         {
+          "id": "lekarstwo",
           "emoji": "💊",
           "text": "Lekarstwo"
         },
         {
+          "id": "cos-innego-mi-dolega",
           "emoji": "🩺❓",
           "text": "Coś innego mi dolega"
         }
@@ -218,54 +266,67 @@
       "color": "#FFF9C4",
       "words": [
         {
+          "id": "wesolo-mi",
           "emoji": "😄",
           "text": "Wesoło mi"
         },
         {
+          "id": "smutno-mi",
           "emoji": "😢",
           "text": "Smutno mi"
         },
         {
+          "id": "zloszcze-sie",
           "emoji": "😠",
           "text": "Złoszczę się"
         },
         {
+          "id": "boje-sie",
           "emoji": "😨",
           "text": "Boję się"
         },
         {
+          "id": "chce-mi-sie-spac",
           "emoji": "😴",
           "text": "Chce mi się spać"
         },
         {
+          "id": "nudzi-mi-sie",
           "emoji": "😐",
           "text": "Nudzi mi się"
         },
         {
+          "id": "zimno-mi",
           "emoji": "🥶",
           "text": "Zimno mi"
         },
         {
+          "id": "goraco-mi",
           "emoji": "🥵",
           "text": "Gorąco mi"
         },
         {
+          "id": "niedobrze-mi-2",
           "emoji": "🤢",
           "text": "Niedobrze mi"
         },
         {
+          "id": "dobrze-sie-czuje",
           "emoji": "🙂",
           "text": "Dobrze się czuję"
         },
         {
+          "id": "zle-sie-czuje",
           "emoji": "😞",
           "text": "Źle się czuję"
         },
         {
+          "id": "za-glosno",
           "emoji": "🔊",
           "text": "Za głośno"
         },
         {
+          "id": "czuje-cos-innego",
           "emoji": "😊❓",
           "text": "Czuję coś innego"
         }
@@ -278,6 +339,7 @@
       "color": "#FFE0B2",
       "words": [
         {
+          "id": "inne-jedzenie",
           "emoji": "🍽️❓",
           "text": "Inne jedzenie"
         }
@@ -290,66 +352,81 @@
           "color": "#FFCC80",
           "words": [
             {
+              "id": "makaron",
               "emoji": "🍝",
               "text": "Makaron",
               "image": "images/makaron.svg"
             },
             {
+              "id": "spaghetti",
               "emoji": "🍝",
               "text": "Spaghetti"
             },
             {
+              "id": "ziemniaki",
               "emoji": "🥔",
               "text": "Ziemniaki",
               "image": "images/ziemniaki.svg"
             },
             {
+              "id": "mielone",
               "emoji": "🍖",
               "text": "Mielone",
               "image": "images/mielone.svg"
             },
             {
+              "id": "kielbasa",
               "emoji": "🌭",
               "text": "Kiełbasa",
               "image": "images/kielbasa.svg"
             },
             {
+              "id": "placki",
               "emoji": "🥞",
               "text": "Placki"
             },
             {
+              "id": "frytki",
               "emoji": "🍟",
               "text": "Frytki"
             },
             {
+              "id": "pizza",
               "emoji": "🍕",
               "text": "Pizza"
             },
             {
+              "id": "hamburger",
               "emoji": "🍔",
               "text": "Hamburger"
             },
             {
+              "id": "hot-dog",
               "emoji": "🌭",
               "text": "Hot dog"
             },
             {
+              "id": "kurczak",
               "emoji": "🍗",
               "text": "Kurczak"
             },
             {
+              "id": "ryz",
               "emoji": "🍚",
               "text": "Ryż"
             },
             {
+              "id": "kluski",
               "emoji": "🥟",
               "text": "Kluski"
             },
             {
+              "id": "rolada",
               "emoji": "🥩",
               "text": "Rolada"
             },
             {
+              "id": "inny-obiad",
               "emoji": "🍽️❓",
               "text": "Inny obiad"
             }
@@ -362,36 +439,43 @@
           "color": "#FFF59D",
           "words": [
             {
+              "id": "rosol",
               "emoji": "🍲",
               "text": "Rosół",
               "image": "images/zupa-rosol.svg"
             },
             {
+              "id": "zurek",
               "emoji": "🍲",
               "text": "Żurek",
               "image": "images/zupa-zurek.svg"
             },
             {
+              "id": "barszcz-czerwony",
               "emoji": "🍲",
               "text": "Barszcz czerwony",
               "image": "images/zupa-barszcz.svg"
             },
             {
+              "id": "warzywna",
               "emoji": "🍲",
               "text": "Warzywna",
               "image": "images/zupa-warzywna.svg"
             },
             {
+              "id": "pomidorowa-z-makaronem",
               "emoji": "🍲",
               "text": "Pomidorowa z makaronem",
               "image": "images/zupa-pomidorowa.svg"
             },
             {
+              "id": "zupa-krem",
               "emoji": "🍲",
               "text": "Zupa krem",
               "image": "images/zupa-krem.svg"
             },
             {
+              "id": "inna-zupa",
               "emoji": "🍲❓",
               "text": "Inna zupa"
             }
@@ -404,66 +488,80 @@
           "color": "#FFE0B2",
           "words": [
             {
+              "id": "chleb",
               "emoji": "🍞",
               "text": "Chleb"
             },
             {
+              "id": "bulka",
               "emoji": "🥯",
               "text": "Bułka",
               "image": "images/bulka.svg"
             },
             {
+              "id": "chlebek-ryzowy",
               "emoji": "⚪",
               "text": "Chlebek ryżowy",
               "image": "images/chlebek-ryzowy.svg"
             },
             {
+              "id": "kanapka",
               "emoji": "🥪",
               "text": "Kanapka"
             },
             {
+              "id": "platki",
               "emoji": "🥣",
               "text": "Płatki",
               "image": "images/platki.svg"
             },
             {
+              "id": "granola",
               "emoji": "🥣",
               "text": "Granola",
               "image": "images/granola.svg"
             },
             {
+              "id": "rodzynki",
               "emoji": "🍇",
               "text": "Rodzynki",
               "image": "images/rodzynki.svg"
             },
             {
+              "id": "orzeszki",
               "emoji": "🥜",
               "text": "Orzeszki",
               "image": "images/orzeszki.svg"
             },
             {
+              "id": "mieszanka-studencka",
               "emoji": "🥜",
               "text": "Mieszanka studencka",
               "image": "images/mieszanka-studencka.svg"
             },
             {
+              "id": "popcorn",
               "emoji": "🍿",
               "text": "Popcorn"
             },
             {
+              "id": "jajko",
               "emoji": "🥚",
               "text": "Jajko"
             },
             {
+              "id": "ser",
               "emoji": "🧀",
               "text": "Ser"
             },
             {
+              "id": "szynka",
               "emoji": "🥓",
               "text": "Szynka",
               "image": "images/szynka.svg"
             },
             {
+              "id": "inna-przekaska",
               "emoji": "🥪❓",
               "text": "Inna przekąska"
             }
@@ -477,26 +575,31 @@
           "image": "images/dodatki.svg",
           "words": [
             {
+              "id": "ketchup",
               "emoji": "🍅",
               "text": "Ketchup",
               "image": "images/ketchup.svg"
             },
             {
+              "id": "musztarda",
               "emoji": "🟡",
               "text": "Musztarda",
               "image": "images/musztarda.svg"
             },
             {
+              "id": "ostry-sos",
               "emoji": "🌶️",
               "text": "Ostry sos",
               "image": "images/ostry-sos.svg"
             },
             {
+              "id": "sos-czosnkowy",
               "emoji": "🧄",
               "text": "Sos czosnkowy",
               "image": "images/sos-czosnkowy.svg"
             },
             {
+              "id": "inny-dodatek",
               "emoji": "🧂❓",
               "text": "Inny dodatek"
             }
@@ -509,30 +612,37 @@
           "color": "#C5E1A5",
           "words": [
             {
+              "id": "jablko",
               "emoji": "🍎",
               "text": "Jabłko"
             },
             {
+              "id": "banan",
               "emoji": "🍌",
               "text": "Banan"
             },
             {
+              "id": "truskawki",
               "emoji": "🍓",
               "text": "Truskawki"
             },
             {
+              "id": "winogrona",
               "emoji": "🍇",
               "text": "Winogrona"
             },
             {
+              "id": "marchewka",
               "emoji": "🥕",
               "text": "Marchewka"
             },
             {
+              "id": "ogorek",
               "emoji": "🥒",
               "text": "Ogórek"
             },
             {
+              "id": "inny-owoc-albo-warzywo",
               "emoji": "🍎❓",
               "text": "Inny owoc albo warzywo"
             }
@@ -547,53 +657,64 @@
       "color": "#E1BEE7",
       "words": [
         {
+          "id": "ciastko",
           "emoji": "🍪",
           "text": "Ciastko"
         },
         {
+          "id": "lody",
           "emoji": "🍦",
           "text": "Lody"
         },
         {
+          "id": "czekolada",
           "emoji": "🍫",
           "text": "Czekolada"
         },
         {
+          "id": "zelki-haribo",
           "emoji": "🐻",
           "text": "Żelki Haribo",
           "image": "images/zelki.svg"
         },
         {
+          "id": "draze",
           "emoji": "🟤",
           "text": "Draże",
           "image": "images/draze.svg"
         },
         {
+          "id": "gumy",
           "emoji": "🍬",
           "text": "Gumy",
           "image": "images/gumy.svg"
         },
         {
+          "id": "batonik",
           "emoji": "🍫",
           "text": "Batonik",
           "image": "images/batonik.svg"
         },
         {
+          "id": "jajko-niespodzianka",
           "emoji": "🥚",
           "text": "Jajko niespodzianka",
           "image": "images/jajko-niespodzianka.svg"
         },
         {
+          "id": "chipsy",
           "emoji": "🥔",
           "text": "Chipsy",
           "image": "images/chipsy.svg"
         },
         {
+          "id": "nachos-z-dipem",
           "emoji": "🌮",
           "text": "Nachos z dipem",
           "image": "images/nachos.svg"
         },
         {
+          "id": "inne-slodycze",
           "emoji": "🍭❓",
           "text": "Inne słodycze"
         }
@@ -606,36 +727,44 @@
       "color": "#B3E5FC",
       "words": [
         {
+          "id": "woda",
           "emoji": "💧",
           "text": "Woda"
         },
         {
+          "id": "mleko",
           "emoji": "🥛",
           "text": "Mleko"
         },
         {
+          "id": "sok",
           "emoji": "🧃",
           "text": "Sok"
         },
         {
+          "id": "herbata",
           "emoji": "🍵",
           "text": "Herbata",
           "image": "images/herbata.svg"
         },
         {
+          "id": "kakao",
           "emoji": "☕",
           "text": "Kakao"
         },
         {
+          "id": "lemoniada",
           "emoji": "🥤",
           "text": "Lemoniada"
         },
         {
+          "id": "puszka",
           "emoji": "🥫",
           "text": "Puszka",
           "image": "images/puszka.svg"
         },
         {
+          "id": "cos-innego-do-picia",
           "emoji": "🥤❓",
           "text": "Coś innego do picia"
         }
@@ -648,58 +777,72 @@
       "color": "#C8E6C9",
       "words": [
         {
+          "id": "mycie-zebow",
           "emoji": "🦷",
           "text": "Mycie zębów"
         },
         {
+          "id": "mycie-rak",
           "emoji": "🧼",
           "text": "Mycie rąk"
         },
         {
+          "id": "kapiel",
           "emoji": "🛁",
           "text": "Kąpiel"
         },
         {
+          "id": "ubieranie-sie",
           "emoji": "👕",
           "text": "Ubieranie się"
         },
         {
+          "id": "sprzatanie",
           "emoji": "🧹",
           "text": "Sprzątanie"
         },
         {
+          "id": "sprzatanie-zabawek",
           "emoji": "🧸",
           "text": "Sprzątanie zabawek"
         },
         {
+          "id": "nakrywanie-do-stolu",
           "emoji": "🍽️",
           "text": "Nakrywanie do stołu"
         },
         {
+          "id": "zmywanie",
           "emoji": "🧽",
           "text": "Zmywanie"
         },
         {
+          "id": "pranie",
           "emoji": "🧺",
           "text": "Pranie"
         },
         {
+          "id": "scielenie-lozka",
           "emoji": "🛏️",
           "text": "Ścielenie łóżka"
         },
         {
+          "id": "wynoszenie-smieci",
           "emoji": "🗑️",
           "text": "Wynoszenie śmieci"
         },
         {
+          "id": "podlewanie-kwiatow",
           "emoji": "🌷",
           "text": "Podlewanie kwiatów"
         },
         {
+          "id": "karmienie-zwierzaka",
           "emoji": "🐕",
           "text": "Karmienie zwierzaka"
         },
         {
+          "id": "inny-obowiazek",
           "emoji": "🧹❓",
           "text": "Inny obowiązek"
         }
@@ -712,114 +855,140 @@
       "color": "#D1C4E9",
       "words": [
         {
+          "id": "dom",
           "emoji": "🏠",
           "text": "Dom"
         },
         {
+          "id": "szkola",
           "emoji": "🏫",
           "text": "Szkoła"
         },
         {
+          "id": "park",
           "emoji": "🌳",
           "text": "Park",
           "image": "images/park.svg"
         },
         {
+          "id": "plac-zabaw",
           "emoji": "🤸",
           "text": "Plac zabaw",
           "image": "images/plac-zabaw.svg"
         },
         {
+          "id": "trampoliny",
           "emoji": "🤸",
           "text": "Trampoliny",
           "image": "images/trampolina.svg"
         },
         {
+          "id": "sala-zabaw",
           "emoji": "🐒",
           "text": "Sala zabaw",
           "image": "images/sala-zabaw.svg"
         },
         {
+          "id": "sklep",
           "emoji": "🛒",
           "text": "Sklep"
         },
         {
+          "id": "lekarz",
           "emoji": "🏥",
           "text": "Lekarz"
         },
         {
+          "id": "basen",
           "emoji": "🏊",
           "text": "Basen"
         },
         {
+          "id": "las",
           "emoji": "🌲",
           "text": "Las",
           "image": "images/las.svg"
         },
         {
+          "id": "plaza",
           "emoji": "🏖️",
           "text": "Plaża"
         },
         {
+          "id": "kino",
           "emoji": "🎬",
           "text": "Kino"
         },
         {
+          "id": "dom-babci-i-dziadka",
           "emoji": "🏡",
           "text": "Dom babci i dziadka",
           "image": "images/dom-babci.svg"
         },
         {
+          "id": "ogrodek-babci-i-dziadka",
           "emoji": "🌳",
           "text": "Ogródek babci i dziadka",
           "image": "images/ogrodek-babci.svg"
         },
         {
+          "id": "samochod",
           "emoji": "🚗",
           "text": "Samochód"
         },
         {
+          "id": "autobus",
           "emoji": "🚌",
           "text": "Autobus"
         },
         {
+          "id": "tramwaj",
           "emoji": "🚋",
           "text": "Tramwaj"
         },
         {
+          "id": "pociag",
           "emoji": "🚆",
           "text": "Pociąg",
           "image": "images/pociag.svg"
         },
         {
+          "id": "statek",
           "emoji": "🚢",
           "text": "Statek"
         },
         {
+          "id": "lodz",
           "emoji": "⛵",
           "text": "Łódź"
         },
         {
+          "id": "samolot",
           "emoji": "✈️",
           "text": "Samolot"
         },
         {
+          "id": "moj-pokoj",
           "emoji": "🛏️",
           "text": "Mój pokój"
         },
         {
+          "id": "lazienka",
           "emoji": "🚿",
           "text": "Łazienka"
         },
         {
+          "id": "kuchnia",
           "emoji": "🍳",
           "text": "Kuchnia"
         },
         {
+          "id": "ogrod",
           "emoji": "🌻",
           "text": "Ogród"
         },
         {
+          "id": "inne-miejsce",
           "emoji": "🏞️❓",
           "text": "Inne miejsce"
         }
@@ -833,66 +1002,82 @@
       "color": "#F8BBD0",
       "words": [
         {
+          "id": "mama",
           "emoji": "👩",
           "text": "Mama"
         },
         {
+          "id": "tata",
           "emoji": "👨",
           "text": "Tata"
         },
         {
+          "id": "siostra",
           "emoji": "👧",
           "text": "Siostra"
         },
         {
+          "id": "brat",
           "emoji": "👦",
           "text": "Brat"
         },
         {
+          "id": "babcia",
           "emoji": "👵",
           "text": "Babcia"
         },
         {
+          "id": "dziadek",
           "emoji": "👴",
           "text": "Dziadek"
         },
         {
+          "id": "ciocia",
           "emoji": "👩‍🦰",
           "text": "Ciocia"
         },
         {
+          "id": "wujek",
           "emoji": "🧔",
           "text": "Wujek"
         },
         {
+          "id": "pani",
           "emoji": "👩‍🏫",
           "text": "Pani"
         },
         {
+          "id": "pan",
           "emoji": "👨‍🏫",
           "text": "Pan"
         },
         {
+          "id": "lekarz-2",
           "emoji": "🧑‍⚕️",
           "text": "Lekarz"
         },
         {
+          "id": "kolega",
           "emoji": "🧒",
           "text": "Kolega"
         },
         {
+          "id": "kolezanka",
           "emoji": "👧",
           "text": "Koleżanka"
         },
         {
+          "id": "ja",
           "emoji": "🙋",
           "text": "Ja"
         },
         {
+          "id": "ty",
           "emoji": "👉",
           "text": "Ty"
         },
         {
+          "id": "ktos-inny",
           "emoji": "👪❓",
           "text": "Ktoś inny"
         }
@@ -906,44 +1091,54 @@
       "image": "images/zabawa.svg",
       "words": [
         {
+          "id": "rysowanie",
           "emoji": "🖍️",
           "text": "Rysowanie"
         },
         {
+          "id": "malowanie",
           "emoji": "🎨",
           "text": "Malowanie"
         },
         {
+          "id": "ogladanie-bajki",
           "emoji": "📺",
           "text": "Oglądanie bajki"
         },
         {
+          "id": "spacer",
           "emoji": "🚶",
           "text": "Spacer"
         },
         {
+          "id": "sluchanie-muzyki",
           "emoji": "🎵",
           "text": "Słuchanie muzyki"
         },
         {
+          "id": "taniec",
           "emoji": "💃",
           "text": "Taniec"
         },
         {
+          "id": "plywanie",
           "emoji": "🏊",
           "text": "Pływanie"
         },
         {
+          "id": "laskotki",
           "emoji": "🤗",
           "text": "Łaskotki",
           "image": "images/laskotki.svg"
         },
         {
+          "id": "gonitwa",
           "emoji": "🏃",
           "text": "Gonitwa",
           "image": "images/gonitwa.svg"
         },
         {
+          "id": "inna-zabawa",
           "emoji": "🤸❓",
           "text": "Inna zabawa"
         }
@@ -957,56 +1152,72 @@
       "image": "images/zabawki.svg",
       "words": [
         {
+          "id": "klocki",
           "emoji": "🧱",
           "text": "Klocki"
         },
         {
+          "id": "puzzle",
           "emoji": "🧩",
           "text": "Puzzle"
         },
         {
+          "id": "ksiazka",
           "emoji": "📖",
           "text": "Książka"
         },
         {
+          "id": "tablet",
           "emoji": "📱",
           "text": "Tablet"
         },
         {
+          "id": "pilka",
           "emoji": "⚽",
           "text": "Piłka"
         },
         {
+          "id": "mala-pilka",
           "emoji": "⚾",
           "text": "Mała piłka",
           "image": "images/mala-pilka.svg"
         },
         {
+          "id": "paletka",
           "emoji": "🏓",
           "text": "Paletka",
           "image": "images/paletka.svg"
         },
         {
+          "id": "rower",
           "emoji": "🚲",
           "text": "Rower"
         },
         {
+          "id": "pluszak",
           "emoji": "🧸",
           "text": "Pluszak"
         },
         {
+          "id": "pociag-zabawka",
           "emoji": "🚂",
-          "text": "Pociąg zabawka"
+          "text": "Pociąg zabawka",
+          "formerly": [
+            "Pociąg"
+          ]
         },
         {
+          "id": "balony",
           "emoji": "🎈",
           "text": "Balony"
         },
         {
+          "id": "gogle-vr",
           "emoji": "🥽",
           "text": "Gogle VR"
         },
         {
+          "id": "inna-zabawka",
           "emoji": "🧸❓",
           "text": "Inna zabawka"
         }
@@ -1019,36 +1230,43 @@
       "color": "#CFD8DC",
       "words": [
         {
+          "id": "gra-zool",
           "emoji": "🥷",
           "text": "Gra Zool",
           "image": "images/zool.svg"
         },
         {
+          "id": "gra-cool-spot",
           "emoji": "😎",
           "text": "Gra Cool Spot",
           "image": "images/cool-spot.svg"
         },
         {
+          "id": "swinka-peppa",
           "emoji": "🐷",
           "text": "Świnka Peppa",
           "image": "images/swinka.svg"
         },
         {
+          "id": "baranek-shaun",
           "emoji": "🐑",
           "text": "Baranek Shaun",
           "image": "images/baranek.svg"
         },
         {
+          "id": "psi-patrol",
           "emoji": "🐕‍🦺",
           "text": "Psi Patrol",
           "image": "images/psi-patrol.svg"
         },
         {
+          "id": "youtube",
           "emoji": "▶️",
           "text": "YouTube",
           "image": "images/youtube.svg"
         },
         {
+          "id": "inna-bajka-albo-gra",
           "emoji": "📺❓",
           "text": "Inna bajka albo gra"
         }
@@ -1061,50 +1279,62 @@
       "color": "#DCEDC8",
       "words": [
         {
+          "id": "koszulka",
           "emoji": "👕",
           "text": "Koszulka"
         },
         {
+          "id": "spodnie",
           "emoji": "👖",
           "text": "Spodnie"
         },
         {
+          "id": "sukienka",
           "emoji": "👗",
           "text": "Sukienka"
         },
         {
+          "id": "kurtka",
           "emoji": "🧥",
           "text": "Kurtka"
         },
         {
+          "id": "czapka",
           "emoji": "🧢",
           "text": "Czapka"
         },
         {
+          "id": "szalik",
           "emoji": "🧣",
           "text": "Szalik"
         },
         {
+          "id": "rekawiczki",
           "emoji": "🧤",
           "text": "Rękawiczki"
         },
         {
+          "id": "skarpetki",
           "emoji": "🧦",
           "text": "Skarpetki"
         },
         {
+          "id": "buty",
           "emoji": "👟",
           "text": "Buty"
         },
         {
+          "id": "krotkie-spodenki",
           "emoji": "🩳",
           "text": "Krótkie spodenki"
         },
         {
+          "id": "pizama",
           "emoji": "🌙",
           "text": "Piżama"
         },
         {
+          "id": "inne-ubranie",
           "emoji": "👕❓",
           "text": "Inne ubranie"
         }
@@ -1117,54 +1347,67 @@
       "color": "#FFECB3",
       "words": [
         {
+          "id": "glowa",
           "emoji": "👤",
           "text": "Głowa"
         },
         {
+          "id": "brzuch",
           "emoji": "🧍",
           "text": "Brzuch"
         },
         {
+          "id": "zab",
           "emoji": "🦷",
           "text": "Ząb"
         },
         {
+          "id": "ucho",
           "emoji": "👂",
           "text": "Ucho"
         },
         {
+          "id": "oko",
           "emoji": "👁️",
           "text": "Oko"
         },
         {
+          "id": "nos",
           "emoji": "👃",
           "text": "Nos"
         },
         {
+          "id": "buzia",
           "emoji": "👄",
           "text": "Buzia"
         },
         {
+          "id": "gardlo",
           "emoji": "🗣️",
           "text": "Gardło"
         },
         {
+          "id": "reka",
           "emoji": "✋",
           "text": "Ręka"
         },
         {
+          "id": "noga",
           "emoji": "🦵",
           "text": "Noga"
         },
         {
+          "id": "stopa",
           "emoji": "🦶",
           "text": "Stopa"
         },
         {
+          "id": "plecy",
           "emoji": "🚶",
           "text": "Plecy"
         },
         {
+          "id": "inna-czesc-ciala",
           "emoji": "🧍❓",
           "text": "Inna część ciała"
         }
@@ -1177,54 +1420,67 @@
       "color": "#B2DFDB",
       "words": [
         {
+          "id": "pies",
           "emoji": "🐶",
           "text": "Pies"
         },
         {
+          "id": "kot",
           "emoji": "🐱",
           "text": "Kot"
         },
         {
+          "id": "krolik",
           "emoji": "🐰",
           "text": "Królik"
         },
         {
+          "id": "rybka",
           "emoji": "🐟",
           "text": "Rybka"
         },
         {
+          "id": "ptak",
           "emoji": "🐦",
           "text": "Ptak"
         },
         {
+          "id": "kon",
           "emoji": "🐴",
           "text": "Koń"
         },
         {
+          "id": "krowa",
           "emoji": "🐮",
           "text": "Krowa"
         },
         {
+          "id": "swinka",
           "emoji": "🐷",
           "text": "Świnka"
         },
         {
+          "id": "kura",
           "emoji": "🐔",
           "text": "Kura"
         },
         {
+          "id": "kaczka",
           "emoji": "🦆",
           "text": "Kaczka"
         },
         {
+          "id": "mis",
           "emoji": "🐻",
           "text": "Miś"
         },
         {
+          "id": "lew",
           "emoji": "🦁",
           "text": "Lew"
         },
         {
+          "id": "inne-zwierze",
           "emoji": "🐾❓",
           "text": "Inne zwierzę"
         }
