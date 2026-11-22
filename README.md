@@ -95,9 +95,10 @@ Format pliku słów:
 - `id` słowa: nowe, niepowtarzalne w całym słowniku (małe litery, cyfry i myślniki, np. `pociag-zabawka`).
   Po nim są zapamiętywane ulubione, więc **`id` raz nadanego słowa nigdy się nie zmienia** – zmieniaj spokojnie
   `text`, `emoji` czy obrazek. Dwa słowa mogą mieć ten sam napis, ale nigdy to samo `id`.
-- Zmiana napisu słowa: dopisz do niego `"formerly": ["dawny napis"]` (w każdym języku jego dawny napis).
-  Dzięki temu ulubione zapisane jeszcze po napisie (wersje aplikacji do 0.29) przejdą na właściwe słowo,
-  nawet gdy dawny napis ma teraz inne słowo (np. „Pociąg” → „Pociąg zabawka”, a „Pociąg” w Miejscach jest nowy).
+- `"formerly": ["napis"]` – ulubione zapisane jeszcze po napisie (wersje aplikacji do 0.29) przechodzą na to słowo,
+  a nie na inne słowo o tym samym napisie. Dopisz je, gdy zmieniasz napis słowa (w każdym języku jego dawny napis)
+  albo gdy dodajesz nowe słowo o napisie, który już był: np. pociąg w Zabawkach ma `"formerly": ["Pociąg"]`,
+  więc stara gwiazdka „Pociąg” zostaje przy zabawce, a nie przechodzi na nowy „Pociąg” w Miejscach.
 - Nowa kategoria: dodaj obiekt do `categories` z unikalnym `id` (małe litery, bez polskich znaków i spacji).
 - Podkategorie: kategoria może mieć własne pole `"categories": [ … ]` z kategoriami w tym samym formacie
   (tak jest zrobione Jedzenie → Obiad, Zupa, Przekąski, Owoce i warzywa). Pole `words` musi być zawsze (może być `[]`).
