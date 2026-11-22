@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "dictionaryVersion": "1.04",
+  "dictionaryVersion": "1.05",
   "language": "en-US",
   "categories": [
     {
@@ -340,6 +340,14 @@
             {
               "emoji": "🍚",
               "text": "Rice"
+            },
+            {
+              "emoji": "🥟",
+              "text": "Dumplings"
+            },
+            {
+              "emoji": "🥩",
+              "text": "Beef roulade"
             },
             {
               "emoji": "🍽️❓",
@@ -972,6 +980,10 @@
         {
           "emoji": "🎈",
           "text": "Balloons"
+        },
+        {
+          "emoji": "🥽",
+          "text": "VR goggles"
         },
         {
           "emoji": "🧸❓",

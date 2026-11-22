@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "dictionaryVersion": "1.04",
+  "dictionaryVersion": "1.05",
   "language": "pl-PL",
   "categories": [
     {
@@ -340,6 +340,14 @@
             {
               "emoji": "🍚",
               "text": "Ryż"
+            },
+            {
+              "emoji": "🥟",
+              "text": "Kluski"
+            },
+            {
+              "emoji": "🥩",
+              "text": "Rolada"
             },
             {
               "emoji": "🍽️❓",
@@ -972,6 +980,10 @@
         {
           "emoji": "🎈",
           "text": "Balony"
+        },
+        {
+          "emoji": "🥽",
+          "text": "Gogle VR"
         },
         {
           "emoji": "🧸❓",
