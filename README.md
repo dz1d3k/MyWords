@@ -31,6 +31,9 @@ początkowego wygląda jak zwykła aplikacja i działa także bez internetu.
 - **☆ / ★** – dodaje / usuwa słowo lub kategorię z ulubionych (gwiazdka nie mówi). Ulubione są na górze każdej listy –
   kolejność zmienia się przy następnym otwarciu ekranu, nie od razu (żeby kafelek nie uciekał spod palca).
   **⭐** u góry albo kafelek „Ulubione” pokazuje wszystkie ulubione.
+- **Kolejność w kategorii:** najpierw ulubione (podkategorie, słowa), potem reszta (podkategorie, słowa).
+  „Inna …/Inne …” (emoji z `❓`) jest zawsze na końcu swojej grupy: ulubione „Inne” – na końcu ulubionych,
+  pozostałe „Inne” – na samym końcu kategorii.
 - **⚙️ Ustawienia głosu** – na samym dole ekranu startowego: **głos żeński albo męski** (aplikacja sama bierze
   najlepszy głos tej płci, który działa bez internetu), tempo, głośność, wysokość głosu, test.
 

@@ -251,6 +251,12 @@
   function favFirst(items, test) {
     return items.filter(test).concat(items.filter(function (x) { return !test(x); }));
   }
+  // „Inna …” / „Inne …” (emoji kończy się na ❓) – zawsze na końcu swojej grupy:
+  // ulubione „Inne” na końcu ulubionych, pozostałe „Inne” na samym końcu kategorii.
+  function isOther(w) { return /❓$/.test(String(w.emoji || '')); }
+  function othersLast(words) {
+    return words.filter(function (w) { return !isOther(w); }).concat(words.filter(isOther));
+  }
 
   /* ---------------- Mowa ---------------- */
   var synth = null;
@@ -685,14 +691,19 @@
       var c = categoryById(state.cat);
       if (!c) { state = { screen: 'home', depth: 0 }; return render(); }
       setTitle(c.emoji, c.name);
-      favFirst(subcats(c), function (x) { return isFavCat(x.id); })
-        .forEach(function (x) { el.list.appendChild(categoryTile(x)); });
-      favFirst(c.words, isFav)
-        .forEach(function (w) { el.list.appendChild(wordTile(w, c.color)); });
+      // Kolejność: ulubione (podkategorie, słowa, „Inne”), potem reszta (podkategorie, słowa, „Inne”).
+      var favCatOn = function (x) { return isFavCat(x.id); };
+      var subs = subcats(c);
+      var addCat = function (x) { el.list.appendChild(categoryTile(x)); };
+      var addWord = function (w) { el.list.appendChild(wordTile(w, c.color)); };
+      subs.filter(favCatOn).forEach(addCat);
+      othersLast(c.words.filter(isFav)).forEach(addWord);
+      subs.filter(function (x) { return !favCatOn(x); }).forEach(addCat);
+      othersLast(c.words.filter(function (w) { return !isFav(w); })).forEach(addWord);
     } else if (state.screen === 'favorites') {
       setTitle('⭐', ui('favorites'));
       var fc = allCategories().filter(function (c) { return isFavCat(c.id); });
-      var fw = favoriteWords();
+      var fw = othersLast(favoriteWords());
       if (!fw.length && !fc.length) {
         var e = document.createElement('div');
         e.className = 'empty';
