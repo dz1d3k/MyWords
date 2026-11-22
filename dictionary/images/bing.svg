@@ -2,16 +2,16 @@
   <!-- telewizor: to bajka -->
   <path d="M48 14 L64 28 L80 14" stroke="#546E7A" stroke-width="4" fill="none" stroke-linecap="round"/>
   <rect x="8" y="28" width="112" height="88" rx="16" fill="#455A64"/>
-  <rect x="16" y="36" width="96" height="72" rx="10" fill="#B3E5FC"/>
-  <!-- króliczek (własny rysunek) -->
-  <ellipse cx="50" cy="50" rx="9" ry="22" fill="#ECEFF1" transform="rotate(-12 50 50)"/>
-  <ellipse cx="50" cy="51" rx="4" ry="15" fill="#F8BBD0" transform="rotate(-12 50 51)"/>
-  <ellipse cx="78" cy="50" rx="9" ry="22" fill="#ECEFF1" transform="rotate(12 78 50)"/>
-  <ellipse cx="78" cy="51" rx="4" ry="15" fill="#F8BBD0" transform="rotate(12 78 51)"/>
-  <ellipse cx="64" cy="84" rx="26" ry="22" fill="#ECEFF1"/>
-  <circle cx="54" cy="80" r="4" fill="#263238"/><circle cx="55.5" cy="78.5" r="1.3" fill="#FFF"/>
-  <circle cx="74" cy="80" r="4" fill="#263238"/><circle cx="75.5" cy="78.5" r="1.3" fill="#FFF"/>
-  <ellipse cx="64" cy="89" rx="3.5" ry="2.5" fill="#EC407A"/>
-  <path d="M58 94 Q64 99 70 94" stroke="#78909C" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <circle cx="46" cy="92" r="4" fill="#F48FB1" opacity=".6"/><circle cx="82" cy="92" r="4" fill="#F48FB1" opacity=".6"/>
+  <rect x="16" y="36" width="96" height="72" rx="10" fill="#FFF3C4"/>
+  <!-- czarny króliczek (własny rysunek) -->
+  <ellipse cx="50" cy="50" rx="9" ry="22" fill="#212121" transform="rotate(-12 50 50)"/>
+  <ellipse cx="50" cy="51" rx="4" ry="15" fill="#F48FB1" transform="rotate(-12 50 51)"/>
+  <ellipse cx="78" cy="50" rx="9" ry="22" fill="#212121" transform="rotate(12 78 50)"/>
+  <ellipse cx="78" cy="51" rx="4" ry="15" fill="#F48FB1" transform="rotate(12 78 51)"/>
+  <ellipse cx="64" cy="84" rx="26" ry="22" fill="#212121"/>
+  <circle cx="54" cy="80" r="6" fill="#FFF"/><circle cx="55" cy="81" r="3.2" fill="#263238"/><circle cx="56" cy="79.5" r="1.1" fill="#FFF"/>
+  <circle cx="74" cy="80" r="6" fill="#FFF"/><circle cx="75" cy="81" r="3.2" fill="#263238"/><circle cx="76" cy="79.5" r="1.1" fill="#FFF"/>
+  <ellipse cx="64" cy="90" rx="3.5" ry="2.5" fill="#F06292"/>
+  <path d="M58 95 Q64 100 70 95" stroke="#9E9E9E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <circle cx="46" cy="92" r="4" fill="#F48FB1" opacity=".55"/><circle cx="82" cy="92" r="4" fill="#F48FB1" opacity=".55"/>
 </svg>
