@@ -31,7 +31,17 @@
         logout: 'Wyloguj', newUserTitle: 'Nowy użytkownik', namePlaceholder: 'Imię', save: 'Zapisz', cancel: 'Anuluj',
         nameEmpty: 'Wpisz imię.', nameTaken: 'Taki użytkownik już istnieje.',
         logoutQuestion: 'Czy chcesz się wylogować?', yes: 'Tak', no: 'Nie',
-        logoutTitle: 'Wylogowanie', logoutInstr: 'Aby się wylogować, wpisz liczbę:', logoutWrong: 'Błędna liczba.',
+        logoutTitle: 'Wylogowanie', logoutInstr: 'Aby się wylogować, wpisz cyframi liczbę:', logoutWrong: 'Błędna liczba.',
+        editModeBtn: '✏️ Tryb edycji', editModeTitle: 'Tryb edycji', editModeInstr: 'Aby wejść w tryb edycji, wpisz cyframi liczbę:',
+        editEnter: 'Wejdź', editBarDone: 'Zakończ edycję', editBarHint: '✏️ Tryb edycji – dotknij ✏️ przy kafelku',
+        clipCut: '✂️ Wycięte: {x}', clipCopy: '📋 Skopiowane: {x}', pasteHere: 'Wklej tutaj', pasteGoCategory: '{clip} – wejdź do kategorii i wklej',
+        pasteIntoSelf: 'Nie można wkleić kategorii do niej samej.',
+        editWord: 'Edytuj kafelek', editCat: 'Edytuj kategorię', newWord: 'Nowy kafelek', newCat: 'Nowa kategoria',
+        textLabel: 'Tekst (to powie aplikacja)', nameLabel: 'Nazwa kategorii', emojiPlaceholder: 'Emoji (opcjonalnie), np. 🐰',
+        photoBtn: '📷 Zdjęcie z telefonu', resetBtn: '↩️ Przywróć oryginał', cutBtn: '✂️ Wytnij', copyBtn: '📋 Kopiuj',
+        deleteBtn: '🗑️ Usuń', restoreBtn: '♻️ Przywróć', textEmpty: 'Wpisz tekst.',
+        noSpace: 'Brak miejsca w pamięci – usuń kilka zdjęć albo wybierz mniejsze.', photoError: 'Nie udało się wczytać zdjęcia.',
+        addWordTile: '➕ Dodaj kafelek', addCatTile: '➕ Dodaj kategorię', hiddenMark: '(ukryte)',
         deleteUser: 'Usuń użytkownika', deleteTitle: 'Usuń użytkownika', delete: 'Usuń', undo: 'Cofnij',
         deleteInstr: 'Aby usunąć użytkownika „{name}”, przepisz dokładnie jego nazwę i dopisz na końcu 12. Wielkość liter ma znaczenie. Wpisz: {code}',
         deleteWrong: 'Błędnie wpisana wartość.',
@@ -74,7 +84,17 @@
         logout: 'Log out', newUserTitle: 'New user', namePlaceholder: 'Name', save: 'Save', cancel: 'Cancel',
         nameEmpty: 'Enter a name.', nameTaken: 'This user already exists.',
         logoutQuestion: 'Do you want to log out?', yes: 'Yes', no: 'No',
-        logoutTitle: 'Log out', logoutInstr: 'To log out, type the number:', logoutWrong: 'Wrong number.',
+        logoutTitle: 'Log out', logoutInstr: 'To log out, type this number in digits:', logoutWrong: 'Wrong number.',
+        editModeBtn: '✏️ Edit mode', editModeTitle: 'Edit mode', editModeInstr: 'To enter edit mode, type this number in digits:',
+        editEnter: 'Enter', editBarDone: 'Finish editing', editBarHint: '✏️ Edit mode – tap ✏️ next to a tile',
+        clipCut: '✂️ Cut: {x}', clipCopy: '📋 Copied: {x}', pasteHere: 'Paste here', pasteGoCategory: '{clip} – open a category to paste',
+        pasteIntoSelf: 'A category cannot be pasted into itself.',
+        editWord: 'Edit tile', editCat: 'Edit category', newWord: 'New tile', newCat: 'New category',
+        textLabel: 'Text (the app says this)', nameLabel: 'Category name', emojiPlaceholder: 'Emoji (optional), e.g. 🐰',
+        photoBtn: '📷 Photo from the phone', resetBtn: '↩️ Restore original', cutBtn: '✂️ Cut', copyBtn: '📋 Copy',
+        deleteBtn: '🗑️ Delete', restoreBtn: '♻️ Restore', textEmpty: 'Enter the text.',
+        noSpace: 'Out of storage – delete some photos or choose smaller ones.', photoError: 'Could not load the photo.',
+        addWordTile: '➕ Add tile', addCatTile: '➕ Add category', hiddenMark: '(hidden)',
         deleteUser: 'Delete user', deleteTitle: 'Delete user', delete: 'Delete', undo: 'Back',
         deleteInstr: 'To delete the user “{name}”, type the name exactly and add 12 at the end. Letter case matters. Type: {code}',
         deleteWrong: 'Wrong value.',
@@ -117,7 +137,9 @@
 
   var FAV_TILE = { id: FAV_ID, emoji: '⭐', name: '', color: '#FFE082' };
 
-  var vocab = null;          // zawartość vocabulary.json
+  var vocab = null;          // słownik do wyświetlania: vocabulary.json + zmiany użytkownika (applyCustom)
+  var baseVocab = null;      // sam słownik (z paczki albo pobrany z internetu), bez zmian użytkownika
+  var editMode = false;      // tryb edycji (wejście z ekranu logowania, po teście z liczbą)
   var state = { screen: 'home', depth: 0 };
   // Pasek zdania: ostatnie wybrane słowa (same obrazki) i podświetlony kafelek.
   var STRIP_MAX = 30;
@@ -151,6 +173,7 @@
     yesBtn: document.getElementById('btn-yes'),
     noBtn: document.getElementById('btn-no'),
     deleteBtn: document.getElementById('btn-delete-user'),
+    editModeBtn: document.getElementById('btn-edit-mode'),
     deleteDialog: document.getElementById('delete-user'),
     deleteForm: document.getElementById('delete-user-form'),
     deleteInstr: document.getElementById('delete-instr'),
@@ -627,8 +650,22 @@
     main.appendChild(cpic);
     main.appendChild(textSpan(c.name));
     d.appendChild(main);
-    if (!special) d.appendChild(starButton(isFavCat(c.id), 'data-star-cat', c.id));
+    if (!special) {
+      if (editMode) {
+        if (c._hidden) d.classList.add('is-hidden');
+        d.appendChild(editButton('data-edit-cat', c.id));
+      } else d.appendChild(starButton(isFavCat(c.id), 'data-star-cat', c.id));
+    }
     return d;
+  }
+  // Tryb edycji: ✏️ zamiast gwiazdki.
+  function editButton(attr, id) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'star edit-btn';
+    b.setAttribute(attr, id);
+    b.textContent = '✏️';
+    return b;
   }
 
   function wordTile(w, color) {
@@ -648,7 +685,10 @@
     main.appendChild(textSpan(w.text));
     d.appendChild(main);
 
-    if (w.id) d.appendChild(starButton(isFav(w), 'data-star', w.id));
+    if (editMode && w.id) {
+      if (w._hidden) d.classList.add('is-hidden');
+      d.appendChild(editButton('data-edit-word', w.id));
+    } else if (w.id) d.appendChild(starButton(isFav(w), 'data-star', w.id));
     return d;
   }
 
@@ -700,6 +740,10 @@
       othersLast(c.words.filter(isFav)).forEach(addWord);
       subs.filter(function (x) { return !favCatOn(x); }).forEach(addCat);
       othersLast(c.words.filter(function (w) { return !isFav(w); })).forEach(addWord);
+      if (editMode) {
+        el.list.appendChild(addTile('word', ui('addWordTile')));
+        el.list.appendChild(addTile('cat', ui('addCatTile')));
+      }
     } else if (state.screen === 'favorites') {
       setTitle('⭐', ui('favorites'));
       var fc = allCategories().filter(function (c) { return isFavCat(c.id); });
@@ -720,7 +764,17 @@
       el.list.appendChild(categoryTile(FAV_TILE, true));
       favFirst(vocab.categories, function (c) { return isFavCat(c.id); })
         .forEach(function (c) { el.list.appendChild(categoryTile(c)); });
+      if (editMode) el.list.appendChild(addTile('cat', ui('addCatTile')));
     }
+    updateEditBar();
+  }
+  function addTile(kind, label) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'tile add-tile';
+    b.setAttribute('data-add', kind);
+    b.textContent = label;
+    return b;
   }
 
   /* ---------------- Nawigacja ----------------
@@ -774,6 +828,20 @@
   /* ---------------- Zdarzenia ---------------- */
   el.list.addEventListener('click', function (ev) {
     var t = ev.target;
+    if (editMode && t.closest) {
+      var eb = t.closest('.edit-btn');
+      if (eb) {
+        ev.stopPropagation();
+        if (eb.hasAttribute('data-edit-cat')) openEditor('cat', eb.getAttribute('data-edit-cat'));
+        else openEditor('word', eb.getAttribute('data-edit-word'));
+        return;
+      }
+      var at = t.closest('[data-add]');
+      if (at) { openEditor(at.getAttribute('data-add'), null); return; }
+      var wt = t.closest('.tile.word');
+      var wb = wt && wt.querySelector('[data-edit-word]');
+      if (wb) { openEditor('word', wb.getAttribute('data-edit-word')); return; } // w edycji słowo nie mówi
+    }
     var star = t.closest && t.closest('.star');
     if (star) {
       ev.stopPropagation();
@@ -1385,7 +1453,8 @@
           data = stored.files[L().file];
           remoteImages = stored.images;
         }
-        vocab = data;
+        baseVocab = data;
+        vocab = applyCustom(data); // słownik + zmiany użytkownika z trybu edycji
         migrateFavs();
         render();
         showVersion();
@@ -1483,6 +1552,7 @@
     el.userSelect.value = (selectedId && userById(selectedId)) ? selectedId : '';
     el.loginBtn.disabled = !userById(el.userSelect.value);
     el.deleteBtn.disabled = el.loginBtn.disabled;
+    el.editModeBtn.disabled = el.loginBtn.disabled;
   }
 
   var selectedBeforeAdd = '';
@@ -1492,6 +1562,7 @@
     selectedBeforeAdd = el.userSelect.value;
     el.loginBtn.disabled = !userById(el.userSelect.value);
     el.deleteBtn.disabled = el.loginBtn.disabled;
+    el.editModeBtn.disabled = el.loginBtn.disabled;
   });
 
   function openAddUser() {
@@ -1534,8 +1605,11 @@
     if (u) loginAs(u);
   });
 
-  function loginAs(user) {
+  function loginAs(user, edit) {
     currentUser = user;
+    editMode = !!edit;
+    custom = loadCustom();
+    clip = null;
     rawSet(LS_LAST_USER, user.id);
     lang = LANGS[lsGet(LS_LANG)] ? lsGet(LS_LANG) : 'pl';
     el.langSelect.value = lang;
@@ -1546,6 +1620,7 @@
     state = { screen: 'home', depth: 0 };
     try { history.replaceState(state, ''); } catch (e) { /* ignoruj */ }
     vocab = null;
+    baseVocab = null;
     applyUi();
     loadStrip();
     render();
@@ -1579,33 +1654,66 @@
     d.removeAttribute('open');
   }
 
-  // ⏻ – trzeba wpisać wylosowaną liczbę 01–99; duży „Cofnij” wraca do aplikacji.
-  var logoutCode = '';
-  el.logout.addEventListener('click', function () {
-    logoutCode = ('0' + (1 + Math.floor(Math.random() * 99))).slice(-2);
-    el.logoutCode.textContent = logoutCode;
+  /* Test dla opiekuna (wylogowanie, wejście w tryb edycji): liczba 100–999 zapisana słownie,
+   * np. „sześćset dwadzieścia jeden” → trzeba wpisać 621. Duży „Cofnij” zamyka okno. */
+  var NUM = {
+    pl: {
+      units: ['', 'jeden', 'dwa', 'trzy', 'cztery', 'pięć', 'sześć', 'siedem', 'osiem', 'dziewięć'],
+      teens: ['dziesięć', 'jedenaście', 'dwanaście', 'trzynaście', 'czternaście', 'piętnaście', 'szesnaście',
+        'siedemnaście', 'osiemnaście', 'dziewiętnaście'],
+      tens: ['', '', 'dwadzieścia', 'trzydzieści', 'czterdzieści', 'pięćdziesiąt', 'sześćdziesiąt', 'siedemdziesiąt',
+        'osiemdziesiąt', 'dziewięćdziesiąt'],
+      hundreds: ['', 'sto', 'dwieście', 'trzysta', 'czterysta', 'pięćset', 'sześćset', 'siedemset', 'osiemset', 'dziewięćset']
+    },
+    en: {
+      units: ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'],
+      teens: ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'],
+      tens: ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
+    }
+  };
+  function numberInWords(n) {
+    var h = Math.floor(n / 100), t = Math.floor(n / 10) % 10, u = n % 10;
+    var w = NUM[lang] || NUM.pl;
+    var rest = t === 1 ? w.teens[u] : (lang === 'en'
+      ? [w.tens[t], w.units[u]].filter(Boolean).join('-')
+      : [w.tens[t], w.units[u]].filter(Boolean).join(' '));
+    var head = lang === 'en' ? w.units[h] + ' hundred' : NUM.pl.hundreds[h];
+    return [head, rest].filter(Boolean).join(' ');
+  }
+
+  var codeNumber = 0, codeOnOk = null;
+  function askCode(title, instr, confirmText, onOk) {
+    codeNumber = 100 + Math.floor(Math.random() * 900);
+    codeOnOk = onOk;
+    document.getElementById('code-title').textContent = title;
+    document.getElementById('code-instr').textContent = instr;
+    document.getElementById('btn-logout-confirm').textContent = confirmText;
+    el.logoutCode.textContent = numberInWords(codeNumber);
     el.logoutInput.value = '';
     el.logoutErr.hidden = true;
     openDialog(el.logoutDialog);
+  }
+  el.logout.addEventListener('click', function () {
+    askCode(ui('logoutTitle'), ui('logoutInstr'), ui('logout'), logout);
   });
   el.logoutInput.addEventListener('input', function () {
-    el.logoutInput.value = el.logoutInput.value.replace(/\D/g, '').slice(0, 2);
+    el.logoutInput.value = el.logoutInput.value.replace(/\D/g, '').slice(0, 3);
     el.logoutErr.hidden = true;
   });
-  el.logoutCancel.addEventListener('click', function () { closeDialog(el.logoutDialog); });
-  el.logoutDialog.addEventListener('cancel', function (e) { e.preventDefault(); closeDialog(el.logoutDialog); });
+  el.logoutCancel.addEventListener('click', function () { codeOnOk = null; closeDialog(el.logoutDialog); });
+  el.logoutDialog.addEventListener('cancel', function (e) { e.preventDefault(); codeOnOk = null; closeDialog(el.logoutDialog); });
   el.logoutForm.addEventListener('submit', function (e) {
     e.preventDefault();
     var v = el.logoutInput.value.trim();
-    // „7” i „07” to ta sama liczba
-    if (!v || parseInt(v, 10) !== parseInt(logoutCode, 10)) {
+    if (!v || parseInt(v, 10) !== codeNumber) {
       el.logoutInput.value = '';
       el.logoutErr.textContent = ui('logoutWrong');
       el.logoutErr.hidden = false;
       return;
     }
     closeDialog(el.logoutDialog);
-    logout();
+    var cb = codeOnOk; codeOnOk = null;
+    if (cb) cb();
   });
 
   /* Okno Tak/Nie z kciukami 👍 / 👎 – na razie nieużywane (wcześniej potwierdzało wylogowanie).
@@ -1625,6 +1733,9 @@
   window.MeTalk = { askYesNo: askYesNo }; // dostęp do okna Tak/Nie z zewnątrz (np. przyszłe funkcje)
 
   function logout() {
+    editMode = false;
+    clip = null;
+    updateEditBar();
     try { if (synth && (synth.speaking || synth.pending)) synth.cancel(); } catch (e) { /* ignoruj */ }
     if (nativeTTS()) TTS().stop();
     var depth = state.depth || 0;
@@ -1674,6 +1785,396 @@
       if (rawGet(LS_LAST_USER) === u.id) window.localStorage.removeItem(LS_LAST_USER);
     } catch (e) { /* ignoruj */ }
   }
+
+  /* ---------------- Tryb edycji (wersja 0.35) ----------------
+   * Wejście: ekran logowania → „✏️ Tryb edycji” → test z liczbą słownie → słownik użytkownika do edycji.
+   * Zmiany są tylko dla tego użytkownika na tym telefonie i są NAKŁADKĄ na słownik (po "id"),
+   * więc aktualizacja słownika ich nie kasuje:
+   *   words[id] / cats[id] – zmiany słów/kategorii ze słownika: text|name {pl,en}, photo, hidden, cat|parent (przeniesione), t
+   *   newWords / newCats – kafelki i kategorie dodane przez użytkownika (id "u-…" / "uc-…").
+   * Słowa i kategorie ze słownika nie są kasowane, tylko ukrywane (w edycji widać je wyszarzone – można przywrócić). */
+  var LS_CUSTOM = 'mojeSlowa.custom';
+  var custom = emptyCustom();
+  function emptyCustom() { return { words: {}, cats: {}, newWords: [], newCats: [] }; }
+  function loadCustom() {
+    var c = null;
+    try { c = JSON.parse(lsGet(LS_CUSTOM) || 'null'); } catch (e) { c = null; }
+    var d = emptyCustom();
+    if (c && typeof c === 'object') {
+      if (c.words && typeof c.words === 'object') d.words = c.words;
+      if (c.cats && typeof c.cats === 'object') d.cats = c.cats;
+      if (Array.isArray(c.newWords)) d.newWords = c.newWords;
+      if (Array.isArray(c.newCats)) d.newCats = c.newCats;
+    }
+    return d;
+  }
+  // Zapis; false = brak miejsca (wtedy zmiana jest cofana).
+  function saveCustom() {
+    try { window.localStorage.setItem(userKey(LS_CUSTOM), JSON.stringify(custom)); return true; }
+    catch (e) { custom = loadCustom(); return false; }
+  }
+
+  function applyCustom(base) {
+    if (!base) return base;
+    var data = JSON.parse(JSON.stringify(base));
+    var cats = {}, order = [], parentOf = {};
+    (function walk(list, parent) {
+      list.forEach(function (c) {
+        cats[c.id] = c; order.push(c.id); parentOf[c.id] = parent;
+        walk(subcats(c), c.id);
+      });
+    })(data.categories, '');
+    var stay = [], moved = [];
+    order.forEach(function (id) { cats[id].words.forEach(function (w) { stay.push({ w: w, cat: id, t: 0 }); }); });
+
+    custom.newCats.forEach(function (n) {
+      if (!n || !n.id || cats[n.id]) return;
+      cats[n.id] = { id: n.id, emoji: n.emoji || '', name: n.name || '', color: n.color || '#E3F2FD',
+        image: n.photo || undefined, words: [], categories: [], user: true };
+      order.push(n.id);
+      parentOf[n.id] = n.parent || '';
+    });
+    Object.keys(custom.cats).forEach(function (id) {
+      var o = custom.cats[id], c = cats[id];
+      if (!c || !o) return;
+      if (o.name && o.name[lang]) c.name = o.name[lang];
+      if (o.photo) c.image = o.photo;
+      if (o.hidden) c._hidden = true;
+      if (typeof o.parent === 'string' && (o.parent === '' || cats[o.parent])) parentOf[id] = o.parent;
+    });
+    // Kategoria nie może być w samej sobie – przy pętli wraca na najwyższy poziom.
+    order.forEach(function (id) {
+      var p = parentOf[id], n = 0;
+      while (p && n++ < 50) { if (p === id) { parentOf[id] = ''; break; } p = parentOf[p]; }
+    });
+    stay = stay.filter(function (x) {
+      var o = custom.words[x.w.id];
+      if (!o) return true;
+      if (o.text && o.text[lang]) x.w.text = o.text[lang];
+      if (o.photo) x.w.image = o.photo;
+      if (o.hidden) x.w._hidden = true;
+      if (o.cat && cats[o.cat] && o.cat !== x.cat) { x.cat = o.cat; x.t = o.t || 0; moved.push(x); return false; }
+      return true;
+    });
+    moved.sort(function (a, b) { return a.t - b.t; });
+    var added = custom.newWords.filter(function (n) { return n && n.id && cats[n.cat]; }).map(function (n) {
+      return { w: { id: n.id, emoji: n.emoji || '', text: n.text || '', image: n.photo || undefined, user: true }, cat: n.cat };
+    });
+
+    order.forEach(function (id) { cats[id].words = []; cats[id].categories = []; });
+    stay.concat(moved, added).forEach(function (x) {
+      if (!editMode && x.w._hidden) return;
+      cats[x.cat].words.push(x.w);
+    });
+    var top = [];
+    order.forEach(function (id) {
+      var c = cats[id];
+      if (!editMode && c._hidden) return;
+      var p = parentOf[id];
+      if (p && cats[p]) cats[p].categories.push(c); else top.push(c);
+    });
+    data.categories = top;
+    return data;
+  }
+  function refreshCustom() { if (baseVocab) { vocab = applyCustom(baseVocab); render(); } }
+
+  function findWord(id) {
+    var found = null;
+    allCategories().forEach(function (c) { c.words.forEach(function (w) { if (w.id === id && !found) found = { w: w, cat: c }; }); });
+    return found;
+  }
+  function baseItem(kind, id) {
+    var found = null;
+    (function walk(list) {
+      list.forEach(function (c) {
+        if (kind === 'cat' && c.id === id) found = c;
+        if (kind === 'word') c.words.forEach(function (w) { if (w.id === id) found = w; });
+        walk(subcats(c));
+      });
+    })(baseVocab ? baseVocab.categories : []);
+    return found;
+  }
+  function userEntry(kind, id) {
+    var list = kind === 'cat' ? custom.newCats : custom.newWords;
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
+    return null;
+  }
+  function newId(prefix) { return prefix + Date.now().toString(36) + Math.floor(Math.random() * 1e6).toString(36); }
+
+  /* Zdjęcie z telefonu → kwadrat 320×320 JPEG (data: URL), żeby zmieściło się w pamięci. */
+  function readPhoto(file, cb) {
+    var url;
+    try { url = URL.createObjectURL(file); } catch (e) { cb(null); return; }
+    var img = new Image();
+    img.onload = function () {
+      try {
+        var side = Math.min(img.naturalWidth, img.naturalHeight), size = Math.min(320, side);
+        var c = document.createElement('canvas');
+        c.width = c.height = size;
+        c.getContext('2d').drawImage(img, (img.naturalWidth - side) / 2, (img.naturalHeight - side) / 2, side, side, 0, 0, size, size);
+        cb(c.toDataURL('image/jpeg', 0.82));
+      } catch (e) { cb(null); }
+      URL.revokeObjectURL(url);
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); cb(null); };
+    img.src = url;
+  }
+
+  /* ---- Okno edycji ---- */
+  var ed = {
+    dlg: document.getElementById('edit-dialog'), form: document.getElementById('edit-form'),
+    title: document.getElementById('edit-title'), preview: document.getElementById('edit-preview'),
+    label: document.getElementById('edit-text-label'), text: document.getElementById('edit-text'),
+    emoji: document.getElementById('edit-emoji'), err: document.getElementById('edit-error'),
+    photo: document.getElementById('edit-photo'), reset: document.getElementById('edit-reset'),
+    cut: document.getElementById('edit-cut'), copy: document.getElementById('edit-copy'),
+    del: document.getElementById('edit-delete'), save: document.getElementById('edit-save'),
+    cancel: document.getElementById('edit-cancel'), file: document.getElementById('edit-file')
+  };
+  var editing = null; // { kind, id (null = nowy), user, parent, photo: undefined | data URL | null (usuń) , emoji, image }
+
+  function showPreview() {
+    clear(ed.preview);
+    var image = editing.photo === undefined ? editing.image : (editing.photo || editing.origImage);
+    var emoji = editing.user || !editing.id ? ed.emoji.value.trim() : editing.emojiShown;
+    if (image || emoji) ed.preview.appendChild(pictureNode(emoji, image));
+  }
+
+  function openEditor(kind, id) {
+    var item = null, user = false;
+    if (id) {
+      item = kind === 'cat' ? categoryById(id) : (findWord(id) || {}).w;
+      if (!item) return;
+      user = !!item.user;
+    }
+    var isNew = !id;
+    editing = { kind: kind, id: id, user: user, photo: undefined,
+      parent: state.screen === 'category' ? state.cat : '',
+      image: item ? item.image : undefined, emojiShown: item ? item.emoji : '',
+      origImage: !isNew && !user ? (baseItem(kind, id) || {}).image : undefined };
+    ed.title.textContent = ui(isNew ? (kind === 'cat' ? 'newCat' : 'newWord') : (kind === 'cat' ? 'editCat' : 'editWord'));
+    ed.label.textContent = ui(kind === 'cat' ? 'nameLabel' : 'textLabel');
+    ed.text.value = item ? (kind === 'cat' ? item.name : item.text) : '';
+    ed.emoji.hidden = !(isNew || user);
+    ed.emoji.placeholder = ui('emojiPlaceholder');
+    ed.emoji.value = item && (isNew || user) ? (item.emoji || '') : '';
+    ed.err.hidden = true;
+    ed.photo.textContent = ui('photoBtn');
+    ed.reset.textContent = ui('resetBtn');
+    ed.cut.textContent = ui('cutBtn');
+    ed.copy.textContent = ui('copyBtn');
+    ed.save.textContent = ui('save');
+    ed.cancel.textContent = ui('cancel');
+    var o = id && !user ? (kind === 'cat' ? custom.cats[id] : custom.words[id]) : null;
+    ed.reset.hidden = !(o && ((o.text && o.text[lang]) || (o.name && o.name[lang]) || o.photo));
+    ed.cut.hidden = isNew;
+    ed.copy.hidden = isNew || kind === 'cat';
+    ed.cut.parentNode.hidden = isNew;
+    ed.del.hidden = isNew;
+    ed.del.textContent = item && item._hidden ? ui('restoreBtn') : ui('deleteBtn');
+    ed.del.className = 'dlg-btn ' + (item && item._hidden ? 'save' : 'danger');
+    showPreview();
+    openDialog(ed.dlg);
+    // Bez automatycznej klawiatury – zasłaniała przyciski; pojawia się po dotknięciu pola tekstu.
+    setTimeout(function () { try { if (document.activeElement) document.activeElement.blur(); } catch (e) { /* ignoruj */ } }, 0);
+  }
+
+  function closeEditor() { closeDialog(ed.dlg); editing = null; }
+  function editorFail(msg) { ed.err.textContent = msg; ed.err.hidden = false; }
+
+  ed.emoji.addEventListener('input', function () { if (editing) showPreview(); });
+  ed.text.addEventListener('input', function () { ed.err.hidden = true; });
+  ed.cancel.addEventListener('click', closeEditor);
+  ed.dlg.addEventListener('cancel', function (e) { e.preventDefault(); closeEditor(); });
+  ed.photo.addEventListener('click', function () { ed.file.value = ''; ed.file.click(); });
+  ed.file.addEventListener('change', function () {
+    var f = ed.file.files && ed.file.files[0];
+    if (!f || !editing) return;
+    readPhoto(f, function (url) {
+      if (!editing) return;
+      if (!url) { editorFail(ui('photoError')); return; }
+      editing.photo = url;
+      showPreview();
+    });
+  });
+
+  ed.form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!editing) return;
+    var text = ed.text.value.trim();
+    if (!text) { editorFail(ui('textEmpty')); return; }
+    var k = editing.kind, emoji = ed.emoji.value.trim();
+    if (!editing.id) {
+      if (k === 'word') {
+        if (!editing.parent) return closeEditor();
+        custom.newWords.push({ id: newId('u-'), cat: editing.parent, text: text, emoji: emoji, photo: editing.photo || undefined });
+      } else {
+        var pc = editing.parent ? categoryById(editing.parent) : null;
+        custom.newCats.push({ id: newId('uc-'), parent: editing.parent, name: text, emoji: emoji,
+          color: pc ? pc.color : '#E3F2FD', photo: editing.photo || undefined });
+      }
+    } else if (editing.user) {
+      var en = userEntry(k, editing.id);
+      if (en) {
+        if (k === 'cat') en.name = text; else en.text = text;
+        en.emoji = emoji;
+        if (editing.photo !== undefined) en.photo = editing.photo || undefined;
+      }
+    } else {
+      var store = k === 'cat' ? custom.cats : custom.words;
+      var o = store[editing.id] || (store[editing.id] = {});
+      var key = k === 'cat' ? 'name' : 'text';
+      var orig = baseItem(k, editing.id);
+      o[key] = o[key] || {};
+      if (orig && text === orig[key]) delete o[key][lang]; else o[key][lang] = text;
+      if (editing.photo !== undefined) { if (editing.photo) o.photo = editing.photo; else delete o.photo; }
+    }
+    if (!saveCustom()) { editorFail(ui('noSpace')); return; }
+    closeEditor();
+    refreshCustom();
+  });
+
+  // ↩️ Przywróć oryginał – tekst i obrazek ze słownika (przeniesienie i ukrycie zostają).
+  ed.reset.addEventListener('click', function () {
+    if (!editing || !editing.id || editing.user) return;
+    var o = (editing.kind === 'cat' ? custom.cats : custom.words)[editing.id];
+    if (o) { delete o.photo; if (o.text) delete o.text[lang]; if (o.name) delete o.name[lang]; }
+    saveCustom();
+    closeEditor();
+    refreshCustom();
+  });
+
+  // 🗑️ Usuń: słowo/kategoria ze słownika → ukryte (można przywrócić); własne → usunięte na stałe.
+  ed.del.addEventListener('click', function () {
+    if (!editing || !editing.id) return;
+    var k = editing.kind, id = editing.id, label = ed.text.value.trim();
+    if (!editing.user) {
+      var store = k === 'cat' ? custom.cats : custom.words;
+      var o = store[id] || (store[id] = {});
+      o.hidden = !o.hidden;
+      if (!o.hidden) delete o.hidden;
+      saveCustom();
+      closeEditor();
+      refreshCustom();
+      return;
+    }
+    closeEditor();
+    askYesNo(ui('deleteBtn').replace(/^\S+\s/, '') + ' „' + label + '”?', function () {
+      if (k === 'word') custom.newWords = custom.newWords.filter(function (n) { return n.id !== id; });
+      else {
+        custom.newCats = custom.newCats.filter(function (n) { return n.id !== id; });
+        custom.newWords = custom.newWords.filter(function (n) { return n.cat !== id; });
+        Object.keys(custom.words).forEach(function (w) { if (custom.words[w].cat === id) delete custom.words[w].cat; });
+        Object.keys(custom.cats).forEach(function (c) { if (custom.cats[c].parent === id) delete custom.cats[c].parent; });
+        custom.newCats.forEach(function (n) { if (n.parent === id) n.parent = ''; });
+      }
+      saveCustom();
+      if (clip && clip.id === id) clip = null;
+      refreshCustom();
+    });
+  });
+
+  /* ---- Schowek: wytnij / kopiuj → wklej w bieżącej kategorii ---- */
+  var clip = null; // { kind, id, mode: 'cut' | 'copy', label }
+  var bar = {
+    el: document.getElementById('edit-bar'), info: document.getElementById('edit-clip'),
+    paste: document.getElementById('edit-paste'), clear: document.getElementById('edit-clip-clear'),
+    done: document.getElementById('edit-done')
+  };
+  ed.cut.addEventListener('click', function () {
+    if (!editing || !editing.id) return;
+    clip = { kind: editing.kind, id: editing.id, mode: 'cut', label: ed.text.value.trim() };
+    closeEditor(); updateEditBar();
+  });
+  ed.copy.addEventListener('click', function () {
+    if (!editing || !editing.id || editing.kind !== 'word') return;
+    clip = { kind: 'word', id: editing.id, mode: 'copy', label: ed.text.value.trim() };
+    closeEditor(); updateEditBar();
+  });
+
+  function pasteTarget() {
+    if (state.screen === 'category') return state.cat;
+    if (state.screen === 'home' && clip && clip.kind === 'cat') return '';
+    return null; // słowo można wkleić tylko w kategorii
+  }
+  function isInside(catId, ancestorId) { // czy catId leży w ancestorId (albo nim jest)
+    var n = 0, c = catId;
+    while (c && n++ < 50) {
+      if (c === ancestorId) return true;
+      var parent = null;
+      allCategories().forEach(function (x) { if (subcats(x).some(function (s) { return s.id === c; })) parent = x.id; });
+      c = parent;
+    }
+    return false;
+  }
+
+  function updateEditBar() {
+    document.body.classList.toggle('editing', editMode);
+    bar.el.hidden = !editMode;
+    if (!editMode) return;
+    bar.done.textContent = ui('editBarDone');
+    var target = pasteTarget();
+    if (!clip) {
+      bar.info.textContent = ui('editBarHint');
+      bar.paste.hidden = bar.clear.hidden = true;
+      return;
+    }
+    var label = ui(clip.mode === 'cut' ? 'clipCut' : 'clipCopy').replace('{x}', clip.label);
+    bar.info.textContent = target === null ? ui('pasteGoCategory').replace('{clip}', label) : label;
+    bar.paste.textContent = ui('pasteHere');
+    bar.paste.hidden = target === null;
+    bar.clear.hidden = false;
+  }
+
+  bar.clear.addEventListener('click', function () { clip = null; updateEditBar(); });
+  bar.done.addEventListener('click', function () {
+    editMode = false;
+    clip = null;
+    var depth = state.depth || 0;
+    state = { screen: 'home', depth: 0 };
+    if (depth) { try { history.go(-depth); } catch (e) { /* ignoruj */ } }
+    refreshCustom();
+    window.scrollTo(0, 0);
+  });
+  bar.paste.addEventListener('click', function () {
+    var target = pasteTarget();
+    if (!clip || target === null) return;
+    var id = clip.id;
+    if (clip.kind === 'word') {
+      if (clip.mode === 'copy') {
+        var src = findWord(id);
+        if (!src) { clip = null; updateEditBar(); return; }
+        custom.newWords.push({ id: newId('u-'), cat: target, text: src.w.text, emoji: src.w.emoji, photo: src.w.image });
+      } else {
+        var en = userEntry('word', id);
+        if (en) {
+          custom.newWords = custom.newWords.filter(function (n) { return n !== en; });
+          en.cat = target;
+          custom.newWords.push(en); // na koniec kategorii
+        } else {
+          var o = custom.words[id] || (custom.words[id] = {});
+          o.cat = target; o.t = Date.now();
+        }
+        clip = null;
+      }
+    } else {
+      if (target && isInside(target, id)) { alertBar(ui('pasteIntoSelf')); return; }
+      var ce = userEntry('cat', id);
+      if (ce) ce.parent = target;
+      else (custom.cats[id] || (custom.cats[id] = {})).parent = target;
+      clip = null;
+    }
+    if (!saveCustom()) { alertBar(ui('noSpace')); return; }
+    refreshCustom();
+  });
+  function alertBar(msg) { bar.info.textContent = msg; }
+
+  /* ---- Wejście w tryb edycji z ekranu logowania ---- */
+  el.editModeBtn.addEventListener('click', function () {
+    var u = userById(el.userSelect.value);
+    if (!u) return;
+    askCode(ui('editModeTitle'), ui('editModeInstr'), ui('editEnter'), function () { loginAs(u, true); });
+  });
 
   showLogin();
 

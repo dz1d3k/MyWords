@@ -12,8 +12,19 @@ początkowego wygląda jak zwykła aplikacja i działa także bez internetu.
   Na dole listy jest **➕ Dodaj nowego użytkownika** – wpisz imię i **Zapisz**.
   Każdy użytkownik ma własne: ulubione, język, głos, tempo mowy i pasek zdania – zapisywane automatycznie.
   To profile na tym telefonie (bez haseł); nie przenoszą się na inne urządzenia.
-  **⏻** (czerwony) w górnym pasku wylogowuje – trzeba wpisać wylosowaną liczbę 01–99 i dotknąć **Wyloguj**
+  **⏻** (czerwony) w górnym pasku wylogowuje – aplikacja pokazuje liczbę 100–999 **zapisaną słownie**
+  (np. „sześćset dwadzieścia jeden”), trzeba wpisać ją cyframi (621) i dotknąć **Wyloguj**
   (błędna liczba: „Błędna liczba.”). Duży **Cofnij** wraca do aplikacji.
+- **✏️ Tryb edycji** (od 0.35) – na ekranie logowania wybierz użytkownika, dotknij **✏️ Tryb edycji** i przejdź ten sam
+  test z liczbą słownie. Zmiany dotyczą tylko tego użytkownika na tym telefonie i **aktualizacje słownika ich nie kasują**.
+  - przy każdym kafelku i kategorii jest **✏️**: zmiana tekstu (to mówi aplikacja), **📷 zdjęcie z telefonu**
+    (galeria lub aparat; przycinane do kwadratu, ok. 10 KB), **↩️ Przywróć oryginał**, **✂️ Wytnij**, **📋 Kopiuj** (kafelki),
+    **🗑️ Usuń** – kafelki i kategorie ze słownika są tylko ukrywane (w edycji wyszarzone 🚫, można **♻️ Przywróć**),
+    własne są usuwane na stałe,
+  - po Wytnij/Kopiuj na żółtym pasku u góry jest **Wklej tutaj** – wkleja do otwartej kategorii
+    (kategorię można wkleić też na ekranie startowym),
+  - na końcu listy: **➕ Dodaj kafelek** i **➕ Dodaj kategorię** (tekst, emoji, zdjęcie),
+  - **Zakończ edycję** na pasku – powrót do zwykłego używania (dalej zalogowany).
 - **Usuwanie użytkownika** – na ekranie logowania wybierz użytkownika i dotknij **Usuń użytkownika**.
   Trzeba przepisać dokładnie jego nazwę z dopisanym **12** na końcu (np. Jan → `Jan12`, wielkość liter ma znaczenie).
   Błędny wpis jest kasowany i pojawia się „Błędnie wpisana wartość.”; **Cofnij** wraca do logowania.
