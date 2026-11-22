@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "dictionaryVersion": "1.06",
+  "dictionaryVersion": "1.07",
   "language": "en-US",
   "categories": [
     {
@@ -1264,6 +1264,11 @@
           "emoji": "▶️",
           "text": "YouTube",
           "image": "images/youtube.svg"
+        },
+        {
+          "id": "bing",
+          "emoji": "🐰",
+          "text": "Bing"
         },
         {
           "id": "inna-bajka-albo-gra",
