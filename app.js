@@ -490,7 +490,7 @@
     if (image) {
       var img = document.createElement('img');
       img.className = 'pic';
-      img.src = dictUrl(image);
+      img.src = remoteImages[image] || dictUrl(image);
       img.alt = '';
       img.draggable = false;
       img.onerror = function () { img.replaceWith(document.createTextNode(emoji || '')); };
@@ -593,6 +593,7 @@
     el.settingsWrap.hidden = !isHome || !vocab;
     if (isHome && hl !== null) { hl = null; renderStrip(false); } // na ekranie startowym nic nie jest podświetlone
     el.langWrap.hidden = !isHome;
+    if (isHome && remoteDictPending) setTimeout(applyPendingDict, 0); // nowy słownik z internetu czekał na ekran startowy
 
     if (!vocab) {
       setTitle('', ui('appTitle'));
@@ -1026,6 +1027,121 @@
     speak(strip.slice(from).map(function (it) { return it.text; }).join(' '));
   });
 
+  /* ---------------- Zdalny słownik (aplikacja Android) ----------------
+   * Strona (PWA) dostaje nowy słownik przez service workera. Aplikacja Android ma słownik w paczce APK,
+   * więc sama sprawdza w internecie (GitHub Pages), czy jest nowszy "dictionaryVersion".
+   * Nowy słownik jest przyjmowany w całości albo wcale: oba języki + wszystkie obrazki (jako data: URL),
+   * zapisane w pamięci telefonu – działa potem bez internetu. Starszy lub zepsuty słownik z sieci
+   * jest ignorowany; słownik z APK zawsze zostaje jako zapas.
+   * Nowe słowa pojawiają się po powrocie na ekran startowy, żeby kafelki nie zmieniały się pod palcem. */
+  var REMOTE_DICT_BASE = 'https://dz1d3k.github.io/MyWords/';
+  var LS_REMOTE_DICT = 'mojeSlowa.remoteDictionary';
+  var LS_REMOTE_BASE = 'mojeSlowa.remoteDictionaryBase'; // tylko do testów: inny adres słownika
+  var REMOTE_CHECK_EVERY = 6 * 60 * 60 * 1000;          // telefon w trybie kiosku może nie być restartowany
+  GLOBAL_KEYS[LS_REMOTE_DICT] = true;
+  GLOBAL_KEYS[LS_REMOTE_BASE] = true;
+  var remoteImages = {};      // obrazki aktualnie używanego zdalnego słownika: ścieżka → data: URL
+  var remoteDictPending = false;
+  var remoteCheckedAt = 0, remoteChecking = false;
+
+  function remoteBase() { return rawGet(LS_REMOTE_BASE) || REMOTE_DICT_BASE; }
+  function remoteDictEnabled() { return isNativeApp() || !!rawGet(LS_REMOTE_BASE); }
+
+  // "1.10" > "1.9" – porównanie liczb po kropkach.
+  function versionNewer(a, b) {
+    var pa = String(a || '0').split('.'), pb = String(b || '0').split('.');
+    for (var i = 0; i < Math.max(pa.length, pb.length); i++) {
+      var x = parseInt(pa[i] || '0', 10) || 0, y = parseInt(pb[i] || '0', 10) || 0;
+      if (x !== y) return x > y;
+    }
+    return false;
+  }
+  function eachWord(data, fn) {
+    (function walk(list) {
+      list.forEach(function (c) { c.words.forEach(function (w) { fn(w, c); }); walk(subcats(c)); });
+    })(data.categories);
+  }
+  function hasWordIds(data) {
+    var ok = true;
+    eachWord(data, function (w) { if (typeof w.id !== 'string' || !w.id) ok = false; });
+    return ok;
+  }
+  function storedRemoteDict() {
+    try {
+      var s = JSON.parse(rawGet(LS_REMOTE_DICT) || 'null');
+      return s && s.version && s.files && s.images ? s : null;
+    } catch (e) { return null; }
+  }
+
+  function blobToDataUrl(blob) {
+    return new Promise(function (resolve, reject) {
+      var r = new FileReader();
+      r.onload = function () { resolve(r.result); };
+      r.onerror = reject;
+      r.readAsDataURL(blob);
+    });
+  }
+  function fetchOk(url, asJson) {
+    return fetch(url, { cache: 'no-store' }).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return asJson ? r.json() : r.blob();
+    });
+  }
+
+  function checkRemoteDict() {
+    if (!remoteDictEnabled() || remoteChecking || !vocab) return;
+    if (Date.now() - remoteCheckedAt < REMOTE_CHECK_EVERY) return;
+    remoteChecking = true;
+    remoteCheckedAt = Date.now();
+    var base = remoteBase();
+    var codes = Object.keys(LANGS);
+    var have = vocab.dictionaryVersion;
+    var stored = storedRemoteDict();
+    if (stored && versionNewer(stored.version, have)) have = stored.version;
+    var files = {}, version = null;
+    Promise.all(codes.map(function (k) { return fetchOk(new URL(LANGS[k].file, base).href, true); }))
+      .then(function (list) {
+        list.forEach(function (data, i) {
+          if (!valid(data) || !hasWordIds(data)) throw new Error('bad format');
+          if (version === null) version = data.dictionaryVersion;
+          if (data.dictionaryVersion !== version) throw new Error('versions differ');
+          files[LANGS[codes[i]].file] = data;
+        });
+        if (!versionNewer(version, have)) throw new Error('not newer');
+        var paths = {};
+        list.forEach(function (data) {
+          (function walk(cats) {
+            cats.forEach(function (c) {
+              if (c.image) paths[c.image] = true;
+              c.words.forEach(function (w) { if (w.image) paths[w.image] = true; });
+              walk(subcats(c));
+            });
+          })(data.categories);
+        });
+        var dictFile = new URL(LANGS[codes[0]].file, base).href;
+        var images = {};
+        return Promise.all(Object.keys(paths).map(function (p) {
+          return fetchOk(new URL(p, dictFile).href, false)
+            .then(blobToDataUrl)
+            .then(function (url) { images[p] = url; });
+        })).then(function () {
+          window.localStorage.setItem(LS_REMOTE_DICT, JSON.stringify({ version: version, files: files, images: images }));
+          remoteDictPending = true;
+          if (state.screen === 'home') applyPendingDict();
+        });
+      })
+      .catch(function () { /* brak internetu, starszy lub zepsuty słownik – zostaje obecny */ })
+      .then(function () { remoteChecking = false; });
+  }
+  function applyPendingDict() {
+    if (!remoteDictPending || !currentUser) return;
+    remoteDictPending = false;
+    loadVocab();
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible' && currentUser) checkRemoteDict();
+  });
+
   var loadSeq = 0;
   function loadVocab(onLoaded) {
     var seq = ++loadSeq;
@@ -1037,12 +1153,20 @@
       .then(function (data) {
         if (seq !== loadSeq) return; // w międzyczasie wybrano inny język
         if (!valid(data)) throw new Error('bad format');
+        // Nowszy słownik pobrany z internetu (aplikacja Android) ma pierwszeństwo przed tym z APK.
+        var stored = remoteDictEnabled() ? storedRemoteDict() : null;
+        remoteImages = {};
+        if (stored && stored.files[L().file] && versionNewer(stored.version, data.dictionaryVersion)) {
+          data = stored.files[L().file];
+          remoteImages = stored.images;
+        }
         vocab = data;
         migrateFavs();
         render();
         showVersion();
-        cacheDictionary(data);
+        if (!Object.keys(remoteImages).length) cacheDictionary(data); // zdalny słownik ma obrazki w pamięci telefonu
         checkVoice();
+        checkRemoteDict();
         if (onLoaded) onLoaded();
       })
       .catch(function () {

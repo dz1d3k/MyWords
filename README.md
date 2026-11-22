@@ -125,6 +125,13 @@ Obie wersje widać na ekranie startowym pod wyborem języka – tak sprawdzisz, 
 - Nowy **słownik** (słowa, obrazki) pojawia się przy **najbliższym** otwarciu aplikacji z internetem.
   Bez internetu aplikacja używa ostatnio pobranego słownika.
 - Nowa **wersja aplikacji** pojawia się przy **drugim** otwarciu (pierwsze pobiera ją w tle).
+- **Aplikacja Android** ma słownik w paczce APK, ale sama sprawdza słownik na stronie
+  (`https://dz1d3k.github.io/MyWords/dictionary/…`): przy starcie i potem co 6 godzin, gdy jest internet.
+  Gdy `dictionaryVersion` tam jest wyższa, pobiera **oba** języki i **wszystkie** obrazki, zapisuje w telefonie
+  i pokazuje nowe słowa po powrocie na ekran startowy (żeby kafelek nie zmienił się dziecku pod palcem).
+  Dalej działa bez internetu. Starszy słownik, słownik bez `id` słów albo błąd pobierania – zostaje obecny.
+  Czyli: nowe słowa trafiają na telefony, gdy zmiana słownika jest na gałęzi `main` na GitHubie
+  (GitHub Pages odświeża się do ~10 minut). Nowy APK potrzebny jest tylko przy zmianie kodu aplikacji.
 
 Aplikacja Flutter ma wczytywać ten sam plik `dictionary/vocabulary.json` (obrazki: ścieżka z pola `image`
 względem tego pliku) – nie zmieniaj jego struktury.
