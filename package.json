@@ -9,7 +9,8 @@
     "build:android": "npm run build:web && npx cap sync android",
     "open:android": "npx cap open android",
     "run:android": "npm run build:android && npx cap run android",
-    "check:dict": "node scripts/check-dictionary.mjs"
+    "check:dict": "node scripts/check-dictionary.mjs",
+    "release:android": "node scripts/release-android.mjs"
   },
   "dependencies": {
     "@capacitor-community/text-to-speech": "^8.0.2",

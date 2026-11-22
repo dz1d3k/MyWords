@@ -25,7 +25,26 @@
     <select id="user-select" class="login-select"></select>
     <button id="btn-login" class="login-btn" type="button" data-i18n="login" disabled>Zaloguj</button>
     <button id="btn-delete-user" class="login-delete" type="button" data-i18n="deleteUser" disabled>Usuń użytkownika</button>
+    <button id="btn-check-updates" class="login-updates" type="button" data-i18n="updatesBtn">🔄 Sprawdź aktualizacje</button>
   </section>
+
+  <!-- Sprawdź aktualizacje (ekran logowania): tylko sprawdza; aktualizuje dopiero „KLIKNIJ TUTAJ” -->
+  <dialog id="updates-dialog" class="settings">
+    <div class="settings-inner">
+      <h2 data-i18n="updatesTitle">Aktualizacje</h2>
+      <section class="update-part">
+        <h3 data-i18n="appVersionTitle">Wersja aplikacji</h3>
+        <p id="update-app-status" class="update-status"></p>
+        <button id="btn-update-app" class="dlg-btn save" type="button" data-i18n="clickHere" hidden>KLIKNIJ TUTAJ</button>
+      </section>
+      <section class="update-part">
+        <h3 data-i18n="dictVersionTitle">Wersja słownika</h3>
+        <p id="update-dict-status" class="update-status"></p>
+        <button id="btn-update-dict" class="dlg-btn save" type="button" data-i18n="clickHere" hidden>KLIKNIJ TUTAJ</button>
+      </section>
+      <button id="btn-updates-close" class="dlg-btn cancel" type="button" data-i18n="done">Gotowe</button>
+    </div>
+  </dialog>
 
   <!-- Wylogowanie: trzeba wpisać wylosowaną liczbę 01–99 (żeby dziecko nie wylogowało się przypadkiem) -->
   <dialog id="logout-dialog" class="settings">

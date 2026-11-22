@@ -18,6 +18,7 @@ public class MainActivity extends BridgeActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        registerPlugin(AppUpdaterPlugin.class); // „Sprawdź aktualizacje” – pobranie i instalacja nowego APK
         super.onCreate(savedInstanceState);
         // Ekran nie gaśnie, dopóki aplikacja jest na wierzchu.
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

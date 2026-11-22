@@ -567,6 +567,20 @@ body.logged-out #settings-wrap { display: none !important; }
   font-weight: 700;
 }
 .login-delete:disabled { opacity: .35; }
+.login-updates {
+  margin-top: 14px;
+  align-self: center;
+  background: transparent;
+  color: var(--muted);
+  border: 2px solid currentColor;
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-size: 17px;
+  font-weight: 700;
+}
+.update-part { display: flex; flex-direction: column; gap: 10px; padding: 12px 0; border-top: 1px solid rgba(127, 127, 127, .3); }
+.update-part h3 { margin: 0; font-size: 19px; }
+.update-status { margin: 0; font-size: 17px; line-height: 1.45; }
 .delete-instr { margin: 0; font-size: 17px; line-height: 1.45; }
 .dlg-btn.danger { background: #D32F2F; color: #FFFFFF; }
 

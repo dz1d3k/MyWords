@@ -46,6 +46,20 @@
         language: '🌐 Język', version: 'Wersja aplikacji', dictVersion: 'słownik', settingsBtn: '⚙️ Ustawienia głosu', settingsTitle: 'Ustawienia głosu',
         voice: 'Głos', rate: 'Tempo', test: '🔊 Test', done: 'Gotowe',
         voiceFemale: '👩 Głos żeński', voiceMale: '👨 Głos męski', voiceDefault: 'Głos domyślny telefonu',
+        updatesBtn: '🔄 Sprawdź aktualizacje', updatesTitle: 'Aktualizacje',
+        appVersionTitle: 'Wersja aplikacji', dictVersionTitle: 'Wersja słownika', checking: 'Sprawdzam…', clickHere: 'KLIKNIJ TUTAJ',
+        appUpToDate: 'Twoja wersja aplikacji jest aktualna ({cur}).',
+        appAvailable: 'Możesz zaktualizować aplikację (Twoja wersja to {cur}, dostępna {new}).',
+        dictUpToDate: 'Twoja wersja słownika jest aktualna ({cur}).',
+        dictAvailable: 'Możesz zaktualizować słownik (Twoja wersja to {cur}, dostępna {new}).',
+        checkFailed: 'Nie udało się sprawdzić. Sprawdź połączenie z internetem.',
+        appDownloading: 'Pobieram aktualizację aplikacji…',
+        appInstaller: 'Otworzyło się okno instalacji – dotknij „Aktualizuj”.',
+        appNeedPermission: 'Zezwól MeTalk na instalowanie aplikacji (otworzyły się ustawienia), wróć tutaj i kliknij ponownie.',
+        appUpdateFailed: 'Nie udało się zaktualizować aplikacji: {err}',
+        appWebReload: 'Wczytuję nową wersję…',
+        dictDownloading: 'Pobieram słownik…',
+        dictUpdated: 'Słownik zaktualizowany do wersji {new}. Nowe słowa będą widoczne po zalogowaniu.',
         noVoice: 'Nie znaleziono polskiego głosu. Zostanie użyty głos domyślny.',
         noSpeech: 'Ta przeglądarka nie obsługuje mowy.',
         hello: 'Cześć!', testPhrase: 'Cześć! To jest mój głos.', langSpoken: 'Polski',
@@ -75,6 +89,20 @@
         language: '🌐 Language', version: 'App version', dictVersion: 'dictionary', settingsBtn: '⚙️ Voice settings', settingsTitle: 'Voice settings',
         voice: 'Voice', rate: 'Speed', test: '🔊 Test', done: 'Done',
         voiceFemale: '👩 Female voice', voiceMale: '👨 Male voice', voiceDefault: 'Phone default voice',
+        updatesBtn: '🔄 Check for updates', updatesTitle: 'Updates',
+        appVersionTitle: 'App version', dictVersionTitle: 'Dictionary version', checking: 'Checking…', clickHere: 'TAP HERE',
+        appUpToDate: 'Your app version is up to date ({cur}).',
+        appAvailable: 'You can update the app (your version is {cur}, {new} is available).',
+        dictUpToDate: 'Your dictionary version is up to date ({cur}).',
+        dictAvailable: 'You can update the dictionary (your version is {cur}, {new} is available).',
+        checkFailed: 'Could not check. Check your internet connection.',
+        appDownloading: 'Downloading the app update…',
+        appInstaller: 'The install window has opened – tap “Update”.',
+        appNeedPermission: 'Allow MeTalk to install apps (settings have opened), come back here and tap again.',
+        appUpdateFailed: 'Could not update the app: {err}',
+        appWebReload: 'Loading the new version…',
+        dictDownloading: 'Downloading the dictionary…',
+        dictUpdated: 'Dictionary updated to version {new}. New words will show after logging in.',
         noVoice: 'No English voice found. The default voice will be used.',
         noSpeech: 'This browser does not support speech.',
         hello: 'Hello!', testPhrase: 'Hello! This is my voice.', langSpoken: 'English',
@@ -1127,48 +1155,70 @@
     });
   }
 
-  function checkRemoteDict() {
-    if (!remoteDictEnabled() || remoteChecking || !vocab) return;
-    if (Date.now() - remoteCheckedAt < REMOTE_CHECK_EVERY) return;
-    remoteChecking = true;
-    remoteCheckedAt = Date.now();
-    var base = remoteBase();
-    var codes = Object.keys(LANGS);
-    var have = vocab.dictionaryVersion;
-    var stored = storedRemoteDict();
-    if (stored && versionNewer(stored.version, have)) have = stored.version;
-    var files = {}, version = null;
-    Promise.all(codes.map(function (k) { return fetchOk(new URL(LANGS[k].file, base).href, true); }))
+  // Wersja słownika, którego aplikacja teraz używa: z paczki albo nowsza, pobrana wcześniej z internetu.
+  function currentDictVersion() {
+    return fetch(L().file).then(function (r) { return r.json(); }).then(function (data) {
+      var v = data.dictionaryVersion;
+      var s = remoteDictEnabled() ? storedRemoteDict() : null;
+      return s && versionNewer(s.version, v) ? s.version : v;
+    });
+  }
+
+  // Oba pliki słów z internetu → { version, files, list }; błąd, gdy zepsute albo wersje PL/EN się różnią.
+  function fetchRemoteDictFiles() {
+    var base = remoteBase(), codes = Object.keys(LANGS);
+    return Promise.all(codes.map(function (k) { return fetchOk(new URL(LANGS[k].file, base).href, true); }))
       .then(function (list) {
+        var files = {}, version = null;
         list.forEach(function (data, i) {
           if (!valid(data) || !hasWordIds(data)) throw new Error('bad format');
           if (version === null) version = data.dictionaryVersion;
           if (data.dictionaryVersion !== version) throw new Error('versions differ');
           files[LANGS[codes[i]].file] = data;
         });
-        if (!versionNewer(version, have)) throw new Error('not newer');
-        var paths = {};
-        list.forEach(function (data) {
-          (function walk(cats) {
-            cats.forEach(function (c) {
-              if (c.image) paths[c.image] = true;
-              c.words.forEach(function (w) { if (w.image) paths[w.image] = true; });
-              walk(subcats(c));
-            });
-          })(data.categories);
-        });
-        var dictFile = new URL(LANGS[codes[0]].file, base).href;
-        var images = {};
-        return Promise.all(Object.keys(paths).map(function (p) {
-          return fetchOk(new URL(p, dictFile).href, false)
-            .then(blobToDataUrl)
-            .then(function (url) { images[p] = url; });
-        })).then(function () {
-          window.localStorage.setItem(LS_REMOTE_DICT, JSON.stringify({ version: version, files: files, images: images }));
-          remoteDictPending = true;
-          if (state.screen === 'home') applyPendingDict();
-        });
-      })
+        return { version: version, files: files, list: list, dictFile: new URL(LANGS[codes[0]].file, base).href };
+      });
+  }
+
+  // Pobiera słownik nowszy niż `have` razem ze wszystkimi obrazkami i zapisuje w telefonie.
+  // Wszystko albo nic. Promise<nowa wersja>; błąd 'not newer', gdy w internecie nie ma nowszego.
+  function downloadRemoteDict(have) {
+    return fetchRemoteDictFiles().then(function (r) {
+      if (!versionNewer(r.version, have)) throw new Error('not newer');
+      var paths = {};
+      r.list.forEach(function (data) {
+        (function walk(cats) {
+          cats.forEach(function (c) {
+            if (c.image) paths[c.image] = true;
+            c.words.forEach(function (w) { if (w.image) paths[w.image] = true; });
+            walk(subcats(c));
+          });
+        })(data.categories);
+      });
+      var images = {};
+      return Promise.all(Object.keys(paths).map(function (p) {
+        return fetchOk(new URL(p, r.dictFile).href, false)
+          .then(blobToDataUrl)
+          .then(function (url) { images[p] = url; });
+      })).then(function () {
+        window.localStorage.setItem(LS_REMOTE_DICT, JSON.stringify({ version: r.version, files: r.files, images: images }));
+        remoteDictPending = true;
+        return r.version;
+      });
+    });
+  }
+
+  // Automatycznie: przy starcie i co 6 godzin (aplikacja Android).
+  function checkRemoteDict() {
+    if (!remoteDictEnabled() || remoteChecking || !vocab) return;
+    if (Date.now() - remoteCheckedAt < REMOTE_CHECK_EVERY) return;
+    remoteChecking = true;
+    remoteCheckedAt = Date.now();
+    var have = vocab.dictionaryVersion;
+    var stored = storedRemoteDict();
+    if (stored && versionNewer(stored.version, have)) have = stored.version;
+    downloadRemoteDict(have)
+      .then(function () { if (state.screen === 'home') applyPendingDict(); })
       .catch(function () { /* brak internetu, starszy lub zepsuty słownik – zostaje obecny */ })
       .then(function () { remoteChecking = false; });
   }
@@ -1179,6 +1229,131 @@
   }
   document.addEventListener('visibilitychange', function () {
     if (document.visibilityState === 'visible' && currentUser) checkRemoteDict();
+  });
+
+  /* ---------------- Sprawdź aktualizacje (ekran logowania) ----------------
+   * Przycisk tylko SPRAWDZA i pokazuje stan aplikacji i słownika. Aktualizuje dopiero „KLIKNIJ TUTAJ”:
+   *  - aplikacja Android: plugin AppUpdater pobiera APK z releases/latest.json i otwiera instalator,
+   *  - strona (PWA): nowa wersja z serwera (service worker) i przeładowanie,
+   *  - słownik: to samo pobieranie co automatyczne (downloadRemoteDict); na stronie – odświeżenie pamięci słownika.
+   * releases/latest.json = { "appVersion": "0.32", "apk": "MeTalk.apk", "sha256": "…" } – tworzy go
+   * scripts/release-android.mjs (npm run release:android). */
+  var LATEST_APP = 'releases/latest.json';
+  var upd = {
+    open: document.getElementById('btn-check-updates'),
+    dlg: document.getElementById('updates-dialog'),
+    appStatus: document.getElementById('update-app-status'),
+    appBtn: document.getElementById('btn-update-app'),
+    dictStatus: document.getElementById('update-dict-status'),
+    dictBtn: document.getElementById('btn-update-dict'),
+    close: document.getElementById('btn-updates-close')
+  };
+  var latestApp = null, latestDict = null;
+  function fmt(key, o) {
+    return ui(key).replace('{cur}', o.cur || '').replace('{new}', o.latest || '').replace('{err}', o.err || '');
+  }
+  function useReleaseFile() { return isNativeApp() || !!rawGet(LS_REMOTE_BASE); }
+
+  function checkAppUpdate() {
+    var cur = typeof APP_VERSION === 'string' ? APP_VERSION : '0';
+    if (useReleaseFile()) {
+      var url = new URL(LATEST_APP, remoteBase()).href;
+      return fetchOk(url, true).then(function (r) {
+        if (!r || !r.appVersion || !r.apk) throw new Error('bad release file');
+        return { cur: cur, latest: String(r.appVersion), apk: new URL(r.apk, url).href, sha256: r.sha256 || '' };
+      });
+    }
+    return fetch('version.js?check=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+      .then(function (t) {
+        var m = /APP_VERSION\s*=\s*'([^']+)'/.exec(t);
+        if (!m) throw new Error('no version');
+        return { cur: cur, latest: m[1], web: true };
+      });
+  }
+  function checkDictUpdate() {
+    return currentDictVersion().then(function (cur) {
+      var remote = remoteDictEnabled()
+        ? fetchRemoteDictFiles().then(function (r) { return r.version; })
+        : fetchOk(L().file + '?check=' + Date.now(), true).then(function (d) { return d.dictionaryVersion; });
+      return remote.then(function (v) { return { cur: cur, latest: v }; });
+    });
+  }
+
+  function showUpdateResult(r, statusEl, btn, keyAvail, keyOk) {
+    var newer = versionNewer(r.latest, r.cur);
+    statusEl.textContent = fmt(newer ? keyAvail : keyOk, r);
+    btn.hidden = !newer;
+    btn.disabled = false;
+    return newer ? r : null;
+  }
+  function checkUpdates() {
+    latestApp = latestDict = null;
+    upd.appBtn.hidden = upd.dictBtn.hidden = true;
+    upd.appStatus.textContent = upd.dictStatus.textContent = ui('checking');
+    checkAppUpdate()
+      .then(function (r) { latestApp = showUpdateResult(r, upd.appStatus, upd.appBtn, 'appAvailable', 'appUpToDate'); })
+      .catch(function () { upd.appStatus.textContent = ui('checkFailed'); });
+    checkDictUpdate()
+      .then(function (r) { latestDict = showUpdateResult(r, upd.dictStatus, upd.dictBtn, 'dictAvailable', 'dictUpToDate'); })
+      .catch(function () { upd.dictStatus.textContent = ui('checkFailed'); });
+  }
+
+  upd.open.addEventListener('click', function () { openDialog(upd.dlg); checkUpdates(); });
+  upd.close.addEventListener('click', function () { closeDialog(upd.dlg); });
+
+  upd.appBtn.addEventListener('click', function () {
+    var r = latestApp;
+    if (!r) return;
+    if (r.web) {
+      upd.appStatus.textContent = ui('appWebReload');
+      var reg = navigator.serviceWorker ? navigator.serviceWorker.getRegistration() : Promise.resolve(null);
+      reg.then(function (g) { return g && g.update(); }).catch(function () {})
+        .then(function () { setTimeout(function () { location.reload(); }, 1500); });
+      return;
+    }
+    var cap = window.Capacitor;
+    if (!cap || typeof cap.nativePromise !== 'function') {
+      upd.appStatus.textContent = fmt('appUpdateFailed', { err: 'brak modułu aktualizacji' });
+      return;
+    }
+    upd.appBtn.disabled = true;
+    upd.appStatus.textContent = ui('appDownloading');
+    cap.nativePromise('AppUpdater', 'downloadAndInstall', { url: r.apk, sha256: r.sha256 })
+      .then(function () { upd.appStatus.textContent = ui('appInstaller'); })
+      .catch(function (e) {
+        upd.appStatus.textContent = e && e.code === 'NEED_PERMISSION'
+          ? ui('appNeedPermission')
+          : fmt('appUpdateFailed', { err: (e && e.message) || String(e) });
+      })
+      .then(function () { upd.appBtn.disabled = false; });
+  });
+
+  upd.dictBtn.addEventListener('click', function () {
+    var r = latestDict;
+    if (!r) return;
+    upd.dictBtn.disabled = true;
+    upd.dictStatus.textContent = ui('dictDownloading');
+    if (!remoteDictEnabled()) {
+      // Strona: usuwamy zapamiętane pliki słów – po przeładowaniu przyjdą nowe z serwera.
+      if (!('caches' in window)) { location.reload(); return; }
+      caches.open('moje-slowa-dict').then(function (c) {
+        return c.keys().then(function (keys) {
+          return Promise.all(keys.filter(function (k) { return /\.json(\?|$)/.test(k.url); })
+            .map(function (k) { return c.delete(k); }));
+        });
+      }).catch(function () {}).then(function () { location.reload(); });
+      return;
+    }
+    downloadRemoteDict(r.cur)
+      .then(function (v) {
+        upd.dictStatus.textContent = fmt('dictUpdated', { latest: v });
+        upd.dictBtn.hidden = true;
+      })
+      .catch(function (e) {
+        upd.dictStatus.textContent = e && e.message === 'not newer' ? fmt('dictUpToDate', r) : ui('checkFailed');
+        upd.dictBtn.disabled = false;
+      });
   });
 
   var loadSeq = 0;

@@ -83,3 +83,26 @@ npm run run:android      # albo: buduje i instaluje na podłączonym telefonie/e
 2. Preferowany mechanizm: **Samsung TTS** albo **Usługi mowy Google** (Google ma zwykle lepszy polski głos).
 3. Ikona ⚙️ obok mechanizmu → **Zainstaluj dane głosowe** → **Polski** → pobierz (przy Wi‑Fi).
 4. Język: **Polski**. Test: „Odtwórz” – potem włącz tryb samolotowy i sprawdź, czy dalej mówi.
+
+## Aktualizacje (wersja 0.32+)
+
+Na **ekranie logowania** (po wylogowaniu) jest przycisk **🔄 Sprawdź aktualizacje**. Tylko sprawdza i pokazuje:
+
+- **Wersja aplikacji** – „aktualna” albo „Możesz zaktualizować aplikację (Twoja wersja to X, dostępna Y)” + **KLIKNIJ TUTAJ**:
+  aplikacja pobiera nowy APK i otwiera systemowe okno instalacji („Aktualizuj”). Przy pierwszym razie Android poprosi
+  o zgodę „Instalowanie nieznanych aplikacji” dla MeTalk – po jej włączeniu wróć i kliknij jeszcze raz.
+  Przed instalacją sprawdzane są: suma SHA-256 z `latest.json`, nazwa pakietu i wyższy numer wersji;
+  podpis sprawdza Android (ten sam klucz wydania).
+- **Wersja słownika** – „aktualna” albo „Możesz zaktualizować słownik …” + **KLIKNIJ TUTAJ** (pobiera od razu).
+  Niezależnie od przycisku aplikacja sama pobiera nowszy słownik przy starcie i co 6 godzin.
+
+### Jak wydać nową wersję aplikacji
+
+1. Podbij `APP_VERSION` w `version.js` (np. `0.32` → `0.33`).
+2. `npm run release:android` – sprawdza słownik, buduje podpisany APK, zapisuje `releases/MeTalk.apk`
+   i `releases/latest.json` (`appVersion`, `apk`, `sha256`). Potrzebny `JAVA_HOME` i `android/keystore.properties`.
+3. Commit obu plików z `releases/` i wypchnięcie na `main`. Po ~1–10 min (GitHub Pages) telefony zobaczą nową wersję
+   w „Sprawdź aktualizacje”.
+
+Pliki są pod `https://dz1d3k.github.io/MyWords/releases/`. W repozytorium jest zawsze tylko najnowszy APK
+(każde wydanie podmienia `MeTalk.apk`; historia git rośnie o ok. 4 MB na wydanie).
