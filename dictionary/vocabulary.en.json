@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "dictionaryVersion": "1.05",
+  "dictionaryVersion": "1.06",
   "language": "en-US",
   "categories": [
     {
@@ -783,6 +783,27 @@
           "text": "Bus"
         },
         {
+          "emoji": "🚋",
+          "text": "Tram"
+        },
+        {
+          "emoji": "🚆",
+          "text": "Train",
+          "image": "images/pociag.svg"
+        },
+        {
+          "emoji": "🚢",
+          "text": "Ship"
+        },
+        {
+          "emoji": "⛵",
+          "text": "Boat"
+        },
+        {
+          "emoji": "✈️",
+          "text": "Airplane"
+        },
+        {
           "emoji": "🛏️",
           "text": "My room"
         },
@@ -975,7 +996,7 @@
         },
         {
           "emoji": "🚂",
-          "text": "Train"
+          "text": "Toy train"
         },
         {
           "emoji": "🎈",

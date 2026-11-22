@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "dictionaryVersion": "1.05",
+  "dictionaryVersion": "1.06",
   "language": "pl-PL",
   "categories": [
     {
@@ -783,6 +783,27 @@
           "text": "Autobus"
         },
         {
+          "emoji": "🚋",
+          "text": "Tramwaj"
+        },
+        {
+          "emoji": "🚆",
+          "text": "Pociąg",
+          "image": "images/pociag.svg"
+        },
+        {
+          "emoji": "🚢",
+          "text": "Statek"
+        },
+        {
+          "emoji": "⛵",
+          "text": "Łódź"
+        },
+        {
+          "emoji": "✈️",
+          "text": "Samolot"
+        },
+        {
           "emoji": "🛏️",
           "text": "Mój pokój"
         },
@@ -975,7 +996,7 @@
         },
         {
           "emoji": "🚂",
-          "text": "Pociąg"
+          "text": "Pociąg zabawka"
         },
         {
           "emoji": "🎈",
