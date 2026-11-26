@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "dictionaryVersion": "1.09",
+  "dictionaryVersion": "1.10",
   "language": "pl-PL",
   "categories": [
     {
@@ -698,8 +698,8 @@
         {
           "id": "jajko-niespodzianka",
           "emoji": "🥚",
-          "text": "Jajko niespodzianka",
-          "image": "images/jajko-niespodzianka.svg"
+          "text": "Jajko czekoladowe",
+          "image": "images/jajko-czekoladowe.svg"
         },
         {
           "id": "chipsy",
@@ -740,6 +740,16 @@
           "id": "sok",
           "emoji": "🧃",
           "text": "Sok"
+        },
+        {
+          "id": "sok-jablkowy",
+          "emoji": "🍏",
+          "text": "Sok jabłkowy"
+        },
+        {
+          "id": "sok-pomaranczowy",
+          "emoji": "🍊",
+          "text": "Sok pomarańczowy"
         },
         {
           "id": "herbata",
@@ -1230,46 +1240,28 @@
       "color": "#CFD8DC",
       "words": [
         {
-          "id": "gra-zool",
-          "emoji": "🥷",
-          "text": "Gra Zool",
-          "image": "images/zool.svg"
+          "id": "bajki",
+          "emoji": "📺",
+          "text": "Bajki",
+          "image": "images/bajki.svg"
         },
         {
-          "id": "gra-cool-spot",
-          "emoji": "😎",
-          "text": "Gra Cool Spot",
-          "image": "images/cool-spot.svg"
+          "id": "piosenki",
+          "emoji": "🎵",
+          "text": "Piosenki",
+          "image": "images/piosenki.svg"
         },
         {
-          "id": "swinka-peppa",
-          "emoji": "🐷",
-          "text": "Świnka Peppa",
-          "image": "images/swinka.svg"
-        },
-        {
-          "id": "baranek-shaun",
-          "emoji": "🐑",
-          "text": "Baranek Shaun",
-          "image": "images/baranek.svg"
-        },
-        {
-          "id": "psi-patrol",
-          "emoji": "🐕‍🦺",
-          "text": "Psi Patrol",
-          "image": "images/psi-patrol.svg"
+          "id": "konsola",
+          "emoji": "🕹️",
+          "text": "Konsola",
+          "image": "images/konsola.svg"
         },
         {
           "id": "youtube",
           "emoji": "▶️",
           "text": "YouTube",
           "image": "images/youtube.svg"
-        },
-        {
-          "id": "bing",
-          "emoji": "🐰",
-          "text": "Bing",
-          "image": "images/bing.svg"
         },
         {
           "id": "inna-bajka-albo-gra",

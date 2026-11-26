@@ -1,15 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
   <defs><clipPath id="b"><path d="M30 12 L90 12 L90 112 Q90 118 84 118 L36 118 Q30 118 30 112 Z"/></clipPath></defs>
   <g clip-path="url(#b)">
-    <rect x="30" y="8" width="60" height="112" fill="#F2B51B"/>
-    <circle cx="68" cy="48" r="26" fill="#F08A24"/>
-    <path d="M52 48 A16 16 0 0 1 84 48 Z" fill="#D7262B"/>
+    <rect x="30" y="8" width="60" height="112" fill="#4FC3F7"/>
+    <circle cx="68" cy="48" r="26" fill="#FFF59D"/>
+    <path d="M52 48 A16 16 0 0 1 84 48 Z" fill="#1565C0"/>
     <rect x="30" y="48" width="60" height="16" fill="#F4F0DF"/>
-    <rect x="30" y="64" width="60" height="22" fill="#76428A"/>
-    <rect x="30" y="86" width="60" height="34" fill="#D9C7E3"/>
+    <rect x="30" y="64" width="60" height="22" fill="#2E7D32"/>
+    <rect x="30" y="86" width="60" height="34" fill="#C8E6C9"/>
   </g>
-  <path d="M30 14 L33 10 L36 14 L39 10 L42 14 L45 10 L48 14 L51 10 L54 14 L57 10 L60 14 L63 10 L66 14 L69 10 L72 14 L75 10 L78 14 L81 10 L84 14 L87 10 L90 14 L90 14" fill="#E8A915"/>
-  <text x="60" y="60" text-anchor="middle" font-family="Arial Rounded MT Bold, Arial, Helvetica, sans-serif" font-weight="900" font-size="10.5" fill="#D7262B">RiceBread</text>
+  <path d="M30 14 L33 10 L36 14 L39 10 L42 14 L45 10 L48 14 L51 10 L54 14 L57 10 L60 14 L63 10 L66 14 L69 10 L72 14 L75 10 L78 14 L81 10 L84 14 L87 10 L90 14 L90 14" fill="#29B6F6"/>
+  <text x="60" y="60" text-anchor="middle" font-family="Arial Rounded MT Bold, Arial, Helvetica, sans-serif" font-weight="900" font-size="10.5" fill="#1565C0">RiceBread</text>
   <text x="34" y="74" font-family="Arial Narrow, Arial, Helvetica, sans-serif" font-weight="700" font-size="8" fill="#FFFFFF">WAFLE</text>
   <text x="34" y="83" font-family="Arial Narrow, Arial, Helvetica, sans-serif" font-weight="700" font-size="8" fill="#FFFFFF">RYŻOWE</text>
   <ellipse cx="70" cy="105.2" rx="16" ry="7" fill="#E8D9B5"/><ellipse cx="70" cy="102" rx="16" ry="7" fill="#FBF6E9" stroke="#D9C9A0" stroke-width="1.5"/><ellipse cx="78.8" cy="106.3" rx="2.6" ry="1.8" fill="#FFFFFF" stroke="#E2D4AE" stroke-width=".8"/><ellipse cx="70.6" cy="98.8" rx="2.6" ry="1.8" fill="#FFFFFF" stroke="#E2D4AE" stroke-width=".8"/><ellipse cx="60.4" cy="102.1" rx="2.6" ry="1.8" fill="#FFFFFF" stroke="#E2D4AE" stroke-width=".8"/><ellipse cx="62.6" cy="97.5" rx="2.6" ry="1.8" fill="#FFFFFF" stroke="#E2D4AE" stroke-width=".8"/><ellipse cx="72.0" cy="102.6" rx="2.6" ry="1.8" fill="#FFFFFF" stroke="#E2D4AE" stroke-width=".8"/><ellipse cx="74.8" cy="98.5" rx="2.6" ry="1.8" fill="#FFFFFF" stroke="#E2D4AE" stroke-width=".8"/><ellipse cx="70.1" cy="101.7" rx="2.6" ry="1.8" fill="#FFFFFF" stroke="#E2D4AE" stroke-width=".8"/><ellipse cx="58.6" cy="103.8" rx="2.6" ry="1.8" fill="#FFFFFF" stroke="#E2D4AE" stroke-width=".8"/><ellipse cx="71.9" cy="108.0" rx="2.6" ry="1.8" fill="#FFFFFF" stroke="#E2D4AE" stroke-width=".8"/><ellipse cx="72.0" cy="101.4" rx="2.6" ry="1.8" fill="#FFFFFF" stroke="#E2D4AE" stroke-width=".8"/><ellipse cx="80.4" cy="102.7" rx="2.6" ry="1.8" fill="#FFFFFF" stroke="#E2D4AE" stroke-width=".8"/><ellipse cx="78.2" cy="100.6" rx="2.6" ry="1.8" fill="#FFFFFF" stroke="#E2D4AE" stroke-width=".8"/>
