@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "dictionaryVersion": "1.10",
+  "dictionaryVersion": "1.11",
   "language": "en-US",
   "categories": [
     {
@@ -737,21 +737,6 @@
           "text": "Milk"
         },
         {
-          "id": "sok",
-          "emoji": "🧃",
-          "text": "Juice"
-        },
-        {
-          "id": "sok-jablkowy",
-          "emoji": "🍏",
-          "text": "Apple juice"
-        },
-        {
-          "id": "sok-pomaranczowy",
-          "emoji": "🍊",
-          "text": "Orange juice"
-        },
-        {
           "id": "herbata",
           "emoji": "🍵",
           "text": "Tea",
@@ -777,6 +762,34 @@
           "id": "cos-innego-do-picia",
           "emoji": "🥤❓",
           "text": "Another drink"
+        }
+      ],
+      "categories": [
+        {
+          "id": "soki",
+          "emoji": "🧃",
+          "name": "Juices",
+          "color": "#FFE0B2",
+          "words": [
+            {
+              "id": "sok-pomaranczowy",
+              "emoji": "🍊",
+              "text": "Orange juice"
+            },
+            {
+              "id": "sok-jablkowy",
+              "emoji": "🍏",
+              "text": "Apple juice"
+            },
+            {
+              "id": "sok",
+              "emoji": "🧃❓",
+              "text": "Other juice",
+              "formerly": [
+                "Juice"
+              ]
+            }
+          ]
         }
       ]
     },

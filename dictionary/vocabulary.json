@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "dictionaryVersion": "1.10",
+  "dictionaryVersion": "1.11",
   "language": "pl-PL",
   "categories": [
     {
@@ -737,21 +737,6 @@
           "text": "Mleko"
         },
         {
-          "id": "sok",
-          "emoji": "🧃",
-          "text": "Sok"
-        },
-        {
-          "id": "sok-jablkowy",
-          "emoji": "🍏",
-          "text": "Sok jabłkowy"
-        },
-        {
-          "id": "sok-pomaranczowy",
-          "emoji": "🍊",
-          "text": "Sok pomarańczowy"
-        },
-        {
           "id": "herbata",
           "emoji": "🍵",
           "text": "Herbata",
@@ -777,6 +762,34 @@
           "id": "cos-innego-do-picia",
           "emoji": "🥤❓",
           "text": "Coś innego do picia"
+        }
+      ],
+      "categories": [
+        {
+          "id": "soki",
+          "emoji": "🧃",
+          "name": "Soki",
+          "color": "#FFE0B2",
+          "words": [
+            {
+              "id": "sok-pomaranczowy",
+              "emoji": "🍊",
+              "text": "Sok pomarańczowy"
+            },
+            {
+              "id": "sok-jablkowy",
+              "emoji": "🍏",
+              "text": "Sok jabłkowy"
+            },
+            {
+              "id": "sok",
+              "emoji": "🧃❓",
+              "text": "Inny sok",
+              "formerly": [
+                "Sok"
+              ]
+            }
+          ]
         }
       ]
     },
