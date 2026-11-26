@@ -1,15 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <!-- szklanka soku jabłkowego z jabłkiem -->
-  <ellipse cx="54" cy="120" rx="34" ry="5" fill="#000" opacity=".12"/>
-  <path d="M22 24 L82 24 L74 116 Q73 120 69 120 L35 120 Q31 120 30 116 Z" fill="#E3F2FD" stroke="#90A4AE" stroke-width="3"/>
-  <path d="M25 44 L79 44 L74 113 Q73 116 69 116 L35 116 Q31 116 30 113 Z" fill="#FBC02D"/>
-  <path d="M25 44 L79 44 L78 52 L26 52 Z" fill="#FFE082"/>
-  <rect x="36" y="58" width="6" height="44" rx="3" fill="#FFF" opacity=".35"/>
-  <!-- słomka -->
-  <path d="M60 50 L72 6 L80 8" stroke="#43A047" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- zielone jabłko obok -->
-  <path d="M104 84 Q96 78 90 84 Q82 92 86 106 Q90 120 100 118 Q104 117 104 117 Q104 117 108 118 Q118 120 122 106 Q126 92 118 84 Q112 78 104 84 Z" fill="#7CB342"/>
-  <path d="M104 84 Q103 76 106 70" stroke="#5D4037" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <path d="M106 76 Q114 68 120 72 Q114 80 106 76 Z" fill="#558B2F"/>
-  <ellipse cx="93" cy="96" rx="3" ry="6" fill="#FFF" opacity=".4"/>
+  <!-- szklanka soku jabłkowego -->
+  <ellipse cx="64" cy="120" rx="34" ry="5" fill="#000" opacity=".12"/>
+  <path d="M34 24 L94 24 L86 116 Q85 120 81 120 L47 120 Q43 120 42 116 Z" fill="#E3F2FD" stroke="#90A4AE" stroke-width="3"/>
+  <path d="M37 44 L91 44 L86 113 Q85 116 81 116 L47 116 Q43 116 42 113 Z" fill="#FBC02D"/>
+  <path d="M37 44 L91 44 L90 52 L38 52 Z" fill="#FFE082"/>
+  <rect x="48" y="58" width="6" height="44" rx="3" fill="#FFF" opacity=".35"/>
+  <path d="M72 50 L84 6 L92 8" stroke="#43A047" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
