@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "dictionaryVersion": "1.11",
+  "dictionaryVersion": "1.12",
   "language": "pl-PL",
   "categories": [
     {
@@ -617,6 +617,11 @@
               "text": "Jabłko"
             },
             {
+              "id": "pomarancza",
+              "emoji": "🍊",
+              "text": "Pomarańcza"
+            },
+            {
               "id": "banan",
               "emoji": "🍌",
               "text": "Banan"
@@ -774,12 +779,14 @@
             {
               "id": "sok-pomaranczowy",
               "emoji": "🍊",
-              "text": "Sok pomarańczowy"
+              "text": "Sok pomarańczowy",
+              "image": "images/sok-pomaranczowy.svg"
             },
             {
               "id": "sok-jablkowy",
               "emoji": "🍏",
-              "text": "Sok jabłkowy"
+              "text": "Sok jabłkowy",
+              "image": "images/sok-jablkowy.svg"
             },
             {
               "id": "sok",

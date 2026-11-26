@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- szklanka soku pomarańczowego z plasterkiem -->
+  <ellipse cx="60" cy="120" rx="34" ry="5" fill="#000" opacity=".12"/>
+  <path d="M30 24 L90 24 L82 116 Q81 120 77 120 L43 120 Q39 120 38 116 Z" fill="#E3F2FD" stroke="#90A4AE" stroke-width="3"/>
+  <path d="M33 44 L87 44 L82 113 Q81 116 77 116 L43 116 Q39 116 38 113 Z" fill="#FB8C00"/>
+  <path d="M33 44 L87 44 L86 52 L34 52 Z" fill="#FFB74D"/>
+  <rect x="44" y="58" width="6" height="44" rx="3" fill="#FFF" opacity=".35"/>
+  <!-- słomka -->
+  <path d="M68 50 L80 6 L88 8" stroke="#E53935" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- plasterek pomarańczy na brzegu -->
+  <circle cx="94" cy="30" r="20" fill="#F57C00"/>
+  <circle cx="94" cy="30" r="16" fill="#FFCC80"/>
+  <g stroke="#F57C00" stroke-width="2">
+    <line x1="94" y1="14" x2="94" y2="46"/><line x1="78" y1="30" x2="110" y2="30"/>
+    <line x1="83" y1="19" x2="105" y2="41"/><line x1="105" y1="19" x2="83" y2="41"/>
+  </g>
+  <circle cx="94" cy="30" r="3" fill="#FFF3E0"/>
+</svg>
